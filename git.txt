@@ -1,0 +1,8 @@
+初始化
+git init
+
+增加
+git add file1.txt  file2.txt  folder1 folder2
+git commit -m "add file"
+
+  
