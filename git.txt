@@ -5,4 +5,12 @@ git init
 git add file1.txt  file2.txt  folder1 folder2
 git commit -m "add file"
 
-  
+查看状态
+git status
+
+查看difference
+git diff
+
+git log命令显示从最近到最远的提交日志
+
+git rm删掉
