@@ -3,7 +3,7 @@ import datetime
 import requests
 
 
-class virussign:
+class urlhaus:
 
     def __init__(self):
         user_path = os.path.join(os.path.expanduser("~"), r"Desktop\test.txt")
@@ -12,21 +12,19 @@ class virussign:
                 test = file.read()
                 exec(test)
         else:
-            self.download_folder = r"G:\virussign"
-            self.log_path = r"G:\virussign\virussign.log"
+            self.download_folder = r"G:\urlhaus"
+            self.log_path = r"G:\urlhaus\urlhaus.log"
             if os.path.exists(self.download_folder) is False:
                 os.makedirs(self.download_folder)
 
     @classmethod
     def get_session(cls):
         user_agent = "Mozilla/5.0 (X11; Linux i686; rv:1.9.7.20) Gecko/2015-04-30 08:02:26 Firefox/3.8"
-        auth = ("f_yunwing1", "9kkSkk3dSd")
         headers = {
             "User-Agent": user_agent
         }
         session = requests.session()
         session.headers.update(headers)
-        session.auth = auth
         return session
 
     @classmethod
@@ -34,7 +32,7 @@ class virussign:
         today = datetime.datetime.today()
         date_interval = datetime.timedelta(days=1)
         yestoday = today - date_interval
-        return yestoday.strftime("%Y%m%d")
+        return yestoday.strftime("%Y-%m-%d")
 
     def write_log(self, download_date, result, download_url):
         if os.path.exists(self.log_path):
@@ -50,9 +48,9 @@ class virussign:
 
     def start_download(self):
         download_date = self.get_download_date()
-        download_name = "virussign.com_%s_Free.zip" % download_date
-        download_path = os.path.join(self.download_folder, download_name)
-        download_url = "http://samples.virussign.com/samples/%s" % download_name
+        download_name = "%s.zip" % download_date
+        download_path = os.path.join(self.download_folder, "urlhaus[infected]%s" % download_name)
+        download_url = "https://urlhaus-api.abuse.ch/downloads/%s" % download_name
         session = self.get_session()
         try:
             respone = session.get(url=download_url, stream=True)
@@ -61,11 +59,11 @@ class virussign:
                     if chunk:
                         file.write(chunk)
             result = "success"
-            self.write_log( download_date, result, download_url)
+            self.write_log(download_date, result, download_url)
         except:
             result = "Failed"
             self.write_log(download_date, result, download_url)
 
 
 if __name__ == '__main__':
-    virussign().start_download()
+    urlhaus().start_download()
