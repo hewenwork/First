@@ -3,7 +3,7 @@ import datetime
 import requests
 
 
-class urlhaus:
+class Urlhaus:
 
     def __init__(self):
         user_path = os.path.join(os.path.expanduser("~"), r"Desktop\test.txt")
@@ -66,4 +66,4 @@ class urlhaus:
 
 
 if __name__ == '__main__':
-    urlhaus().start_download()
+    Urlhaus().start_download()
