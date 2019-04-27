@@ -3,7 +3,7 @@ import datetime
 import requests
 
 
-class virussign:
+class VirusSign:
 
     def __init__(self):
         user_path = os.path.join(os.path.expanduser("~"), r"Desktop\test.txt")
@@ -68,4 +68,4 @@ class virussign:
 
 
 if __name__ == '__main__':
-    virussign().start_download()
+    VirusSign().start_download()
