@@ -3,7 +3,7 @@ import os
 import shutil
 
 
-class compression_func:
+class CompressionFunc:
 
     def __init__(self):
         self.local_rar_path = r"C:\Program Files\WinRAR"
@@ -29,7 +29,7 @@ class compression_func:
             file_dir = os.path.dirname(file_path)
             new_file_name = file_md5 + ".vir"
             new_file_path = os.path.join(file_dir, new_file_name)
-            if file_path != new_file_path and os.path.exists(new_file_path)is False:
+            if file_path != new_file_path and os.path.exists(new_file_path) is False:
                 os.rename(file_path, new_file_path)
                 return True
             elif file_path != new_file_path and os.path.exists(new_file_path):
@@ -122,8 +122,7 @@ class compression_func:
 if __name__ == '__main__':
     input_path = input(u"要解压的文件或文件夹").replace("\"", "")
     if os.path.isfile(input_path):
-        compression_func().decompression(input_path)
+        CompressionFunc().decompression(input_path)
     elif os.path.isdir(input_path):
-        compression_func().decompression_all(input_path)
-        compression_func().compression_folder(input_path)
-
+        CompressionFunc().decompression_all(input_path)
+        CompressionFunc().compression_folder(input_path)
