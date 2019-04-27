@@ -39,15 +39,14 @@ class GetSample:
         return session
 
     def write_download_log(self, target):
-        log_file = r"F:\auto_collect\下载日志.log"
-        if os.path.exists(log_file):
-            with open(log_file, "r+")as file:
+        if os.path.exists(self.log_file):
+            with open(self.log_file, "r+")as file:
                 old_data = file.read()
                 new_data = u"%s: %s :失败%s, 成功%s\n" % (self.download_date, target, self.failed_num, self.success_num)
                 file.seek(0, 0)
                 file.write(new_data + old_data)
         else:
-            with open(log_file, "a")as file:
+            with open(self.log_file, "a")as file:
                 data = u"%s: %s :失败%s, 成功%s\n" % (self.download_date, target, self.failed_num, self.success_num)
                 file.write(data)
 
