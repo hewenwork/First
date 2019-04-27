@@ -2,7 +2,7 @@ import re
 import requests
 
 
-class virustotal:
+class VirusTotal:
 
     def __init__(self):
         pass
@@ -124,7 +124,7 @@ class virustotal:
             "resource": resouce
         }
         try:
-            session = virustotal.get_session()
+            session = VirusTotal.get_session()
             respone = session.get(url, params=params).json()
             if respone["response_code"] != 0:
                 return respone
@@ -136,7 +136,7 @@ class virustotal:
     @classmethod
     def get_size(cls, permalink):
         try:
-            session = virustotal.get_session()
+            session = VirusTotal.get_session()
             respone = session.get(permalink).text
             file_size = re.findall("File size</span>\n.*\\( (.*?) bytes \\)", respone)[0]
             if file_size is None:
@@ -152,18 +152,18 @@ class virustotal:
         old_file = open(file_path, "r")
         old_data = old_file.read().split("\n")
         old_file.close()
-        api_list = virustotal.get_api_list()
+        api_list = VirusTotal.get_api_list()
         api_len = len(api_list)
         with open(file_path, "w")as file:
             for resuoce in old_data:
                 api = api_list[old_data.index(resuoce) % api_len]
-                report_json = virustotal.get_report_json(api, resuoce)
+                report_json = VirusTotal.get_report_json(api, resuoce)
                 if report_json is not False:
                     md5 = report_json["md5"]
-                    result = virustotal.imf_rule(report_json)
+                    result = VirusTotal.imf_rule(report_json)
                     if result:
                         permalink = report_json["permalink"]
-                        file_size = virustotal.get_size(permalink)
+                        file_size = VirusTotal.get_size(permalink)
                         if file_size is not False:
                             md5_info = "Trojan.Generic,%s,%s\n" % (md5, file_size)
                             md5_info_list.append(md5_info)
