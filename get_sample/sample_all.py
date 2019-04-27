@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 from contextlib import closing
 
 
-class get_sample:
+class GetSample:
 
     def __init__(self):
         start_dir = r"F:\auto_collect"
@@ -180,7 +180,7 @@ class get_sample:
             self.write_download_log(u"(错误: 登陆失败) " + "www.malware-traffic-analysis.net")
 
     def sample_virussign(self):
-        self.session.auth=("infected", "infected")
+        self.session.auth = ("infected", "infected")
         url = "http://virusign.com/get_hashlist.php"
         params = {
             "sha256": "",
@@ -215,7 +215,8 @@ class get_sample:
             for sample_info in respone:
                 sample_md5 = sample_info["md5"]
                 sample_name = sample_md5 + ".vir"
-                sample_download_url = "https://malshare.com/api.php?api_key=%s&action=getfile&hash=%s" % (api_key, sample_md5)
+                sample_download_url = "https://malshare.com/api.php?api_key=%s&action=getfile&hash=%s" % (
+                    api_key, sample_md5)
                 if self.write_sample(sample_name, sample_download_url):
                     self.success_num += 1
                 else:
@@ -264,7 +265,9 @@ class get_sample:
                     if add_date == self.download_date:
                         try:
                             file_respone = self.session.get(md5_url).text
-                            sample_download_url = "http%s" % (re.findall(">hXXp(.*?)<", file_respone)[0]).replace("]", "").replace("[", "")
+                            sample_download_url = "http%s" % (re.findall(">hXXp(.*?)<", file_respone)[0]).replace("]",
+                                                                                                                  "").replace(
+                                "[", "")
                             if self.write_sample(sample_name, sample_download_url):
                                 self.success_num += 1
                             else:
@@ -308,14 +311,14 @@ class get_sample:
             self.write_download_log("(错误:没有链接VPN) " + "http://malc0de.com")
 
     def start_download(self):
-        get_sample().sample_vxvault()
-        get_sample().sample_malware_traffic_analysis()
-        get_sample().sample_virusbay()
-        get_sample().sample_virussign()
-        get_sample().sample_malshare()
-        get_sample().sample_hybird()
+        GetSample().sample_vxvault()
+        GetSample().sample_malware_traffic_analysis()
+        GetSample().sample_virusbay()
+        GetSample().sample_virussign()
+        GetSample().sample_malshare()
+        GetSample().sample_hybird()
         # get_sample().sample_infosec()
-        get_sample().sample_malc0de()
+        GetSample().sample_malc0de()
         return self.download_folder
 
 
@@ -345,7 +348,7 @@ class final_deal:
             file_dir = os.path.dirname(file_path)
             new_file_name = file_md5 + ".vir"
             new_file_path = os.path.join(file_dir, new_file_name)
-            if file_path != new_file_path and os.path.exists(new_file_path)is False:
+            if file_path != new_file_path and os.path.exists(new_file_path) is False:
                 os.rename(file_path, new_file_path)
                 return True
             elif file_path != new_file_path and os.path.exists(new_file_path):
@@ -609,7 +612,7 @@ if __name__ == '__main__':
         date_now = datetime.datetime.now()
         if date_now.strftime("%H%M%S") == "020000":
             time.sleep(1)
-            download_folder = get_sample().start_download()
+            download_folder = GetSample().start_download()
             final_deal().compression_delete_rename_compression_move(download_folder)
         elif date_now.weekday() == 6 and date_now.strftime("%H%M%S") == "120000":
             resouce_path = r"F:\auto_collect\下载失败.txt"
@@ -617,8 +620,7 @@ if __name__ == '__main__':
             dist_path = r"C:\Users\hewen\Desktop\2019-04-14\MD5N%s.db" % date_now.strftime("%Y%m%d")
             os.popen("move %s %s" % (resouce_path, dist_path))
         elif os.path.exists(test_file):
-            download_folder = get_sample().start_download()
+            download_folder = GetSample().start_download()
             final_deal().compression_delete_rename_compression_move(download_folder)
             if os.path.exists(test_file):
                 os.remove(test_file)
-
