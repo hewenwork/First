@@ -166,6 +166,11 @@ class VirusTotal:
                         file_size = VirusTotal.get_size(permalink)
                         if file_size is not False:
                             md5_info = "Trojan.Generic,%s,%s\n" % (md5, file_size)
+                            print(md5_info)
                             md5_info_list.append(md5_info)
             file.writelines(md5_info_list)
 
+
+if __name__ == "__main__":
+    input_path = input(u"md5文件: ").replace("\"", "")
+    VirusTotal().deal_file(input_path)

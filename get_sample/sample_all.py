@@ -8,27 +8,39 @@ import requests
 from bs4 import BeautifulSoup
 from contextlib import closing
 
+sample_dir = r"F:\auto_collect"
+failed_log = os.path.join(sample_dir, r"下载失败.txt")
+log_file = os.path.join(sample_dir, r"下载日志.log")
+
+local_rar_path = r"C:\Program Files\WinRAR"
+local_7z_path = r"C:\Program Files\7-Zip"
+compression_failed_folder = r"F:\auto_collect\解压失败"
+rename_failed_folder = r"F:\auto_collect\重命名失败"
+
+copy_folder = r"\\192.168.1.39\f\Auto"
+
+dist_dir = r"\\192.168.1.254\部门共享\TEST\朱亚玲\IMF\IMF手动分析\贺文"
+
+test_file = os.path.join(os.path.expanduser("~"), r"Desktop\test.test")
+
 
 class GetSample:
 
     def __init__(self):
-        start_dir = r"F:\auto_collect"
         self.session = self.get_session()
         self.download_date = self.get_download_date()
-        self.download_folder = os.path.join(start_dir, self.download_date)
-        self.failed_log = os.path.join(start_dir, r"下载失败.txt")
-        self.log_file = os.path.join(start_dir, r"下载日志.log")
-        self.failed_num = 0
-        self.success_num = 0
+        self.download_folder = os.path.join(sample_dir, self.download_date)
         if os.path.exists(self.download_folder) is False:
             os.makedirs(self.download_folder)
+        self.failed_num = 0
+        self.success_num = 0
 
     @staticmethod
     def get_download_date():
         today = datetime.datetime.today()
         time_interval = datetime.timedelta(days=1)
-        yestoday = today - time_interval
-        return yestoday.strftime("%Y-%m-%d")
+        download_day = today - time_interval
+        return download_day.strftime("%Y-%m-%d")
 
     @staticmethod
     def get_session():
@@ -38,64 +50,67 @@ class GetSample:
         session.headers.update(headers)
         return session
 
+    @staticmethod
+    def write_failed_info(failed_info):
+        if os.path.exists(failed_log):
+            if len(failed_info) == 64:
+                with open(failed_log, "r+")as file:
+                    old_data = file.read()
+                    new_data = "%s\n" % failed_info
+                    file.write(new_data + old_data)
+            else:
+                with open(failed_log, "a+")as file:
+                    file.writelines("%s\n" % failed_info)
+        else:
+            with open(failed_log, "wb")as file:
+                data = "%s\n" % failed_info
+                file.write(data)
+
     def write_download_log(self, target):
-        if os.path.exists(self.log_file):
-            with open(self.log_file, "r+")as file:
+        if os.path.exists(log_file):
+            with open(log_file, "r+")as file:
                 old_data = file.read()
                 new_data = u"%s: %s :失败%s, 成功%s\n" % (self.download_date, target, self.failed_num, self.success_num)
                 file.seek(0, 0)
                 file.write(new_data + old_data)
         else:
-            with open(self.log_file, "a")as file:
+            with open(log_file, "a")as file:
                 data = u"%s: %s :失败%s, 成功%s\n" % (self.download_date, target, self.failed_num, self.success_num)
-                file.write(data)
-
-    def write_failed_info(self, failed_info):
-        if os.path.exists(self.failed_log):
-            if len(failed_info) == 64:
-                with open(self.failed_log, "r+")as file:
-                    old_data = file.read()
-                    new_data = "%s\n" % failed_info
-                    file.write(new_data + old_data)
-            else:
-                with open(self.failed_log, "a+")as file:
-                    file.writelines("%s\n" % failed_info)
-        else:
-            with open(self.failed_log, "wb")as file:
-                data = "%s\n" % failed_info
                 file.write(data)
 
     def write_sample(self, sample_name, sample_download_url):
         file_path = os.path.join(self.download_folder, sample_name)
-        try:
-            with closing(self.session.get(sample_download_url, stream=True, timeout=10))as response:
-                if response.status_code == 200 and os.path.exists(file_path) is False:
+        if os.path.exists(file_path):
+            return True
+        else:
+            try:
+                response = self.session.get(sample_download_url, stream=True, timeout=10)
+                if response.status_code == 200:
                     download_timeout = 120
                     start_time = time.time()
-                    with open(file_path, "wb")as file:
-                        for chunk in response.iter_content(chunk_size=1204):
-                            end_time = time.time()
-                            if end_time < start_time + download_timeout:
-                                file.write(chunk)
-                            else:
-                                os.remove(file_path)
-                                break
-                    return True
-                elif os.path.exists(file_path):
+                    sample_file = open(file_path, "wb")
+                    for chunk in response.iter_content(chunk_size=1024):
+                        end_time = time.time()
+                        if end_time < start_time + download_timeout:
+                            sample_file.write(chunk)
+                        else:
+                            os.remove(file_path)
+                            return False
+                    sample_file.close()
                     return True
                 else:
                     return False
-        except:
-            if os.path.exists(file_path):
-                os.remove(file_path)
-            return False
+            except:
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                return False
 
     def sample_vxvault(self):
         url = "http://vxvault.net/ViriList.php"
         try:
-            respone = self.session.get(url=url)
-            if respone.status_code == 200:
-                suop = BeautifulSoup(respone.text, "lxml")
+            response = self.session.get(url=url)
+            if response.status_code == 200:
+                suop = BeautifulSoup(response.text, "lxml")
                 suop_url = suop.select("tr > td:nth-of-type(2) > a:nth-of-type(2)")
                 suop_md5 = suop.select("tr > td:nth-of-type(3) > a")
                 sample_md5_list = [sample_md5.getText() for sample_md5 in suop_md5]
@@ -103,10 +118,10 @@ class GetSample:
                 for sample_url, sample_md5 in zip(sample_url_list, sample_md5_list):
                     try:
                         sample_respone = self.session.get(url=sample_url).text
-                        sample_add_date = re.findall("Added:<\/B> (.*?)<BR>", sample_respone)[0]
+                        sample_add_date = re.findall("Added:<\\/B> (.*?)<BR>", sample_respone)[0]
                         sample_name = sample_md5 + ".vir"
-                        sample_download_url = re.findall("Link:<\/B> (.*?)<BR>", sample_respone)[0].replace("hxxp:",
-                                                                                                            "http:")
+                        sample_download_url = re.findall("Link:<\\/B> (.*?)<BR>", sample_respone)[0].replace("hxxp:",
+                                                                                                             "http:")
                         if sample_add_date == self.download_date:
                             if self.write_sample(sample_name, sample_download_url):
                                 self.success_num += 1
@@ -147,10 +162,10 @@ class GetSample:
             "password": "testvirus0504L"
         }
         try:
-            respone = self.session.post(url, data=data)
-            token = respone.json()["token"]
-            Authorization = {"Authorization": "JWT %s" % token}
-            self.session.headers.update(Authorization)
+            response = self.session.post(url, data=data)
+            token = response.json()["token"]
+            authorization = {"Authorization": "JWT %s" % token}
+            self.session.headers.update(authorization)
             url = "https://beta.virusbay.io/sample/data"
             recent = self.session.get(url).json()["recent"]
             sample_md5_list = []
@@ -171,7 +186,7 @@ class GetSample:
                     else:
                         self.failed_num += 1
                         self.write_failed_info(sample_md5)
-                    self.session.headers.update(Authorization)
+                    self.session.headers.update(authorization)
                 elif add_date < self.download_date:
                     break
             self.write_download_log("www.malware-traffic-analysis.net")
@@ -188,8 +203,8 @@ class GetSample:
             "end_date": self.download_date
         }
         try:
-            respone = self.session.get(url, params=params).text
-            for sha256 in respone.split("\n"):
+            response = self.session.get(url, params=params).text
+            for sha256 in response.split("\n"):
                 sha256 = sha256.replace("\"", "")
                 sample_name = sha256 + ".7z"
                 sample_download_url = "http://virusign.com/file/%s" % sample_name
@@ -210,8 +225,8 @@ class GetSample:
             "action": "getlist"
         }
         try:
-            respone = self.session.get(url=url, params=params).json()
-            for sample_info in respone:
+            response = self.session.get(url=url, params=params).json()
+            for sample_info in response:
                 sample_md5 = sample_info["md5"]
                 sample_name = sample_md5 + ".vir"
                 sample_download_url = "https://malshare.com/api.php?api_key=%s&action=getfile&hash=%s" % (
@@ -284,9 +299,9 @@ class GetSample:
     def sample_malc0de(self):
         url = "http://malc0de.com/database/"
         try:
-            respone = self.session.get(url)
-            if respone.status_code == 200:
-                suop = BeautifulSoup(respone.text, "lxml")
+            response = self.session.get(url)
+            if response.status_code == 200:
+                suop = BeautifulSoup(response.text, "lxml")
                 sample_data_list = suop.select("tr > td:nth-of-type(1)")
                 sample_url_list = suop.select("tr > td:nth-of-type(2)")
                 sample_md5_list = suop.select("tr > td:nth-of-type(7)")
@@ -321,14 +336,14 @@ class GetSample:
         return self.download_folder
 
 
-class final_deal:
+class FinalDeal:
 
-    def __init__(self):
-        self.local_rar_path = r"C:\Program Files\WinRAR"
-        self.local_7z_path = r"C:\Program Files\7-Zip"
-        self.compression_failed_folder = r"F:\auto_collect\解压失败"
-        self.rename_failed_folder = r"F:\auto_collect\重命名失败"
-        self.smartccl_folder = r"\\192.168.1.39\f\Auto"
+    # def __init__(self):
+    # self.local_rar_path = r"C:\Program Files\WinRAR"
+    # self.local_7z_path = r"C:\Program Files\7-Zip"
+    # self.compression_failed_folder = r"F:\auto_collect\解压失败"
+    # self.rename_failed_folder = r"F:\auto_collect\重命名失败"
+    # self.smartccl_folder = r"\\192.168.1.39\f\Auto"
 
     @staticmethod
     def get_file_md5(file_path):
@@ -356,7 +371,7 @@ class final_deal:
             elif file_path == new_file_path:
                 return True
         else:
-            shutil.move(file_path, self.rename_failed_folder)
+            shutil.move(file_path, rename_failed_folder)
 
     def rename_all(self, folder_path):
         for file_name in os.listdir(folder_path):
@@ -369,20 +384,21 @@ class final_deal:
                     elif os.path.isfile(file_path):
                         os.remove(file_path)
                 except:
-                    shutil.move(file_path, self.rename_failed_folder)
+                    shutil.move(file_path, rename_failed_folder)
             else:
                 result = self.rename_file(file_path)
                 if result is False:
-                    shutil.move(file_path, self.rename_failed_folder)
+                    shutil.move(file_path, rename_failed_folder)
 
+    @classmethod
     def decompression(self, file_path):
         password = "infected"
         dir_path = os.path.dirname(file_path)
         command_dict = {
-            ".gz": [self.local_7z_path, "7z e -tgzip -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
-            "zip": [self.local_7z_path, "7z e -tzip -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
-            ".7z": [self.local_7z_path, "7z e -t7z -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
-            "rar": [self.local_rar_path, "rar e -p%s -y \"%s\" %s" % (password, file_path, dir_path)]
+            ".gz": [local_7z_path, "7z e -tgzip -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
+            "zip": [local_7z_path, "7z e -tzip -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
+            ".7z": [local_7z_path, "7z e -t7z -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
+            "rar": [local_rar_path, "rar e -p%s -y \"%s\" %s" % (password, file_path, dir_path)]
         }
         file_type = file_path[-3:]
         if file_type in command_dict.keys():
@@ -407,21 +423,22 @@ class final_deal:
             if result is True:
                 os.remove(file_path)
             elif result is False:
-                shutil.move(file_path, self.compression_failed_folder)
+                shutil.move(file_path, compression_failed_folder)
         for file_name in os.listdir(folder_path):
             file_path = os.path.join(folder_path, file_name)
             result = self.decompression(file_path)
             if result is True:
                 os.remove(file_path)
             elif result is False:
-                shutil.move(file_path, self.compression_failed_folder)
+                shutil.move(file_path, compression_failed_folder)
 
+    @classmethod
     def compression_folder(self, folder_path):
         try:
             password = "infected"
             result_path = folder_path + "[infected].rar"
             command = "rar a -ep -p%s %s %s" % (password, result_path, folder_path)
-            os.chdir(self.local_rar_path)
+            os.chdir(local_rar_path)
             result = os.popen(command).read()
             if "OK" in result.upper():
                 return result_path
@@ -434,13 +451,10 @@ class final_deal:
         self.decompression_all(folder_path)
         self.rename_all(folder_path)
         result_path = self.compression_folder(folder_path)
-        os.popen("copy %s[infected].rar %s" % (result_path, self.smartccl_folder))
+        os.popen("copy %s[infected].rar %s" % (result_path, copy_folder))
 
 
-class virustotal:
-
-    def __init__(self):
-        pass
+class VirusTotal:
 
     @classmethod
     def get_api_list(cls):
@@ -559,7 +573,7 @@ class virustotal:
             "resource": resouce
         }
         try:
-            session = virustotal.get_session()
+            session = VirusTotal.get_session()
             respone = session.get(url, params=params).json()
             if respone["response_code"] != 0:
                 return respone
@@ -571,7 +585,7 @@ class virustotal:
     @classmethod
     def get_size(cls, permalink):
         try:
-            session = virustotal.get_session()
+            session = VirusTotal.get_session()
             respone = session.get(permalink).text
             file_size = re.findall("File size</span>\n.*\\( (.*?) bytes \\)", respone)[0]
             if file_size is None:
@@ -587,18 +601,18 @@ class virustotal:
         old_file = open(file_path, "r")
         old_data = old_file.read().split("\n")
         old_file.close()
-        api_list = virustotal.get_api_list()
+        api_list = VirusTotal.get_api_list()
         api_len = len(api_list)
         with open(file_path, "w")as file:
             for resuoce in old_data:
                 api = api_list[old_data.index(resuoce) % api_len]
-                report_json = virustotal.get_report_json(api, resuoce)
+                report_json = VirusTotal.get_report_json(api, resuoce)
                 if report_json is not False:
                     md5 = report_json["md5"]
-                    result = virustotal.imf_rule(report_json)
+                    result = VirusTotal.imf_rule(report_json)
                     if result:
                         permalink = report_json["permalink"]
-                        file_size = virustotal.get_size(permalink)
+                        file_size = VirusTotal.get_size(permalink)
                         if file_size is not False:
                             md5_info = "Trojan.Generic,%s,%s\n" % (md5, file_size)
                             md5_info_list.append(md5_info)
@@ -606,20 +620,20 @@ class virustotal:
 
 
 if __name__ == '__main__':
-    test_file = os.path.join(os.path.expanduser("~"), r"Desktop\test.test")
+
     while True:
         date_now = datetime.datetime.now()
         if date_now.strftime("%H%M%S") == "020000":
             time.sleep(1)
             download_folder = GetSample().start_download()
-            final_deal().compression_delete_rename_compression_move(download_folder)
+            FinalDeal().compression_delete_rename_compression_move(download_folder)
         elif date_now.weekday() == 6 and date_now.strftime("%H%M%S") == "120000":
             resouce_path = r"F:\auto_collect\下载失败.txt"
-            virustotal.deal_file(resouce_path)
-            dist_path = r"C:\Users\hewen\Desktop\2019-04-14\MD5N%s.db" % date_now.strftime("%Y%m%d")
+            VirusTotal.deal_file(resouce_path)
+            dist_path = os.path.join(dist_dir, "MD5N%s.db" % date_now.strftime("%Y%m%d"))
             os.popen("move %s %s" % (resouce_path, dist_path))
         elif os.path.exists(test_file):
             download_folder = GetSample().start_download()
-            final_deal().compression_delete_rename_compression_move(download_folder)
+            FinalDeal().compression_delete_rename_compression_move(download_folder)
             if os.path.exists(test_file):
                 os.remove(test_file)
