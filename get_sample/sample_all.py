@@ -7,7 +7,8 @@ import datetime
 import requests
 from bs4 import BeautifulSoup
 
-sample_dir = r"F:\auto_collect"
+# sample_dir = r"F:\auto_collect"
+sample_dir = os.path.dirname(__file__)
 failed_log = os.path.join(sample_dir, r"下载失败.txt")
 log_file = os.path.join(sample_dir, r"下载日志.log")
 

@@ -2,6 +2,20 @@ import os
 
 import requests
 
-a = requests.get("https://raw.githubusercontent.com/hewenwork/First/master/icon/hw.ico").content
-with open(r"C:\Users\hewen\Desktop\hw.ico", "wb")as file:
-    file.write(a)
+def t():
+    try:
+        print(1)
+        try:
+            for i in range(12):
+                try:
+                    os.ss
+                except:
+                    print()
+            print(2)
+
+        except:
+            print(3)
+    except:
+        print(4)
+
+t()
