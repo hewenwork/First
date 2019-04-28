@@ -19,16 +19,23 @@ class MakeApplication:
 
     @classmethod
     def get_ico(cls):
-        ico_url = "https://raw.githubusercontent.com/hewenwork/First/master/icon/hw.ico"
-        ico = requests.get(url=ico_url).content
-        with open(icon_path, "wb")as file:
-            file.write(ico)
+        if os.path.exists(icon_path):
+            pass
+        else:
+            user_agent = "Mozilla/5.0 (X11; Linux i686; rv:1.9.7.20) Gecko/2015-04-30 08:02:26 Firefox/3.8"
+            headers = {"User-Agent": user_agent}
+            session = requests.session()
+            session.headers.update(headers)
+            ico_url = "https://raw.githubusercontent.com/hewenwork/First/master/icon/hw.ico"
+            ico = session.get(url=ico_url).content
+            with open(icon_path, "wb")as file:
+                file.write(ico)
 
     @classmethod
     def start_make(cls):
-        input_file = input(u"需要打包的文件").replace("\"", "")
+        input_file = input(u"python file").replace("\"", "")
         os.chdir(environment_path)
-        command = "python pyinstaller-script.py -F %s -i %s --distpath %s -w " % (input_file, icon_path, user_desktop_path)
+        command = "python pyinstaller-script.py -F %s -i %s --distpath %s" % (input_file, icon_path, user_desktop_path)
         result = os.popen(command).read()
         print(result)
 
