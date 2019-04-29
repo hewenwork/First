@@ -38,6 +38,22 @@ class CompressionFunc:
         else:
             return False
 
+    @classmethod
+    def force_del(cls, file_path):
+        dir_name = os.path.dirname(file_path)
+        result_path = os.path.join(dir_name, "delete.rar")
+        command = "rar a -df -ep \"%s\" \"%s\"" % (result_path, file_path)
+        os.chdir(local_rar_path)
+        try:
+            result = os.popen(command).read()
+            os.remove(result_path)
+            if "Done" in result:
+                return True
+            else:
+                return False
+        except:
+            return False
+
     def rename_all(self, folder_path):
         dir_path = os.path.dirname(folder_path)
         failed_path = os.path.join(dir_path, "处理失败")
@@ -50,12 +66,7 @@ class CompressionFunc:
             else:
                 result = self.rename_file(file_path)
                 if result is False:
-                    try:
-                        shutil.move(file_path, failed_path)
-                    except:
-                        os.remove(file_path)
-                    finally:
-                        pass
+                    self.force_del(file_path)
 
     @staticmethod
     def decompression(file_path):

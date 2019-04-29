@@ -329,10 +329,13 @@ if __name__ == '__main__':
         step2 = CompressionFunc().decompression_delete_rename_compression_move(step1)
         os.remove(test_file)
     while True:
-        start_time = datetime.datetime.now().strftime("%H%M%S")
-        if start_time == "030000":
+        start = datetime.datetime.now().strftime("%H%M%S")
+        if start == "030000":
             time.sleep(1)
-            step1 = GetSample().start_download()
-            step2 = CompressionFunc().decompression_delete_rename_compression_move(step1)
+            try:
+                step1 = GetSample().start_download()
+                step2 = CompressionFunc().decompression_delete_rename_compression_move(step1)
+            except:
+                print("compression failed")
 
 
