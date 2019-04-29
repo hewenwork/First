@@ -79,9 +79,6 @@ if __name__ == "__main__":
         date_now = datetime.datetime.now()
         if date_now.strftime("%H%M%S") == "020000":
             Urlhaus().start_download()
-        # elif os.path.exists(test_file):
-        #     Urlhaus().start_download()
-        #     if os.path.exists(test_file):
-        #         os.remove(test_file)
+
 
 

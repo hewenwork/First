@@ -12,7 +12,7 @@ class MakeApplication:
     def start_make(self):
         input_file = input(u"需要打包的文件").replace("\"", "")
         os.chdir(self.python_environment_path)
-        command = "python pyinstaller-script.py -F %s -i %s --distpath %s -w –out %s" % (input_file, self.icon_path, self.dist_dir, self.tempdir)
+        command = "python pyinstaller-script.py -F %s -i %s --distpath %s" % (input_file, self.icon_path, self.dist_dir)
         result = os.popen(command).read()
         print(result)
 

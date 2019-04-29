@@ -1,107 +1,133 @@
+import hashlib
 import os
-import gzip
 import shutil
-import winreg
-import zipfile
+
+local_rar_path = r"C:\Program Files\WinRAR"
+local_7z_path = r"C:\Program Files\7-Zip"
+compression_failed_folder = r"F:\auto_collect\解压失败"
+rename_failed_folder = r"F:\auto_collect\重命名失败"
+
+copy_folder = r"\\192.168.1.39\f\Auto"
 
 
-class all_func():
+class Compression:
 
-    def __init__(self):
-        self.user_path = os.path.expanduser("~")
-        self.local_rar_path = self.get_local_rar_path()
-        self.local_z7_path = self.get_local_z7_path()
+    # def __init__(self):
+    # self.local_rar_path = r"C:\Program Files\WinRAR"
+    # self.local_7z_path = r"C:\Program Files\7-Zip"
+    # self.compression_failed_folder = r"F:\auto_collect\解压失败"
+    # self.rename_failed_folder = r"F:\auto_collect\重命名失败"
+    # self.smartccl_folder = r"\\192.168.1.39\f\Auto"
 
-    def get_local_rar_path(self):
+    @staticmethod
+    def get_file_md5(file_path):
         try:
-            rar_key = winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WinRAR")
-            self.local_rar_path = os.path.dirname(winreg.QueryValueEx(rar_key, r"exe64")[0])
+            with open(file_path, 'rb')as md5_file:
+                md5_con = hashlib.md5()
+                md5_con.update(md5_file.read())
+                md5_result = str(md5_con.hexdigest()).upper()
+                return md5_result
         except:
-            cloud_rar_path = r"C:\Program Files\WinRAR"
-            self.local_rar_path = os.path.join(self.user_path, "AppData\Local\Temp\RAR")
+            return False
+
+    def rename_file(self, file_path):
+        file_md5 = self.get_file_md5(file_path)
+        if file_md5:
+            file_dir = os.path.dirname(file_path)
+            new_file_name = file_md5 + ".vir"
+            new_file_path = os.path.join(file_dir, new_file_name)
+            if file_path != new_file_path and os.path.exists(new_file_path) is False:
+                os.rename(file_path, new_file_path)
+                return True
+            elif file_path != new_file_path and os.path.exists(new_file_path):
+                os.remove(file_path)
+                return True
+            elif file_path == new_file_path:
+                return True
+        else:
+            shutil.move(file_path, rename_failed_folder)
+
+    def rename_all(self, folder_path):
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+            file_size = os.path.getsize(file_path)
+            if file_size < 1024:
+                try:
+                    if os.path.isdir(file_path):
+                        shutil.rmtree(file_path)
+                    elif os.path.isfile(file_path):
+                        os.remove(file_path)
+                except:
+                    shutil.move(file_path, rename_failed_folder)
+            else:
+                result = self.rename_file(file_path)
+                if result is False:
+                    shutil.move(file_path, rename_failed_folder)
+
+    @classmethod
+    def decompression(self, file_path):
+        password = "infected"
+        dir_path = os.path.dirname(file_path)
+        command_dict = {
+            ".gz": [local_7z_path, "7z e -tgzip -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
+            "zip": [local_7z_path, "7z e -tzip -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
+            ".7z": [local_7z_path, "7z e -t7z -p%s -y \"%s\" -o%s" % (password, file_path, dir_path)],
+            "rar": [local_rar_path, "rar e -p%s -y \"%s\" %s" % (password, file_path, dir_path)]
+        }
+        file_type = file_path[-3:]
+        if file_type in command_dict.keys():
             try:
-                shutil.copytree(cloud_rar_path, self.local_rar_path)
+                compression_path = command_dict[file_type][0]
+                command = command_dict[file_type][-1]
+                os.chdir(compression_path)
+                result = os.popen(command).read()
+                if "OK" in result.upper():
+                    return True
+                else:
+                    return False
             except:
-                print("error: copy cloud RAR to local failed ")
-        return self.local_rar_path
+                return False
+        else:
+            return None
 
-    def get_local_z7_path(self):
+    def decompression_all(self, folder_path):
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+            result = self.decompression(file_path)
+            if result is True:
+                os.remove(file_path)
+            elif result is False:
+                shutil.move(file_path, compression_failed_folder)
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+            result = self.decompression(file_path)
+            if result is True:
+                os.remove(file_path)
+            elif result is False:
+                shutil.move(file_path, compression_failed_folder)
+
+    @classmethod
+    def compression_folder(cls, folder_path):
         try:
-            z7_key = winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\7-Zip")
-            self.local_z7_path = os.path.dirname(winreg.QueryValueEx(z7_key, r"Path")[0])
+            password = "infected"
+            result_path = folder_path + "[infected].rar"
+            command = "rar a -ep -p%s %s %s" % (password, result_path, folder_path)
+            os.chdir(local_rar_path)
+            result = os.popen(command).read()
+            if "OK" in result.upper():
+                return result_path
+            else:
+                return False
         except:
-            cloud_z7_path = r"C:\Program Files\7-Zip"
-            self.local_z7_path = os.path.join(self.user_path, "AppData\Local\Temp\z7")
-            try:
-                shutil.copytree(cloud_z7_path, self.local_z7_path)
-            except:
-                print("error: copy cloud 7z to local failed ")
-        return self.local_z7_path
+            return False
 
-    def gz_func(self, gz_file_path):
-        dir_path = os.path.dirname(gz_file_path)
-        failed_dir_path = os.path.join(dir_path, "Failed")
-        try:
-            with open(gz_file_path[:-3], "wb")as de_gz_file:
-                de_gz_file.write(gzip.GzipFile(gz_file_path).read())
-        except:
-            file_name = gz_file_path.split("\\")[-1]
-            if os.path.exists(failed_dir_path) == False:
-                os.makedirs(failed_dir_path)
-            if os.path.exists(os.path.join(failed_dir_path, file_name)) == False:
-                shutil.move(gz_file_path, failed_dir_path)
-            else:
-                os.remove(os.path.join(failed_dir_path, file_name))
-                shutil.move(gz_file_path, failed_dir_path)
-
-    def rar_func(self, rar_file_path, password="infected"):
-        dir_path = os.path.dirname(rar_file_path)
-        failed_dir_path = os.path.join(dir_path, "Failed")
-        os.chdir(self.local_rar_path)
-        result = os.popen("rar e -p%s -y \"%s\" %s" % (password, rar_file_path, dir_path))
-        if "OK" not in result:
-            file_name = rar_file_path.split("\\")[-1]
-            if os.path.exists(failed_dir_path) == False:
-                os.makedirs(failed_dir_path)
-            if os.path.exists(os.path.join(failed_dir_path, file_name)) == False:
-                shutil.move(rar_file_path, failed_dir_path)
-            else:
-                os.remove(os.path.join(failed_dir_path, file_name))
-                shutil.move(rar_file_path, failed_dir_path)
-
-    def z7_func(self, z7_file_path, password="infected", z7="e"):
-        dir_path = os.path.dirname(z7_file_path)
-        failed_dir_path = os.path.join(dir_path, "Failed")
-        os.chdir(self.local_z7_path)
-        result = os.popen("7z %s -p%s -y \"%s\" -o%s" % (z7, password, z7_file_path, dir_path)).read()
-        if "Everything is Ok" not in result:
-            file_name = z7_file_path.split("\\")[-1]
-            if os.path.exists(failed_dir_path) == False:
-                os.makedirs(failed_dir_path)
-            if os.path.exists(os.path.join(failed_dir_path, file_name)):
-                os.remove(os.path.join(failed_dir_path, file_name))
-                shutil.move(z7_file_path, failed_dir_path)
-            else:
-                shutil.move(z7_file_path, failed_dir_path)
-
-    def zip_func(self, zip_file_path, password="infected"):
-        dir_path = os.path.dirname(zip_file_path)
-        failed_dir_path = os.path.join(dir_path, "Failed")
-        try:
-            with zipfile.ZipFile(zip_file_path, "r")as zip_file:
-                zip_file.setpassword(password.encode("utf-8"))
-                for son_file_name in zip_file.namelist():
-                    print(son_file_name.encode("cp437").decode("utf-8"))
-                # zip_file.extractall(dir_path)
-        except:
-            file_name = zip_file_path.split("\\")[-1]
-            if os.path.exists(failed_dir_path)==False:
-                os.makedirs(failed_dir_path)
-            if os.path.exists(os.path.join(failed_dir_path, file_name)):
-                os.remove(os.path.join(failed_dir_path, file_name))
-                shutil.move(zip_file_path, failed_dir_path)
-            else:
-                shutil.move(zip_file_path, failed_dir_path)
+    def compression_delete_rename_compression_move(self, folder_path):
+        self.decompression_all(folder_path)
+        self.rename_all(folder_path)
+        result_path = self.compression_folder(folder_path)
+        os.popen("copy %s[infected].rar %s" % (result_path, copy_folder))
 
 
-all_func().z7_func(r"C:\Users\hewen\Desktop\auto\Win32 API大全.zip", z7="x -tzip")
+if __name__ == '__main__':
+    input_path = input("folder").replace("\"", "")
+    Compression().compression_delete_rename_compression_move(input_path)

@@ -1,3 +1,4 @@
+import os
 import re
 import requests
 
@@ -147,30 +148,30 @@ class VirusTotal:
             return False
 
     @classmethod
+    def write_sample_info(cls, sample_info):
+        file_path = r"C:\Users\hewen\Desktop\自用\md5n.txt"
+        with open(file_path, "a+")as file:
+            file.write(sample_info + "\n")
+
+    @classmethod
     def deal_file(cls, file_path):
-        md5_info_list = []
-        old_file = open(file_path, "r")
-        old_data = old_file.read().split("\n")
-        old_file.close()
+        with open(file_path, "r")as file:
+            old_data = list(set(file.read().split("\n")))
         api_list = VirusTotal.get_api_list()
-        api_len = len(api_list)
-        with open(file_path, "w")as file:
-            for resuoce in old_data:
-                api = api_list[old_data.index(resuoce) % api_len]
-                report_json = VirusTotal.get_report_json(api, resuoce)
-                if report_json is not False:
-                    md5 = report_json["md5"]
-                    result = VirusTotal.imf_rule(report_json)
-                    if result:
-                        permalink = report_json["permalink"]
-                        file_size = VirusTotal.get_size(permalink)
-                        if file_size is not False:
-                            md5_info = "Trojan.Generic,%s,%s\n" % (md5, file_size)
-                            print(md5_info)
-                            md5_info_list.append(md5_info)
-            file.writelines(md5_info_list)
+        for resource in old_data:
+            api = api_list[old_data.index(resource) % len(api_list)]
+            report_json = VirusTotal.get_report_json(api, resource)
+            if report_json is not False:
+                md5 = report_json["md5"]
+                result = VirusTotal.imf_rule(report_json)
+                if result:
+                    permalink = report_json["permalink"]
+                    file_size = VirusTotal.get_size(permalink)
+                    if file_size is not False:
+                        md5_info = "Trojan.Generic,%s,%s" % (md5, file_size)
+                        cls.write_sample_info(md5_info)
 
 
 if __name__ == "__main__":
-    input_path = input(u"md5文件: ").replace("\"", "")
+    input_path = input(u"md5 file: ").replace("\"", "")
     VirusTotal().deal_file(input_path)
