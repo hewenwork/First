@@ -15,3 +15,6 @@ git log命令显示从最近到最远的提交日志
 
 git rm删掉
 
+远程同步到本地
+git fetch --all
+git reset --hard origin/master

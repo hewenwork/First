@@ -33,7 +33,7 @@ class MakeApplication:
     @staticmethod
     def get_script_dir():
         command = "where python"
-        python_dir = os.path.dirname(os.popen(command).read())
+        python_dir = os.path.dirname(os.popen(command).read().split("\n")[0])
         script_dir = os.path.join(python_dir, r"Scripts")
         return script_dir
 

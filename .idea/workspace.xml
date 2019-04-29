@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22c862e1-573b-4963-b2d2-3dc6f3d94fdb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/First.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/First.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/base/make_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/make_app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/compresion.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/compresion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/get_sample/sample_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/sample_all.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/test1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/git.txt" beforeDir="false" afterPath="$PROJECT_DIR$/git.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="340" lean-forward="true" selection-start-line="340" selection-end-line="340" />
+            <state relative-caret-position="127">
+              <caret line="331" column="57" selection-start-line="331" selection-start-column="57" selection-end-line="331" selection-end-column="57" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
                 <element signature="e#10394#11549#0" />
@@ -33,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/get_sample/compresion.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-414">
-              <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+            <state relative-caret-position="161">
+              <caret line="28" column="42" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -84,8 +79,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base/make_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="30" column="27" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
+            <state relative-caret-position="311">
+              <caret line="38" selection-start-line="38" selection-end-line="38" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -193,7 +188,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.make_app">
+  <component name="RunManager" selected="Python.compresion">
     <configuration name="compresion" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -306,10 +301,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.compresion" />
         <item itemvalue="Python.make_app" />
         <item itemvalue="Python.test1" />
         <item itemvalue="Python.sample_all" />
-        <item itemvalue="Python.compresion" />
         <item itemvalue="Python.vt" />
       </list>
     </recent_temporary>
@@ -326,7 +321,7 @@
       <updated>1556370125533</updated>
       <workItem from="1556370127427" duration="16114000" />
       <workItem from="1556501516672" duration="19352000" />
-      <workItem from="1556544716141" duration="3107000" />
+      <workItem from="1556544716141" duration="5174000" />
     </task>
     <task id="LOCAL-00001" summary="修改为开机启动, 不展示cmd窗口">
       <created>1556433931258</created>
@@ -335,22 +330,29 @@
       <option name="project" value="LOCAL" />
       <updated>1556433931258</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="修改下载过长文件失败">
+      <created>1556548016284</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1556548016284</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38573000" />
+    <option name="totallyTimeSpent" value="40640000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14674494" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14674494" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32897604" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32897604" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3994638" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -373,11 +375,12 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="修改为开机启动, 不展示cmd窗口" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改为开机启动, 不展示cmd窗口" />
+    <MESSAGE value="修改下载过长文件失败" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改下载过长文件失败" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/First$compresion.coverage" NAME="compresion Coverage Results" MODIFIED="1556516915195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
-    <SUITE FILE_PATH="coverage/First$make_app.coverage" NAME="make_app Coverage Results" MODIFIED="1556546711648" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
+    <SUITE FILE_PATH="coverage/First$compresion.coverage" NAME="compresion Coverage Results" MODIFIED="1556549940379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$make_app.coverage" NAME="make_app Coverage Results" MODIFIED="1556549502987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
     <SUITE FILE_PATH="coverage/First$vt.coverage" NAME="vt Coverage Results" MODIFIED="1556506588734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$sample_all.coverage" NAME="sample_all Coverage Results" MODIFIED="1556517261613" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1556545762133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
@@ -416,16 +419,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/compresion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-414">
-          <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/get_sample/sample_urlhaus.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="69">
@@ -438,8 +431,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/base/make_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="30" column="27" selection-start-line="30" selection-start-column="27" selection-end-line="30" selection-end-column="27" />
+        <state relative-caret-position="311">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -448,12 +441,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="340" lean-forward="true" selection-start-line="340" selection-end-line="340" />
+        <state relative-caret-position="127">
+          <caret line="331" column="57" selection-start-line="331" selection-start-column="57" selection-end-line="331" selection-end-column="57" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
             <element signature="e#10394#11549#0" />
             <element signature="e#13424#14830#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/compresion.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="28" column="42" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>

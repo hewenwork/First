@@ -4,7 +4,7 @@ import time
 import datetime
 import requests
 from bs4 import BeautifulSoup
-from get_sample.compresion import CompressionFunc
+from get_sample import compresion
 sample_dir = os.path.dirname(__file__)
 failed_log = os.path.join(sample_dir, r"下载失败.txt")
 log_file = os.path.join(sample_dir, r"下载日志.log")
@@ -315,18 +315,21 @@ class GetSample:
         GetSample().sample_vxvault()
         GetSample().sample_malware_traffic_analysis()
         GetSample().sample_virusbay()
-        GetSample().sample_virussign()
-        GetSample().sample_malshare()
-        GetSample().sample_hybird()
-        GetSample().sample_infosec()
-        GetSample().sample_malc0de()
+        # GetSample().sample_virussign()
+        # GetSample().sample_malshare()
+        # GetSample().sample_hybird()
+        # GetSample().sample_infosec()
+        # GetSample().sample_malc0de()
         return self.download_folder
 
 
 if __name__ == '__main__':
     if os.path.exists(test_file):
-        step1 = GetSample().start_download()
-        step2 = CompressionFunc().decompression_delete_rename_compression_move(step1)
+        try:
+            step1 = GetSample().start_download()
+            step2 = compresion.CompressionFunc().decompression_delete_rename_compression_move(step1)
+        except:
+            GetSample().write_download_log("jieyashibai")
         os.remove(test_file)
     while True:
         start = datetime.datetime.now().strftime("%H%M%S")
@@ -334,8 +337,8 @@ if __name__ == '__main__':
             time.sleep(1)
             try:
                 step1 = GetSample().start_download()
-                step2 = CompressionFunc().decompression_delete_rename_compression_move(step1)
+                step2 = compresion.CompressionFunc().decompression_delete_rename_compression_move(step1)
             except:
-                print("compression failed")
+                GetSample().write_download_log("jieyashibai")
 
 
