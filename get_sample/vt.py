@@ -126,9 +126,9 @@ class VirusTotal:
         }
         try:
             session = VirusTotal.get_session()
-            respone = session.get(url, params=params).json()
-            if respone["response_code"] != 0:
-                return respone
+            response = session.get(url, params=params).json()
+            if response["response_code"] != 0:
+                return response
             else:
                 return False
         except:
@@ -138,8 +138,8 @@ class VirusTotal:
     def get_size(cls, permalink):
         try:
             session = VirusTotal.get_session()
-            respone = session.get(permalink).text
-            file_size = re.findall("File size</span>\n.*\\( (.*?) bytes \\)", respone)[0]
+            response = session.get(permalink).text
+            file_size = re.findall("File size</span>\n.*\\( (.*?) bytes \\)", response)[0]
             if file_size is None:
                 return False
             else:
@@ -171,7 +171,8 @@ class VirusTotal:
                         md5_info = "Trojan.Generic,%s,%s" % (md5, file_size)
                         cls.write_sample_info(md5_info)
 
-
-if __name__ == "__main__":
-    input_path = input(u"md5 file: ").replace("\"", "")
-    VirusTotal().deal_file(input_path)
+a = VirusTotal.get_report_json("e63fff6ec2f1d351b56e263e6903cf7199ecba26bd01046c69f4f92b3d79d09e", "63031200899d84e240c95922b5320822")
+print(a)
+# if __name__ == "__main__":
+#     input_path = input(u"md5 file: ").replace("\"", "")
+#     VirusTotal().deal_file(input_path)

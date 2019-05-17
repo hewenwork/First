@@ -1,46 +1,32 @@
 import os
 import datetime
 import requests
-sample_dir = os.path.dirname(__file__)
+sample_dir = os.getcwd()
 log_file = os.path.join(sample_dir, r"下载日志.log")
-test_file = os.path.join(os.path.expanduser("~"), r"Desktop\test.test")
 
 
 class VirusSign:
 
-    # def __init__(self):
-    #     user_path = os.path.join(os.path.expanduser("~"), r"Desktop\test.txt")
-    #     if os.path.exists(user_path):
-    #         with open(user_path, "r")as file:
-    #             test = file.read()
-    #             exec(test)
-    #     else:
-    #         self.download_folder = r"G:\virussign"
-    #         self.log_path = r"G:\virussign\virussign.log"
-    #         if os.path.exists(self.download_folder) is False:
-    #             os.makedirs(self.download_folder)
-
-    @classmethod
-    def get_session(cls):
+    @staticmethod
+    def get_session():
         user_agent = "Mozilla/5.0 (X11; Linux i686; rv:1.9.7.20) Gecko/2015-04-30 08:02:26 Firefox/3.8"
         auth = ("f_yunwing1", "9kkSkk3dSd")
-        headers = {
-            "User-Agent": user_agent
-        }
+        headers = {"User-Agent": user_agent}
         session = requests.session()
         session.headers.update(headers)
         session.auth = auth
         return session
 
-    @classmethod
-    def get_download_date(cls):
+    @staticmethod
+    def get_download_date(days=1):
         today = datetime.datetime.today()
-        date_interval = datetime.timedelta(days=1)
-        yestoday = today - date_interval
-        return yestoday.strftime("%Y%m%d")
+        date_interval = datetime.timedelta(days=days)
+        download_date = today - date_interval
+        return download_date.strftime("%Y%m%d")
 
     @staticmethod
-    def write_log(download_date, result, download_url):
+    def write_log(result, download_url):
+        download_date = VirusSign.get_download_date()
         if os.path.exists(log_file):
             with open(log_file, "r+")as file:
                 old_data = file.read()
@@ -52,21 +38,27 @@ class VirusSign:
                 data = "%s: download %s %s\n" % (download_date, result, download_url)
                 file.write(data)
 
-    def write_sample(self, download_path, download_url):
-        session = self.get_session()
+    @staticmethod
+    def write_sample(download_path, download_url):
+        session = VirusSign.get_session()
         if os.path.exists(download_path):
-            try:
-                start_size = os.path.getsize(download_path)
+            start_size = os.path.getsize(download_path)
+            response = session.get(url=download_url, stream=True)
+            total_size = response.headers["content-length"]
+            if abs(total_size - start_size) < 1024:
+                return True
+            else:
                 session.headers.update({'Range': 'bytes=%d-' % start_size})
                 response = session.get(url=download_url, stream=True)
-                with open(download_path, "ab")as file:
-                    for chunk in response.iter_content(chunk_size=1024):
-                        if chunk:
-                            file.write(chunk)
-                            file.flush()
-                return True
-            except:
-                return False
+                try:
+                    with open(download_path, "ab")as file:
+                        for chunk in response.iter_content(chunk_size=1024):
+                            if chunk:
+                                file.write(chunk)
+                                file.flush()
+                    return True
+                except:
+                    return False
         else:
             try:
                 response = session.get(url=download_url, stream=True)
@@ -79,18 +71,18 @@ class VirusSign:
             except:
                 return False
 
-    def start_download(self):
-        download_date = self.get_download_date()
+    @staticmethod
+    def start_download():
+        download_date = VirusSign.get_download_date()
         download_name = "virussign.com_%s_Free.zip" % download_date
         download_path = os.path.join(sample_dir, download_name)
         download_url = "http://samples.virussign.com/samples/%s" % download_name
-        result = self.write_sample(download_path, download_url)
+        result = VirusSign.write_sample(download_path, download_url)
         while result is False:
-            self.write_log(download_date, "Failed", download_url)
-            result = self.write_sample(download_path, download_url)
+            result = VirusSign.write_sample(download_path, download_url)
+        VirusSign.write_log("True", download_url)
 
 
 if __name__ == '__main__':
-    while True:
-        VirusSign().start_download()
+    VirusSign.start_download()
 

@@ -1,9 +1,8 @@
 import os
 import re
+import shutil
 import hashlib
 import datetime
-import shutil
-
 import requests
 from bs4 import BeautifulSoup
 
@@ -270,7 +269,6 @@ class SampleVxvault:
             total_num = len(sample_info)
             sample_folder = Base.get_sample_folder()
             for md5, download_url in sample_info.items():
-                print(md5, download_url)
                 file_path = os.path.join(sample_folder, md5 + ".vir")
                 download_result = Base.write_sample(file_path, download_url)
                 if download_result is False:
@@ -730,23 +728,23 @@ def start_func():
         SampleInfosec.download_sample()
     finally:
         pass
-    try:
-        SampleMd5.download_sample()
-    finally:
-        pass
-    try:
-        final_folder = Base.get_sample_folder()
-        CompressionFunc.final_deal(final_folder)
-    finally:
-        pass
+    # try:
+    #     SampleMd5.download_sample()
+    # finally:
+    #     pass
+    # try:
+    #     final_folder = Base.get_sample_folder()
+    #     CompressionFunc.final_deal(final_folder)
+    # finally:
+    #     pass
 
 
 if __name__ == '__main__':
     start_func()
-    while True:
-        now = datetime.datetime.today().strftime("%H%M%S")
-        if now == "060000":
-            try:
-                start_func()
-            finally:
-                pass
+    # while True:
+    #     now = datetime.datetime.today().strftime("%H%M%S")
+    #     if now == "060000":
+    #         try:
+    #             start_func()
+    #         finally:
+    #             pass

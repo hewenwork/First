@@ -1,33 +1,24 @@
 import os
 import re
-import time
 import datetime
 import requests
 from bs4 import BeautifulSoup
-from get_sample import compresion
-sample_dir = os.path.dirname(__file__)
-failed_log = os.path.join(sample_dir, r"下载失败.txt")
-log_file = os.path.join(sample_dir, r"下载日志.log")
-test_file = os.path.join(os.path.expanduser("~"), r"Desktop\test.test")
+
+base_dir = os.getcwd()
+sample_copy_folder = r"\\192.168.1.39\f\Auto"
+sample_download_failed_log = os.path.join(base_dir, "MD5&SHA256.db")
+log_path = os.path.join(base_dir, "download.log")
 
 
-class GetSample:
-
-    def __init__(self):
-        self.session = self.get_session()
-        self.download_date = self.get_download_date()
-        self.download_folder = os.path.join(sample_dir, self.download_date)
-        if os.path.exists(self.download_folder) is False:
-            os.makedirs(self.download_folder)
-        self.failed_num = 0
-        self.success_num = 0
+class Base:
 
     @staticmethod
-    def get_download_date():
-        today = datetime.datetime.today()
-        time_interval = datetime.timedelta(days=1)
-        download_day = today - time_interval
-        return download_day.strftime("%Y-%m-%d")
+    def get_sample_folder():
+        download_data = Base.get_date()
+        sample_folder = os.path.join(base_dir, download_data)
+        if os.path.exists(sample_folder) is False:
+            os.makedirs(sample_folder)
+        return sample_folder
 
     @staticmethod
     def get_session():
@@ -38,307 +29,500 @@ class GetSample:
         return session
 
     @staticmethod
-    def write_failed_info(failed_info):
-        if os.path.exists(failed_log):
-            if len(failed_info) == 64:
-                with open(failed_log, "a+")as file:
-                    new_data = "%s\n" % failed_info
-                    file.write(new_data)
-            else:
-                with open(failed_log, "r+")as file:
-                    old_data = file.read()
-                    new_data = "%s\n" % failed_info
-                    file.seek(0, 0)
-                    file.write(new_data + old_data)
-        else:
-            with open(failed_log, "a+")as file:
-                data = "%s\n" % failed_info
-                file.write(data)
+    def get_date(days=1):
+        today = datetime.datetime.today()
+        time_interval = datetime.timedelta(days=days)
+        download_day = today - time_interval
+        return download_day.strftime("%Y-%m-%d")
 
-    def write_download_log(self, target):
-        if os.path.exists(log_file):
-            with open(log_file, "r+")as file:
-                old_data = file.read()
-                new_data = "%s: %s :Failed%s, Success%s\n" % (self.download_date, target, self.failed_num, self.success_num)
-                file.seek(0, 0)
-                file.write(new_data + old_data)
-        else:
-            with open(log_file, "a")as file:
-                data = "%s: %s :Failed%s, Success%s\n" % (self.download_date, target, self.failed_num, self.success_num)
-                file.write(data)
-
-    def write_sample(self, sample_name, sample_download_url):
-        file_path = os.path.join(self.download_folder, sample_name)
-        if os.path.exists(file_path):
+    @staticmethod
+    def write_sample(sample_path, sample_download_url, session=None):
+        if session is None:
+            session = Base.get_session()
+        if os.path.exists(sample_path):
             return True
         else:
             try:
-                response = self.session.get(sample_download_url, stream=True, timeout=10)
+                response = session.get(url=sample_download_url, stream=True)
                 if response.status_code == 200:
-                    download_timeout = 120
-                    start_time = time.time()
-                    sample_file = open(file_path, "wb")
-                    for chunk in response.iter_content(chunk_size=1024):
-                        end_time = time.time()
-                        if end_time < start_time + download_timeout:
-                            sample_file.write(chunk)
-                        else:
-                            os.remove(file_path)
-                            return False
-                    sample_file.close()
+                    with open(sample_path, "wb")as file:
+                        for chunk in response.iter_content(chunk_size=1024):
+                            file.write(chunk)
                     return True
                 else:
                     return False
             except:
-                if os.path.exists(file_path):
-                    os.remove(file_path)
                 return False
 
-    def sample_vxvault(self):
-        url = "http://vxvault.net/ViriList.php"
-        try:
-            response = self.session.get(url=url)
-            if response.status_code == 200:
-                suop = BeautifulSoup(response.text, "lxml")
-                suop_url = suop.select("tr > td:nth-of-type(2) > a:nth-of-type(2)")
-                suop_md5 = suop.select("tr > td:nth-of-type(3) > a")
-                sample_md5_list = [sample_md5.getText() for sample_md5 in suop_md5]
-                sample_url_list = ["http://vxvault.net/%s" % sample_info.get("href") for sample_info in suop_url]
-                for sample_url, sample_md5 in zip(sample_url_list, sample_md5_list):
-                    try:
-                        sample_respone = self.session.get(url=sample_url).text
-                        sample_add_date = re.findall("Added:<\\/B> (.*?)<BR>", sample_respone)[0]
-                        sample_name = sample_md5 + ".vir"
-                        sample_download_url = re.findall("Link:<\\/B> (.*?)<BR>", sample_respone)[0].replace("hxxp:",
-                                                                                                             "http:")
-                        if sample_add_date == self.download_date:
-                            if self.write_sample(sample_name, sample_download_url):
-                                self.success_num += 1
-                            else:
-                                self.failed_num += 1
-                                self.write_failed_info(sample_md5)
-                        elif sample_add_date < self.download_date:
-                            break
-                    except:
-                        pass
-                self.write_download_log(url)
-        except:
-            self.write_download_log("(error: code404) " + url)
+    @staticmethod
+    def switch_vpn():
+        os.system("chcp 437")
+        connect_status = "netstat -an"
+        connect_command = "rasdial  US usa vpn2014"
+        disconnect_command = "rasdial US /DISCONNECT"
+        result = os.popen(connect_status).read()
+        if "1723" in result:
+            os.popen(disconnect_command).read()
+        else:
+            os.popen(connect_command).read()
 
-    def sample_malware_traffic_analysis(self):
-        url = "http://www.malware-traffic-analysis.net/%s/index.html" % self.download_date.replace("-", "/")
-        try:
-            if self.session.get(url).status_code == 200:
-                sample_suop = BeautifulSoup(self.session.get(url).text, "lxml").select("ul > li > a")
-                for download_url in sample_suop:
-                    if "-malware" in download_url.get("href"):
-                        sample_download_url = url.replace("index.html", download_url.get("href"))
-                        sample_name = download_url.get("href")
-                        if self.write_sample(sample_name, sample_download_url):
-                            self.success_num += 1
-                        else:
-                            self.failed_num += 1
-                self.write_download_log("www.malware-traffic-analysis.net")
+    @staticmethod
+    def write_md5(md5):
+        if os.path.exists(sample_download_failed_log):
+            if len(md5) == 64:
+                with open(sample_download_failed_log, "a+")as file:
+                    file.write(md5 + "\n")
             else:
-                self.write_download_log("(error: code501) " + "www.malware-traffic-analysis.net")
-        except:
-            self.write_download_log("(error: code404)" + "www.malware-traffic-analysis.net")
+                with open(sample_download_failed_log, "r+")as file:
+                    old_data = file.read()
+                    file.seek(0, 0)
+                    file.write(md5 + "\n" + old_data)
+        else:
+            with open(sample_download_failed_log, "a+")as file:
+                file.seek(0, 0)
+                file.write(md5 + "\n")
 
-    def sample_virusbay(self):
+    @staticmethod
+    def write_download_log(target, result):
+        download_data = Base.get_date()
+        data = "%s %s %s" % (download_data, target, result)
+        if os.path.exists(log_path):
+            with open(log_path, "r+")as file:
+                old_data = file.read()
+                file.seek(0, 0)
+                file.write(data + "\n" + old_data)
+        else:
+            with open(log_path, "a+")as file:
+                file.write(data + "\n")
+
+
+class SampleMalc0de:
+
+    @staticmethod
+    def get_sample_info():
+        sample_info = {}
+        session = Base.get_session()
+        download_date = Base.get_date(1)
+        url = "http://malc0de.com/database/"
+        response = session.get(url)
+        if response.status_code == 200:
+            suop = BeautifulSoup(response.text, "lxml")
+            sample_data_list = suop.select("tr > td:nth-of-type(1)")
+            sample_url_list = suop.select("tr > td:nth-of-type(2)")
+            sample_md5_list = suop.select("tr > td:nth-of-type(7)")
+            for sample_date, sample_url, sample_md5 in zip(sample_data_list, sample_url_list, sample_md5_list):
+                add_date = sample_date.getText()
+                sample_md5 = sample_md5.getText()
+                sample_url = "http://" + sample_url.getText()
+                if add_date == download_date:
+                    sample_info[sample_md5] = sample_url
+            return sample_info
+        else:
+            return False
+
+    @staticmethod
+    def download_sample():
+        Base.switch_vpn()
+        sample_info = SampleMalc0de.get_sample_info()
+        Base.switch_vpn()
+        if sample_info is False:
+            Base.write_download_log("http://malc0de.com/database/", "--has`t sample")
+        else:
+            failed_num = 0
+            total_num = len(sample_info)
+            sample_folder = Base.get_sample_folder()
+            for md5, download_url in sample_info.items():
+                file_path = os.path.join(sample_folder, md5 + ".vir")
+                download_result = Base.write_sample(file_path, download_url)
+                if download_result is False:
+                    Base.write_md5(md5)
+                    failed_num += 1
+            result = "download result: failed-%s  total-%s" % (failed_num, total_num)
+            Base.write_download_log("http://malc0de.com/database/", result)
+
+
+class SampleVxvault:
+
+    @staticmethod
+    def get_sample_info(session, link):
+        sample_response = session.get(url=link).text
+        sample_md5 = re.findall("MD5:<\\/B> (.*?)<BR>", sample_response)[0]
+        sample_download_url = re.findall("Link:<\\/B> (.*?)<BR>", sample_response)[0].replace("hxxp:", "http:")
+        return sample_md5, sample_download_url
+
+    @staticmethod
+    def get_download_info():
+        sample_info = {}
+        download_date = Base.get_date()
+        session = Base.get_session()
+        url = "http://vxvault.net/ViriList.php"
+        response = session.get(url=url)
+        suop = BeautifulSoup(response.text, "lxml")
+        suop_add_date = suop.select("tr > td:nth-of-type(1) > a")
+        suop_url = suop.select("tr > td:nth-of-type(2) > a:nth-of-type(2)")
+        for add_date, link in zip(suop_add_date, suop_url):
+            add_date = add_date.getText()
+            link = "http://vxvault.net/" + link.get("href")
+            if add_date == download_date[5:]:
+                sample_md5, sample_download_url = SampleVxvault.get_sample_info(session, link)
+                sample_info[sample_md5] = sample_download_url
+            elif add_date < download_date[5:]:
+                break
+        return sample_info
+
+    @staticmethod
+    def download_sample():
+        sample_info = SampleVxvault().get_download_info()
+        if sample_info == {}:
+            Base.write_download_log("http://vxvault.net/ViriList.php", "--has`t sample")
+        else:
+            failed_num = 0
+            total_num = len(sample_info)
+            sample_folder = Base.get_sample_folder()
+            for md5, download_url in sample_info.items():
+                file_path = os.path.join(sample_folder, md5 + ".vir")
+                download_result = Base.write_sample(file_path, download_url)
+                if download_result is False:
+                    failed_num += 1
+                else:
+                    Base.write_md5(md5)
+            result = "download result: failed-%s  total-%s" % (failed_num, total_num)
+            Base.write_download_log("http://vxvault.net/ViriList.php", result)
+
+
+class SampleHybrid:
+
+    @staticmethod
+    def get_login_session():
+        headers = {"User-Agent":  "Falcon Sandbox"}
+        session = requests.session()
+        session.headers.update(headers)
+        url = "https://www.hybrid-analysis.com/login"
+        response = session.get(url)
+        if response.status_code == 200:
+            token = re.findall("name=\"token\" value=\"(.*?)\">", response.text)[0]
+            data = {
+                "email": "cicely@iobit.com",
+                "password": "IObit2018",
+                "token": token
+            }
+            session.post(url, data=data)
+            return session
+        else:
+            return False
+
+    @staticmethod
+    def get_info(session, num):
+        sample_info = {}
+        threat_level = ["malicious", "ambiguous", "suspicious", "-"]
+        url = "https://www.hybrid-analysis.com/recent-submissions"
+        params = {
+            "filter": "file",
+            "sort": "^timestamp",
+            "page": num
+        }
+        response = session.get(url, params=params)
+        suop = BeautifulSoup(response.text, "lxml")
+        sample_date_list = suop.select("td.submission-timestamp.hidden-xs")
+        sample_download_list = suop.select("a.btn.btn-default.btn-xs.pull-right.sampledl.download-url")
+        is_virus_list = suop.select("dd:nth-of-type(3)")
+        for sample_date, sample_download_url, is_virus in zip(sample_date_list, sample_download_list, is_virus_list):
+            # sample_date = sample_date.getText().strip().split(",")[0]
+            sample_sha256 = sample_download_url.get("href").split("?")[0][17:]
+            sample_download_url = "https://www.hybrid-analysis.com%s" % sample_download_url.get("href")
+            is_virus = is_virus.getText().strip()
+            if is_virus in threat_level:
+                sample_info[sample_sha256] = sample_download_url
+        return sample_info
+
+    @staticmethod
+    def get_sample_download_url_dict():
+        sample_dict = {}
+        session = SampleHybrid.get_login_session()
+        for page in range(1, 11):
+            sample_info = SampleHybrid.get_info(session, page)
+            sample_dict.update(sample_info)
+        return sample_dict
+
+    @staticmethod
+    def download_sample():
+        sample_dict = SampleHybrid.get_sample_download_url_dict()
+        failed_num = 0
+        total_num = len(sample_dict)
+        session = SampleHybrid.get_login_session()
+        sample_folder = Base.get_sample_folder()
+        for sha256, download_url in sample_dict.items():
+            file_path = os.path.join(sample_folder, sha256 + ".vir.gz")
+            download_result = Base.write_sample(file_path, download_url, session=session)
+            if download_result is False:
+                failed_num += 1
+                Base.write_md5(sha256)
+        result = "download result: failed-%s  total-%s" % (failed_num, total_num)
+        Base.write_download_log("https://www.hybrid-analysis.com", result)
+
+
+class SampleVirusBay:
+
+    # 取登陆信息
+    @staticmethod
+    def get_login():
         url = "https://beta.virusbay.io/login"
         data = {"email": "niwangxiu@gmail.com",
                 "password": "testvirus0504L"}
-        try:
-            response = self.session.post(url, data=data)
-            token = response.json()["token"]
-            authorization = {"Authorization": "JWT %s" % token}
-            self.session.headers.update(authorization)
-            url = "https://beta.virusbay.io/sample/data"
-            recent = self.session.get(url).json()["recent"]
-            sample_md5_list = []
-            sample_download_url_list = []
-            for info in recent:
-                add_date = info["publishDate"][:10]
-                _id = info["_id"]
-                sample_md5 = info["md5"]
-                sample_name = sample_md5 + ".vir"
-                url = "https://beta.virusbay.io/api/sample/%s/download/link" % _id
-                sample_download_url = self.session.get(url).text
-                sample_download_url_list.append(sample_download_url)
-                sample_md5_list.append(sample_md5)
-                if add_date == self.download_date:
-                    del self.session.headers["Authorization"]
-                    if self.write_sample(sample_name, sample_download_url):
-                        self.success_num += 1
-                    else:
-                        self.failed_num += 1
-                        self.write_failed_info(sample_md5)
-                    self.session.headers.update(authorization)
-                elif add_date < self.download_date:
-                    break
-            self.write_download_log("https://beta.virusbay.io")
-        except:
-            self.write_download_log(u"(error: log in failed) " + "https://beta.virusbay.io")
+        session = Base.get_session()
+        response = session.post(url=url, data=data)
+        token = response.json()["token"]
+        authorization = {"Authorization": "JWT %s" % token}
+        session.headers.update(authorization)
+        return session
 
-    def sample_virussign(self):
-        self.session.auth = ("infected", "infected")
+    # 取下载MD5和下载链接字典
+    @staticmethod
+    def get_all_download_url():
+        url = "https://beta.virusbay.io/sample/data"
+        session = SampleVirusBay.get_login()
+        download_date = Base.get_date(1)
+        recent = session.get(url=url).json()["recent"]
+        sample_info = {}
+        for info in recent:
+            add_date = info["publishDate"][:10]
+            _id = info["_id"]
+            sample_md5 = info["md5"]
+            link = "https://beta.virusbay.io/api/sample/%s/download/link" % _id
+            sample_download_url = session.get(link).text
+            if download_date == add_date:
+                sample_info[sample_md5] = sample_download_url
+        return sample_info
+
+    @staticmethod
+    def download_sample():
+        sample_info = SampleVirusBay.get_all_download_url()
+        if sample_info == {}:
+            Base.write_download_log("https://beta.virusbay.io", "--has`t sample")
+        else:
+            failed_num = 0
+            total_num = len(sample_info)
+            sample_folder = Base.get_sample_folder()
+            for md5, download_url in sample_info.items():
+                file_path = os.path.join(sample_folder, md5 + ".vir")
+                download_result = Base.write_sample(file_path, download_url)
+                if download_result is False:
+                    failed_num += 1
+                    Base.write_md5(md5)
+            result = "download result: failed-%s  total-%s" % (failed_num, total_num)
+            Base.write_download_log("https://beta.virusbay.io", result)
+
+
+class SampleMalwareTrafficAnalysis:
+
+    @staticmethod
+    def get_sample_info():
+        sample_info = {}
+        session = Base.get_session()
+        download_date = Base.get_date(9).replace("-", "/")
+        url = "http://www.malware-traffic-analysis.net/%s/index.html" % download_date
+        if session.get(url).status_code == 200:
+            sample_suop = BeautifulSoup(session.get(url).text, "lxml").select("ul > li > a")
+            for download_url in sample_suop:
+                if "-malware" in download_url.get("href"):
+                    sample_name = download_url.get("href")
+                    sample_download_url = url.replace("index.html", sample_name)
+                    sample_info[sample_name] = sample_download_url
+        return sample_info
+
+    @staticmethod
+    def download_sample():
+        sample_info = SampleMalwareTrafficAnalysis.get_sample_info()
+        if sample_info == {}:
+            Base.write_download_log("http://www.malware-traffic-analysis.net", "--has`t sample")
+        else:
+            failed_num = 0
+            total_num = len(sample_info)
+            sample_folder = Base.get_sample_folder()
+            for file_name, download_url in sample_info.items():
+                file_path = os.path.join(sample_folder, file_name)
+                download_result = Base.write_sample(file_path, download_url)
+                if download_result is False:
+                    failed_num += 1
+            result = "download result: failed-%s  total-%s" % (failed_num, total_num)
+            Base.write_download_log("http://www.malware-traffic-analysis.net", result)
+
+
+class SampleVirusSign:
+
+    @staticmethod
+    def get_login_session():
+        session = Base.get_session()
+        session.auth = ("infected", "infected")
+        return session
+
+    @staticmethod
+    def get_download_info():
+        download_date = Base.get_date()
+        session = SampleVirusSign.get_login_session()
         url = "http://virusign.com/get_hashlist.php"
         params = {
             "sha256": "",
             "n": "ANY",
-            "start_date": self.download_date,
-            "end_date": self.download_date
+            "start_date": download_date,
+            "end_date": download_date
         }
-        try:
-            response = self.session.get(url, params=params).text
-            for sha256 in response.split("\n"):
-                sha256 = sha256.replace("\"", "")
-                sample_name = sha256 + ".7z"
-                sample_download_url = "http://virusign.com/file/%s" % sample_name
-                if self.write_sample(sample_name, sample_download_url):
-                    self.success_num += 1
-                else:
-                    self.failed_num += 1
-                    self.write_failed_info(sha256)
-            self.write_download_log("http://virusign.com")
-        except:
-            self.write_download_log("(error : get JSON failed)" + "http://virusign.com")
+        response = session.get(url, params=params).text
+        sample_info = {}
+        for sha256 in response.split("\n"):
+            sha256 = sha256.replace("\"", "")
+            sample_download_url = "http://virusign.com/file/%s.7z" % sha256
+            sample_info[sha256] = sample_download_url
+        return sample_info
 
-    def sample_malshare(self):
+    @staticmethod
+    def download_sample():
+        sample_info = SampleVirusSign.get_download_info()
+        if sample_info == {}:
+            Base.write_download_log("http://virusign.com", "--has`t sample")
+        else:
+            failed_num = 0
+            total_num = len(sample_info)
+            sample_folder = Base.get_sample_folder()
+            session = SampleVirusSign.get_login_session()
+            for sha256, download_url in sample_info.items():
+                file_path = os.path.join(sample_folder, sha256 + ".7z")
+                download_result = Base.write_sample(file_path, download_url, session=session)
+                if download_result is False:
+                    failed_num += 1
+                    Base.write_md5(sha256)
+            result = "download result: failed-%s  total-%s" % (failed_num, total_num)
+            Base.write_download_log("http://virusign.com", result)
+
+
+class SampleMalshare:
+
+    @staticmethod
+    def get_sample_info():
+        sample_dict = {}
+        session = Base.get_session()
         api_key = "2befc1c0b4d476b8527887f3f415648050638eff8dd400071f694e7356d5e49a"
         url = "https://malshare.com/api.php"
         params = {
             "api_key": api_key,
             "action": "getlist"
         }
-        try:
-            response = self.session.get(url=url, params=params).json()
-            for sample_info in response:
-                sample_md5 = sample_info["md5"]
-                sample_name = sample_md5 + ".vir"
-                sample_download_url = "https://malshare.com/api.php?api_key=%s&action=getfile&hash=%s" % (
-                    api_key, sample_md5)
-                if self.write_sample(sample_name, sample_download_url):
-                    self.success_num += 1
-                else:
-                    self.failed_num += 1
-                    self.write_failed_info(sample_md5)
-            self.write_download_log("https://malshare.com")
-        except:
-            self.write_download_log("(error: get JSON failed) " + "https://malshare.com")
+        response = session.get(url=url, params=params).json()
+        for sample_info in response:
+            sample_md5 = sample_info["md5"]
+            sample_download_url = \
+                "https://malshare.com/api.php?api_key=%s&action=getfile&hash=%s" % (api_key, sample_md5)
+            sample_dict[sample_md5] = sample_download_url
+        return sample_dict
 
-    def sample_hybird(self):
-        user_data = {
-            "User-Agent": "Falcon Sandbox",
-            "api-key": "0ccgsgk0w00w4ogwcgk4o4s0ggw8gg4og04wsko8kw4s8wgocks400cgsg88400g"
-        }
-        self.session.headers.update(user_data)
-        url = "https://www.hybrid-analysis.com/api/v2/feed/latest"
-        try:
-            sample_data = self.session.get(url).json()["data"]
-            sample_sha256_list = [sample["sha256"] for sample in sample_data if sample["threat_level"] != 0]
-            for sha256 in sample_sha256_list:
-                sample_name = sha256 + ".vir.gz"
-                sample_download_url = "https://www.hybrid-analysis.com/api/v2/overview/%s/sample" % sha256
-                result = self.write_sample(sample_name, sample_download_url)
-                if result:
-                    self.success_num += 1
-                    time.sleep(15)
-                else:
-                    self.failed_num += 1
-                    time.sleep(15)
-                    self.write_failed_info(sha256)
-        except:
-            self.write_download_log("(error: get JSON failed)" + "www.hybrid-analysis.com")
-        self.write_download_log("www.hybrid-analysis.com")
+    @staticmethod
+    def download_sample():
+        sample_info = SampleMalshare.get_sample_info()
+        if sample_info == {}:
+            Base.write_download_log("https://malshare.com", "--has`t sample")
+        else:
+            failed_num = 0
+            total_num = len(sample_info)
+            sample_folder = Base.get_sample_folder()
+            for md5, download_url in sample_info.items():
+                file_path = os.path.join(sample_folder, md5 + ".vir")
+                download_result = Base.write_sample(file_path, download_url)
+                if download_result is False:
+                    failed_num += 1
+                    Base.write_md5(md5)
+            result = "download result: failed-%s  total-%s" % (failed_num, total_num)
+            Base.write_download_log("https://malshare.com", result)
 
-    def sample_infosec(self):
-        for page in range(50):
-            url = "https://infosec.cert-pa.it/analyze/submission-page-%s.html" % page
-            try:
-                response = self.session.get(url)
+
+class SampleInfosec:
+
+    @staticmethod
+    def get_download_link(link):
+        session = Base.get_session()
+        file_response = session.get(link).text
+        sample_download_url = "http%s" % (re.findall(">hXXp(.*?)<", file_response)[0]).replace("]", "").replace("[", "")
+        return sample_download_url
+
+    @staticmethod
+    def get_sample_dict():
+        sample_info = {}
+        download_date = Base.get_date(0)
+        session = Base.get_session()
+        stop_code = False
+        for page in range(1, 10):
+            if stop_code is False:
+                url = "https://infosec.cert-pa.it/analyze/submission-page-%s.html" % page
+                response = session.get(url)
                 date_list = BeautifulSoup(response.text, "lxml").select("tr > td:nth-of-type(1)")
                 md5_list = BeautifulSoup(response.text, "lxml").select("tr > td:nth-of-type(3)")
-                for add_date, sample in zip(date_list, md5_list):
+                for add_date, sample_md5 in zip(date_list, md5_list):
                     add_date = add_date.getText()[:10]
-                    sample_md5 = sample.getText()
-                    sample_name = sample_md5 + ".vir"
-                    md5_url = "https://infosec.cert-pa.it/analyze/%s.html" % sample_md5
-                    if add_date == self.download_date:
-                        try:
-                            file_respone = self.session.get(md5_url).text
-                            sample_download_url = "http%s" % (re.findall(">hXXp(.*?)<", file_respone)[0]).replace("]",
-                                                                                                                  "").replace(
-                                "[", "")
-                            if self.write_sample(sample_name, sample_download_url):
-                                self.success_num += 1
-                            else:
-                                self.failed_num += 1
-                                self.write_failed_info(sample_md5)
-                        except:
-                            self.write_failed_info(sample_md5)
-                    elif add_date < self.download_date:
-                        break
-            except:
-                self.write_download_log("(error: code404)" + "https://infosec.cert-pa.it")
-                break
-        self.write_download_log("https://infosec.cert-pa.it")
-
-    def sample_malc0de(self):
-        url = "http://malc0de.com/database/"
-        try:
-            response = self.session.get(url)
-            if response.status_code == 200:
-                suop = BeautifulSoup(response.text, "lxml")
-                sample_data_list = suop.select("tr > td:nth-of-type(1)")
-                sample_url_list = suop.select("tr > td:nth-of-type(2)")
-                sample_md5_list = suop.select("tr > td:nth-of-type(7)")
-                for sample_data, sample_url, sample_md5 in zip(sample_data_list, sample_url_list, sample_md5_list):
-                    add_data = sample_data.getText()
-                    sample_download_url = "http://" + sample_url.getText()
                     sample_md5 = sample_md5.getText()
-                    sample_name = sample_md5 + ".vir"
-                    if add_data == self.download_date:
-                        if self.write_sample(sample_name, sample_download_url):
-                            self.success_num += 1
-                        else:
-                            self.failed_num += 1
-                            self.write_failed_info(sample_md5)
-                    elif add_data < self.download_date:
+                    md5_url = "https://infosec.cert-pa.it/analyze/%s.html" % sample_md5
+                    if add_date == download_date:
+                        download_url = SampleInfosec.get_download_link(md5_url)
+                        sample_info[sample_md5] = download_url
+                    elif add_date < download_date:
+                        stop_code = True
                         break
-                self.write_download_log("http://malc0de.com")
-        except:
-            self.write_download_log("(error: VPN) " + "http://malc0de.com")
-        self.write_download_log("(error: VPN) " + "http://malc0de.com")
+            else:
+                break
+        return sample_info
 
-    def start_download(self):
-        GetSample().sample_vxvault()
-        GetSample().sample_malware_traffic_analysis()
-        GetSample().sample_virusbay()
-        GetSample().sample_virussign()
-        GetSample().sample_malshare()
-        GetSample().sample_hybird()
-        GetSample().sample_infosec()
-        GetSample().sample_malc0de()
-        return self.download_folder
+    @staticmethod
+    def download_sample():
+        sample_info = SampleInfosec.get_sample_dict()
+        if sample_info == {}:
+            Base.write_download_log("https://infosec.cert-pa.it", "--has`t sample")
+        else:
+            failed_num = 0
+            total_num = len(sample_info)
+            sample_folder = Base.get_sample_folder()
+            for md5, download_url in sample_info.items():
+                file_path = os.path.join(sample_folder, md5 + ".vir")
+                download_result = Base.write_sample(file_path, download_url)
+                if download_result is False:
+                    failed_num += 1
+                    Base.write_md5(md5)
+            result = "download result: failed-%s  total-%s" % (failed_num, total_num)
+            Base.write_download_log("https://infosec.cert-pa.it", result)
+
+
+def start_func():
+    try:
+        SampleMalc0de.download_sample()
+    finally:
+        pass
+    try:
+        SampleVxvault.download_sample()
+    finally:
+        pass
+    try:
+        SampleHybrid.download_sample()
+    finally:
+        pass
+    try:
+        SampleVirusBay.download_sample()
+    finally:
+        pass
+    try:
+        SampleMalwareTrafficAnalysis.download_sample()
+    finally:
+        pass
+    try:
+        SampleVirusSign.download_sample()
+    finally:
+        pass
+    try:
+        SampleMalshare.download_sample()
+    finally:
+        pass
+    try:
+        SampleInfosec.download_sample()
+    finally:
+        pass
 
 
 if __name__ == '__main__':
-    if os.path.exists(test_file):
-        try:
-            step1 = GetSample().start_download()
-            # step2 = compresion.CompressionFunc().decompression_delete_rename_compression_move(step1)
-        except:
-            GetSample().write_download_log("jieyashibai")
-        os.remove(test_file)
-    while True:
-        start = datetime.datetime.now().strftime("%H%M%S")
-        if start == "030000":
-            time.sleep(1)
-            try:
-                step1 = GetSample().start_download()
-                # step2 = compresion.CompressionFunc().decompression_delete_rename_compression_move(step1)
-            except:
-                GetSample().write_download_log("jieyashibai")
-
+    start_func()
 

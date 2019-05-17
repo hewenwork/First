@@ -2,9 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22c862e1-573b-4963-b2d2-3dc6f3d94fdb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/GUI/GUI_tkinter/test1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base/Ftp_func.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/base/base_func.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/get_sample/sample_md5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/change_time.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/creat_big_file.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/get_bugreport.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/get_ip.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/get_sm.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/test1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/work_ready.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/compression_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/compression_func.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/make_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/make_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/auto_collect.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/auto_collect.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/compresion.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/compresion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/get_sample/sample_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/sample_all.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/sample_urlhaus.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/sample_urlhaus.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/get_sample/sample_virussign.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/sample_virussign.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/test1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/virussign_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/virussign_old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/vt.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/vt.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,99 +34,38 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GUI/GUI_tkinter/test1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="12" column="32" lean-forward="true" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/get_sample/sample_virussign.py">
+        <entry file="file://$PROJECT_DIR$/GUI/GUI_PyQt5/ui/untitled.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="449">
-              <caret line="93" column="15" lean-forward="true" selection-start-line="93" selection-start-column="15" selection-end-line="93" selection-end-column="15" />
+            <state relative-caret-position="54">
+              <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/get_sample/sample_md5.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="7" selection-start-line="7" selection-end-line="10" selection-end-column="71" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-                <element signature="e#10394#11549#0" />
-                <element signature="e#13424#14830#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_sample/compresion.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="141" lean-forward="true" selection-start-line="141" selection-end-line="141" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_sample/vt.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_sample/sample_urlhaus.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="73" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="73" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/base/compression_func.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="65" selection-start-line="65" selection-end-line="65" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/base/make_app.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_sample/test1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#724#810#0" />
+                <element signature="e#862#1356#0" />
+                <element signature="e#1406#1749#0" />
+                <element signature="e#1802#2351#0" />
               </folding>
             </state>
           </provider>
@@ -121,31 +80,41 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>1723</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/base/compression_func.py" />
-        <option value="$PROJECT_DIR$/get_sample/vt.py" />
-        <option value="$PROJECT_DIR$/get_sample/sample_urlhaus.py" />
         <option value="$PROJECT_DIR$/get_sample/compresion.py" />
-        <option value="$PROJECT_DIR$/get_sample/test1.py" />
-        <option value="$PROJECT_DIR$/base/make_app.py" />
-        <option value="$PROJECT_DIR$/get_sample/sample_all.py" />
         <option value="$PROJECT_DIR$/get_sample/sample_virussign.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/First.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
-        <option value="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" />
+        <option value="$PROJECT_DIR$/get_sample/auto_collect.py" />
+        <option value="$PROJECT_DIR$/base/make_app.py" />
+        <option value="$PROJECT_DIR$/base/base.py" />
+        <option value="$PROJECT_DIR$/base/Ftp_func.py" />
+        <option value="$PROJECT_DIR$/get_sample/sample_hybird.py" />
+        <option value="$PROJECT_DIR$/get_sample/virussign_old.py" />
+        <option value="$PROJECT_DIR$/get_sample/sample_all.py" />
+        <option value="$PROJECT_DIR$/tool/creat_big_file.py" />
+        <option value="$PROJECT_DIR$/get_sample/vt.py" />
+        <option value="$PROJECT_DIR$/base/compression_func.py" />
+        <option value="$PROJECT_DIR$/base/base_func.py" />
+        <option value="$PROJECT_DIR$/tool/test1.py" />
+        <option value="$PROJECT_DIR$/get_sample/test1.py" />
+        <option value="$PROJECT_DIR$/get_sample/sample_urlhaus.py" />
+        <option value="$PROJECT_DIR$/tool/change_time.py" />
+        <option value="$PROJECT_DIR$/tool/work_ready.py" />
+        <option value="$PROJECT_DIR$/tool/get_bugreport.py" />
+        <option value="$PROJECT_DIR$/tool/get_sm.py" />
+        <option value="$PROJECT_DIR$/tool/get_ip.py" />
+        <option value="$PROJECT_DIR$/get_sample/sample_md5.py" />
+        <option value="$PROJECT_DIR$/GUI/GUI_PyQt5/ui/untitled.py" />
+        <option value="$PROJECT_DIR$/GUI/GUI_tkinter/test1.py" />
       </list>
     </option>
   </component>
@@ -174,7 +143,20 @@
             <path>
               <item name="First" type="b2602c69:ProjectViewProjectNode" />
               <item name="First" type="462c0819:PsiDirectoryNode" />
-              <item name="get_sample" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="First" type="b2602c69:ProjectViewProjectNode" />
+              <item name="First" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI_PyQt5" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="First" type="b2602c69:ProjectViewProjectNode" />
+              <item name="First" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI_PyQt5" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -185,9 +167,10 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/GUI/GUI_PyQt5/ui" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -201,8 +184,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.compresion">
-    <configuration name="compresion" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.test1 (2)">
+    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -210,12 +193,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/get_sample" />
+      <option name="WORKING_DIRECTORY" value="F:/python/Lib/tkinter" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/get_sample/compresion.py" />
+      <option name="SCRIPT_NAME" value="F:/python/Lib/tkinter/__init__.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -246,7 +229,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="sample_all" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="test1 (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -254,12 +237,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/get_sample" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI/GUI_tkinter" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/get_sample/sample_all.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/GUI_tkinter/test1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -268,7 +251,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="untitled" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -276,12 +259,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/get_sample" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI/GUI_PyQt5/ui" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/get_sample/test1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/GUI_PyQt5/ui/untitled.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -290,7 +273,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="vt" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="wget" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -298,12 +281,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/get_sample" />
+      <option name="WORKING_DIRECTORY" value="F:/python/Lib/site-packages" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/get_sample/vt.py" />
+      <option name="SCRIPT_NAME" value="F:/python/Lib/site-packages/wget.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -314,11 +297,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.compresion" />
+        <item itemvalue="Python.test1 (2)" />
+        <item itemvalue="Python.untitled" />
+        <item itemvalue="Python.__init__" />
+        <item itemvalue="Python.wget" />
         <item itemvalue="Python.make_app" />
-        <item itemvalue="Python.test1" />
-        <item itemvalue="Python.sample_all" />
-        <item itemvalue="Python.vt" />
       </list>
     </recent_temporary>
   </component>
@@ -335,6 +318,17 @@
       <workItem from="1556370127427" duration="16114000" />
       <workItem from="1556501516672" duration="19352000" />
       <workItem from="1556544716141" duration="7699000" />
+      <workItem from="1557047857207" duration="671000" />
+      <workItem from="1557125885125" duration="5615000" />
+      <workItem from="1557218022657" duration="954000" />
+      <workItem from="1557282530386" duration="10036000" />
+      <workItem from="1557452358391" duration="17127000" />
+      <workItem from="1557628259434" duration="22320000" />
+      <workItem from="1557712831772" duration="10388000" />
+      <workItem from="1557746413971" duration="3027000" />
+      <workItem from="1557798043658" duration="31251000" />
+      <workItem from="1557970660409" duration="10972000" />
+      <workItem from="1558057527985" duration="14282000" />
     </task>
     <task id="LOCAL-00001" summary="修改为开机启动, 不展示cmd窗口">
       <created>1556433931258</created>
@@ -357,21 +351,29 @@
       <option name="project" value="LOCAL" />
       <updated>1556550103189</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="新的逻辑">
+      <created>1557654040286</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1557654040286</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43165000" />
+    <option name="totallyTimeSpent" value="169808000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14674494" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16380544" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32897604" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49928468" visible="true" weight="0.32841823" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3994638" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -379,7 +381,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007153" side_tool="true" weight="0.3297587" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5007153" side_tool="true" weight="0.32841823" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -396,100 +398,365 @@
     <MESSAGE value="修改为开机启动, 不展示cmd窗口" />
     <MESSAGE value="修改下载过长文件失败" />
     <MESSAGE value="绝望啊" />
-    <option name="LAST_COMMIT_MESSAGE" value="绝望啊" />
+    <MESSAGE value="新的逻辑" />
+    <option name="LAST_COMMIT_MESSAGE" value="新的逻辑" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/First$compresion.coverage" NAME="compresion Coverage Results" MODIFIED="1556549940379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
-    <SUITE FILE_PATH="coverage/First$make_app.coverage" NAME="make_app Coverage Results" MODIFIED="1556549502987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
-    <SUITE FILE_PATH="coverage/First$vt.coverage" NAME="vt Coverage Results" MODIFIED="1556506588734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$base_func.coverage" NAME="base_func Coverage Results" MODIFIED="1557831137424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
+    <SUITE FILE_PATH="coverage/First$sample_urlhaus.coverage" NAME="sample_urlhaus Coverage Results" MODIFIED="1558001163163" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$make_app.coverage" NAME="make_app Coverage Results" MODIFIED="1558060771970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
+    <SUITE FILE_PATH="coverage/First$sample_md5.coverage" NAME="sample_md5 Coverage Results" MODIFIED="1557633809653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$test1__1_.coverage" NAME="test1 (1) Coverage Results" MODIFIED="1557921113573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
+    <SUITE FILE_PATH="coverage/First$virussign_old.coverage" NAME="virussign_old Coverage Results" MODIFIED="1557753239229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$change_time.coverage" NAME="change_time Coverage Results" MODIFIED="1558057900167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
+    <SUITE FILE_PATH="coverage/First$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1558083521949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="F:/python/Lib/tkinter" />
+    <SUITE FILE_PATH="coverage/First$untitled.coverage" NAME="untitled Coverage Results" MODIFIED="1558089022339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_PyQt5/ui" />
+    <SUITE FILE_PATH="coverage/First$test1__2_.coverage" NAME="test1 (2) Coverage Results" MODIFIED="1558089191808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_tkinter" />
+    <SUITE FILE_PATH="coverage/First$auto_collect.coverage" NAME="auto_collect Coverage Results" MODIFIED="1557641220127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$compresion.coverage" NAME="compresion Coverage Results" MODIFIED="1557647795718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$wget.coverage" NAME="wget Coverage Results" MODIFIED="1558078711706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="F:/python/Lib/site-packages" />
+    <SUITE FILE_PATH="coverage/First$sample_hybird.coverage" NAME="sample_hybird Coverage Results" MODIFIED="1557383336126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$get_bugreport.coverage" NAME="get_bugreport Coverage Results" MODIFIED="1558059859292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
     <SUITE FILE_PATH="coverage/First$sample_all.coverage" NAME="sample_all Coverage Results" MODIFIED="1556517261613" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
-    <SUITE FILE_PATH="coverage/First$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1556545762133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$vt.coverage" NAME="vt Coverage Results" MODIFIED="1557909016610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1557918502904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/base/test1.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/vt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/test1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/sample_urlhaus.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="73" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="73" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/base/make_app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/2019-05-11.txt" />
     <entry file="file://$PROJECT_DIR$/get_sample/compresion.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="141" lean-forward="true" selection-start-line="141" selection-end-line="141" />
+        <state relative-caret-position="81">
+          <caret line="5" column="38" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="38" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/Ftp_func.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="37" column="17" selection-start-line="37" selection-start-column="17" selection-end-line="37" selection-end-column="17" />
+          <folding>
+            <element signature="e#2#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/file_func.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/sample_hybird.py" />
+    <entry file="file://$PROJECT_DIR$/get_sample/sample_virussign.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/auto_collect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="10" column="39" lean-forward="true" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#6405#8270#0" />
+            <element signature="e#8299#10404#0" />
+            <element signature="e#10432#13364#0" />
+            <element signature="e#13394#15378#0" />
+            <element signature="e#15422#16987#0" />
+            <element signature="e#17018#18757#0" />
+            <element signature="e#18787#20305#0" />
+            <element signature="e#20334#22677#0" />
+            <element signature="e#22702#25466#0" />
+            <element signature="e#25497#26687#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/virussign_old.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1347">
+          <caret line="74" selection-start-line="74" selection-end-line="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/vt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="664">
+          <caret line="130" column="31" selection-start-line="130" selection-start-column="31" selection-end-line="130" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#147#7203#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/creat_big_file.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" selection-start-line="7" selection-end-line="10" selection-end-column="71" />
+        <state relative-caret-position="216">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-            <element signature="e#10394#11549#0" />
-            <element signature="e#13424#14830#0" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/base_func.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="150" column="48" selection-start-line="150" selection-start-column="48" selection-end-line="150" selection-end-column="48" />
+          <folding>
+            <element signature="e#2#11#0" expanded="true" />
+            <element signature="e#185#538#0" />
+            <element signature="e#169#459#0" />
+            <element signature="e#516#728#0" />
+            <element signature="e#779#1019#0" />
+            <element signature="e#1080#1469#0" />
+            <element signature="e#1528#1718#0" />
+            <element signature="e#1772#1953#0" />
+            <element signature="e#2051#2647#0" />
+            <element signature="e#2697#3048#0" />
+            <element signature="e#3121#3207#0" />
+            <element signature="e#3259#3723#0" />
+            <element signature="e#6051#6350#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/test1.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/test1.py">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/base/compression_func.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        <state relative-caret-position="756">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#184#341#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/sample_virussign.py">
+    <entry file="file://$PROJECT_DIR$/get_sample/sample_urlhaus.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="93" column="15" lean-forward="true" selection-start-line="93" selection-start-column="15" selection-end-line="93" selection-end-column="15" />
+        <state relative-caret-position="540">
+          <caret line="22" column="49" selection-start-line="22" selection-start-column="49" selection-end-line="22" selection-end-column="49" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tool/work_ready.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/base/make_app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#56#1643#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/change_time.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="6" column="22" lean-forward="true" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
+          <folding>
+            <element signature="e#9#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/get_bugreport.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-302">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
+          <folding>
+            <element signature="e#214#540#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/get_ip.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/get_sm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="35" column="39" lean-forward="true" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
+          <folding>
+            <element signature="e#15#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/git.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/sample_md5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="5" column="32" selection-start-line="5" selection-start-column="32" selection-end-line="5" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#724#810#0" />
+            <element signature="e#862#1356#0" />
+            <element signature="e#1406#1749#0" />
+            <element signature="e#1802#2351#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://F:/python/Lib/site-packages/wget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8294">
+          <caret line="241" selection-start-line="241" selection-end-line="244" selection-end-column="58" />
+          <folding>
+            <element signature="e#22#498#1" />
+            <element signature="e#2155#8109#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://F:/python/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-76">
+          <caret line="2347" column="21" selection-start-line="2347" selection-start-column="21" selection-end-line="2347" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#1086#1" />
+            <element signature="e#1647#2422#0" />
+            <element signature="e#2447#2666#0" />
+            <element signature="e#2756#3206#0" />
+            <element signature="e#3327#4024#0" />
+            <element signature="e#4064#5113#0" />
+            <element signature="e#5132#8595#0" />
+            <element signature="e#8670#8979#0" />
+            <element signature="e#9004#9037#0" />
+            <element signature="e#9062#9231#0" />
+            <element signature="e#9265#15695#0" />
+            <element signature="e#15728#16431#0" />
+            <element signature="e#16461#17233#0" />
+            <element signature="e#17266#17910#0" />
+            <element signature="e#17944#18869#0" />
+            <element signature="e#18894#18958#0" />
+            <element signature="e#19016#19208#0" />
+            <element signature="e#19282#65636#0" />
+            <element signature="e#65662#66287#0" />
+            <element signature="e#66307#67053#0" />
+            <element signature="e#67073#67815#0" />
+            <element signature="e#67832#79512#0" />
+            <element signature="e#79539#84324#0" />
+            <element signature="e#84326#84384#0" />
+            <element signature="e#85309#86976#0" />
+            <element signature="e#86995#89087#0" />
+            <element signature="e#89105#91183#0" />
+            <element signature="e#91213#93552#0" />
+            <element signature="e#93603#93738#0" />
+            <element signature="e#93776#94906#0" />
+            <element signature="e#94934#96458#0" />
+            <element signature="e#96500#108316#0" />
+            <element signature="e#108349#109596#0" />
+            <element signature="e#109630#112570#0" />
+            <element signature="e#112597#113326#0" />
+            <element signature="e#113353#114034#0" />
+            <element signature="e#114077#118384#0" />
+            <element signature="e#118410#123078#0" />
+            <element signature="e#123110#123268#0" />
+            <element signature="e#123297#123487#0" />
+            <element signature="e#123520#124677#0" />
+            <element signature="e#124704#126196#0" />
+            <element signature="e#126227#128319#0" />
+            <element signature="e#128361#144890#0" />
+            <element signature="e#144911#145264#0" />
+            <element signature="e#145300#146813#0" />
+            <element signature="e#146832#148935#0" />
+            <element signature="e#148966#151591#0" />
+            <element signature="e#151623#151929#0" />
+            <element signature="e#152164#157750#0" />
+            <element signature="e#157859#158437#0" />
+            <element signature="e#158544#166300#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://F:/python/Lib/tkinter/ttk.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-567">
+          <folding>
+            <element signature="e#0#492#1" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GUI/GUI_tkinter/test1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" column="32" lean-forward="true" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GUI/GUI_PyQt5/ui/untitled.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="Copyright.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

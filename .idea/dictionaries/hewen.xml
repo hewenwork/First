@@ -1,6 +1,9 @@
 <component name="ProjectDictionaryState">
   <dictionary name="hewen">
     <words>
+      <w>bugcontent</w>
+      <w>bugreport</w>
+      <w>chcp</w>
       <w>distpath</w>
       <w>hybird</w>
       <w>infosec</w>
@@ -8,15 +11,23 @@
       <w>malc</w>
       <w>malshare</w>
       <w>malware</w>
+      <w>netstat</w>
+      <w>pftpiobit</w>
       <w>pyinstaller</w>
+      <w>rasdial</w>
+      <w>sampledl</w>
+      <w>stor</w>
       <w>suop</w>
       <w>testvirus</w>
       <w>tgzip</w>
       <w>tzip</w>
       <w>urlhaus</w>
       <w>virusbay</w>
+      <w>virusshare</w>
       <w>virussign</w>
       <w>vxvault</w>
+      <w>yestoday</w>
+      <w>yunwing</w>
     </words>
   </dictionary>
 </component>
