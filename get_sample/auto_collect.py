@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 
 base_dir = os.getcwd()
 sample_copy_folder = r"\\192.168.1.39\f\Auto"
-md5_copy_folder = r"\\192.168.1.36\e\a"
 
 
 class Base:

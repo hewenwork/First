@@ -31,7 +31,7 @@ class SampleMd5:
     @staticmethod
     def write_md5(md5):
         download_date = SampleMd5.get_date()
-        md5_file_path = os.path.join(sample_folder, r"%s.txt" % download_date)
+        md5_file_path = os.path.join(sample_folder, r"Auto%s.txt" % download_date)
         if os.path.exists(md5_file_path):
             with open(md5_file_path, "r+")as file:
                 old_data = file.read()

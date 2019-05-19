@@ -68,9 +68,11 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)  # noinspection PyBroadException
 
     def retranslateUi(self, MainWindow):
+        # noinspection PyBroadException
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "TextLabel"))

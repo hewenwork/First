@@ -24,12 +24,15 @@ class Compression:
             ".7z": "7z e -t7z -p%s -y \"%s\" -o\"%s\"" % (password, file_path, dir_path),
         }
         file_type = file_path[-3:]
-        command = command_dict[file_type][-1]
-        result = check_output(command)
-        encoding = Compression.get_encoding(result)
-        if "OK" in bytes.decode(result, encoding=encoding).upper():
-            return True
-        else:
+        command = command_dict[file_type]
+        try:
+            result = check_output(command, shell=True)
+            encoding = Compression.get_encoding(result)
+            if "OK" in bytes.decode(result, encoding=encoding).upper():
+                return True
+            else:
+                return False
+        except:
             return False
 
     @staticmethod
@@ -51,11 +54,18 @@ class Compression:
         os.chdir(local_rar_path)
         result_path = file_path + "[infected].rar"
         command = "rar a -ep -p%s \"%s\" \"%s\"" % (password, result_path, file_path)
-        result = check_output(command)
-        encoding = Compression.get_encoding(result)
-        if "OK" in bytes.decode(result, encoding=encoding).upper():
-            return result_path
-        else:
+        try:
+            result = check_output(command, shell=True)
+            encoding = Compression.get_encoding(result)
+            if "OK" in bytes.decode(result, encoding=encoding).upper():
+                return True
+            else:
+                return False
+        except:
             return False
 
 
+if __name__ == "__main__":
+    _path = r"C:\Users\hewen\Desktop\20190519\新建文件夹\TWRP-3.2.3-1005-REDMI6PRO-CN-wzsx150-fastboot.7z"
+    a = Compression.decompression_7z(_path)
+    print(a)
