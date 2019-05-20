@@ -5,6 +5,7 @@
       <w>bugreport</w>
       <w>chcp</w>
       <w>distpath</w>
+      <w>hewen</w>
       <w>hybird</w>
       <w>infosec</w>
       <w>lxml</w>
@@ -12,6 +13,7 @@
       <w>malshare</w>
       <w>malware</w>
       <w>netstat</w>
+      <w>pagemaxitems</w>
       <w>pftpiobit</w>
       <w>pyinstaller</w>
       <w>rasdial</w>

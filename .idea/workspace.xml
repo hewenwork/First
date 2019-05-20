@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22c862e1-573b-4963-b2d2-3dc6f3d94fdb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/GUI_flexx/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/GUI_pysimpleGui/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI/GUI_pysimpleGui/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/get_sm_md5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tool/get_sm_sign.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI_PyQt5/ui/untitled.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI_PyQt5/ui/untitled.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/base/compression_func.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/compression_func.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/auto_collect.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/auto_collect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/compresion.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/compresion.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/sample_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/sample_all.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/sample_md5.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/sample_md5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/test1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/git.txt" beforeDir="false" afterPath="$PROJECT_DIR$/git.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/get_sm.py" beforeDir="false" afterPath="$PROJECT_DIR$/tool/get_sm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/tool/test1.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,85 +22,15 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="422" selection-start-line="422" selection-end-line="422" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-                <element signature="e#302#753#0" />
-                <element signature="e#604#844#0" />
-                <element signature="e#1177#1773#0" />
-                <element signature="e#3381#3526#0" />
-                <element signature="e#4327#5455#0" />
-                <element signature="e#5576#6966#0" />
-                <element signature="e#5235#5514#0" />
-                <element signature="e#7066#9508#0" />
-                <element signature="e#9543#10922#0" />
-                <element signature="e#10966#11928#0" />
-                <element signature="e#16925#18618#0" />
-              </folding>
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/GUI/GUI_flexx/test.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/get_sample/compresion.py">
+        <entry file="file://$PROJECT_DIR$/git.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-842">
-              <caret line="117" column="35" selection-start-line="117" selection-start-column="35" selection-end-line="117" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-                <element signature="e#1828#1985#0" />
-                <element signature="e#2071#2887#0" />
-                <element signature="e#3011#3515#0" />
-                <element signature="e#4281#5641#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/base/base_func.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="584">
-              <caret line="150" column="48" selection-start-line="150" selection-start-column="48" selection-end-line="150" selection-end-column="48" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_sample/sample_md5.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1539">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/base/make_app.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="48" column="34" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_sample/test1.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="4" selection-start-line="4" selection-end-line="14" selection-end-column="40" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="378">
+              <caret line="14" column="21" lean-forward="true" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -132,12 +63,10 @@
         <option value="$PROJECT_DIR$/tool/creat_big_file.py" />
         <option value="$PROJECT_DIR$/get_sample/vt.py" />
         <option value="$PROJECT_DIR$/base/base_func.py" />
-        <option value="$PROJECT_DIR$/tool/test1.py" />
         <option value="$PROJECT_DIR$/get_sample/sample_urlhaus.py" />
         <option value="$PROJECT_DIR$/tool/change_time.py" />
         <option value="$PROJECT_DIR$/tool/work_ready.py" />
         <option value="$PROJECT_DIR$/tool/get_bugreport.py" />
-        <option value="$PROJECT_DIR$/tool/get_sm.py" />
         <option value="$PROJECT_DIR$/tool/get_ip.py" />
         <option value="$PROJECT_DIR$/GUI/GUI_tkinter/test1.py" />
         <option value="$PROJECT_DIR$/GUI/GUI_PyQt5/ui/untitled.py" />
@@ -148,6 +77,13 @@
         <option value="$PROJECT_DIR$/base/compression_func.py" />
         <option value="$PROJECT_DIR$/get_sample/sample_md5.py" />
         <option value="$PROJECT_DIR$/get_sample/compresion.py" />
+        <option value="$PROJECT_DIR$/GUI/GUI_pysimpleGui/test.py" />
+        <option value="$PROJECT_DIR$/GUI/GUI_pysimpleGui/app.py" />
+        <option value="$PROJECT_DIR$/tool/get_sm_md5.py" />
+        <option value="$PROJECT_DIR$/tool/get_sm.py" />
+        <option value="$PROJECT_DIR$/tool/test1.py" />
+        <option value="$PROJECT_DIR$/GUI/GUI_flexx/test.py" />
+        <option value="$PROJECT_DIR$/git.txt" />
       </list>
     </option>
   </component>
@@ -165,6 +101,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -176,16 +113,20 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/GUI/GUI_PyQt5/ui" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/GUI/GUI_pysimpleGui" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\Workspace\First\GUI\GUI_pysimpleGui" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -199,8 +140,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.make_app">
-    <configuration name="compression_func" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.test1">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -208,12 +149,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/base" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI/GUI_pysimpleGui" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/base/compression_func.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/GUI_pysimpleGui/app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -222,7 +163,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="make_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="get_sm" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -230,12 +171,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/base" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tool" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/base/make_app.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tool/get_sm.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -244,7 +185,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="sample_all" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="get_sm_md5" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -252,12 +193,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/get_sample" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tool" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/get_sample/sample_all.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tool/get_sm_md5.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -266,7 +207,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test1 (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="First" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -274,12 +215,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI/GUI_tkinter" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI/GUI_pysimpleGui" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/GUI_tkinter/test1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/GUI_pysimpleGui/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -296,12 +237,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/get_sample" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tool" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/get_sample/test1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tool/test1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -312,11 +253,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.make_app" />
-        <item itemvalue="Python.compression_func" />
-        <item itemvalue="Python.sample_all" />
         <item itemvalue="Python.test1" />
-        <item itemvalue="Python.test1 (2)" />
+        <item itemvalue="Python.get_sm" />
+        <item itemvalue="Python.get_sm_md5" />
+        <item itemvalue="Python.app" />
+        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -344,7 +285,8 @@
       <workItem from="1557798043658" duration="31251000" />
       <workItem from="1557970660409" duration="10972000" />
       <workItem from="1558057527985" duration="14574000" />
-      <workItem from="1558234523180" duration="20616000" />
+      <workItem from="1558234523180" duration="20663000" />
+      <workItem from="1558315897892" duration="22795000" />
     </task>
     <task id="LOCAL-00001" summary="修改为开机启动, 不展示cmd窗口">
       <created>1556433931258</created>
@@ -381,16 +323,24 @@
       <option name="project" value="LOCAL" />
       <updated>1558089588757</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="回去解决解压缩问题">
+      <created>1558264506131</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1558264506131</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="190716000" />
+    <option name="totallyTimeSpent" value="213558000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16595136" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16809729" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -422,7 +372,8 @@
     <MESSAGE value="绝望啊" />
     <MESSAGE value="新的逻辑" />
     <MESSAGE value="更新" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新" />
+    <MESSAGE value="回去解决解压缩问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="回去解决解压缩问题" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/First$base_func.coverage" NAME="base_func Coverage Results" MODIFIED="1557831137424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
@@ -433,7 +384,10 @@
     <SUITE FILE_PATH="coverage/First$virussign_old.coverage" NAME="virussign_old Coverage Results" MODIFIED="1557753239229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$change_time.coverage" NAME="change_time Coverage Results" MODIFIED="1558057900167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
     <SUITE FILE_PATH="coverage/First$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1558083521949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="F:/python/Lib/tkinter" />
+    <SUITE FILE_PATH="coverage/First$test.coverage" NAME="test Coverage Results" MODIFIED="1558320056415" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_pysimpleGui" />
     <SUITE FILE_PATH="coverage/First$untitled.coverage" NAME="untitled Coverage Results" MODIFIED="1558089022339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_PyQt5/ui" />
+    <SUITE FILE_PATH="coverage/First$get_sm_md5.coverage" NAME="get_sm_md5 Coverage Results" MODIFIED="1558335606882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
+    <SUITE FILE_PATH="coverage/First$get_sm.coverage" NAME="get_sm Coverage Results" MODIFIED="1558354400629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
     <SUITE FILE_PATH="coverage/First$test1__2_.coverage" NAME="test1 (2) Coverage Results" MODIFIED="1558089191808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_tkinter" />
     <SUITE FILE_PATH="coverage/First$auto_collect.coverage" NAME="auto_collect Coverage Results" MODIFIED="1557641220127" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$compresion.coverage" NAME="compresion Coverage Results" MODIFIED="1557647795718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
@@ -443,7 +397,8 @@
     <SUITE FILE_PATH="coverage/First$get_bugreport.coverage" NAME="get_bugreport Coverage Results" MODIFIED="1558059859292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
     <SUITE FILE_PATH="coverage/First$vt.coverage" NAME="vt Coverage Results" MODIFIED="1557909016610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$sample_all.coverage" NAME="sample_all Coverage Results" MODIFIED="1558252928726" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
-    <SUITE FILE_PATH="coverage/First$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1558248835661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$app.coverage" NAME="app Coverage Results" MODIFIED="1558335369533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_pysimpleGui" />
+    <SUITE FILE_PATH="coverage/First$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1558357386868" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/base/test1.py">
@@ -502,9 +457,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tool/test1.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/get_sample/sample_urlhaus.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
@@ -554,19 +506,6 @@
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tool/get_sm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="35" column="39" lean-forward="true" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
-          <folding>
-            <element signature="e#15#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/git.txt">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://F:/python/Lib/site-packages/wget.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -666,26 +605,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/test1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" selection-start-line="4" selection-end-line="14" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/auto_collect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-416">
-          <caret line="438" column="6" selection-start-line="438" selection-start-column="6" selection-end-line="438" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://F:/python/Lib/ntpath.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
@@ -720,14 +639,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/base/base_func.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="584">
+        <state relative-caret-position="3888">
           <caret line="150" column="48" selection-start-line="150" selection-start-column="48" selection-end-line="150" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/get_sample/sample_md5.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1539">
+        <state relative-caret-position="27">
           <caret line="3" selection-start-line="3" selection-end-line="3" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
@@ -735,31 +654,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
+    <entry file="file://$PROJECT_DIR$/base/make_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="422" selection-start-line="422" selection-end-line="422" />
+        <state relative-caret-position="1269">
+          <caret line="48" column="34" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-            <element signature="e#302#753#0" />
-            <element signature="e#604#844#0" />
-            <element signature="e#1177#1773#0" />
-            <element signature="e#3381#3526#0" />
-            <element signature="e#4327#5455#0" />
-            <element signature="e#5576#6966#0" />
-            <element signature="e#5235#5514#0" />
-            <element signature="e#7066#9508#0" />
-            <element signature="e#9543#10922#0" />
-            <element signature="e#10966#11928#0" />
-            <element signature="e#16925#18618#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/base/make_app.py">
+    <entry file="file://$PROJECT_DIR$/get_sample/test1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="48" column="34" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
+        <state relative-caret-position="108">
+          <caret line="4" selection-start-line="4" selection-end-line="14" selection-end-column="40" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -768,15 +676,107 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/get_sample/compresion.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-842">
+        <state relative-caret-position="27">
           <caret line="117" column="35" selection-start-line="117" selection-start-column="35" selection-end-line="117" selection-end-column="35" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-            <element signature="e#1828#1985#0" />
-            <element signature="e#2071#2887#0" />
-            <element signature="e#3011#3515#0" />
-            <element signature="e#4281#5641#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GUI/GUI_pysimpleGui/example.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/get_sm_md5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/auto_collect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="34" column="103" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="103" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://F:/python/Lib/site-packages/flexx/ui/widgets/_dropdown.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4">
+          <caret line="270" column="17" lean-forward="true" selection-start-line="270" selection-start-column="17" selection-end-line="270" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GUI/GUI_pysimpleGui/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="41" selection-start-line="41" selection-end-line="47" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/get_sm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="65" column="53" selection-start-line="65" selection-start-column="53" selection-end-line="65" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#84#513#0" />
+            <element signature="e#617#798#0" />
+            <element signature="e#90#588#0" />
+            <element signature="e#1129#1187#0" />
+            <element signature="e#907#1223#0" />
+            <element signature="e#1263#1579#0" />
+            <element signature="e#1714#1741#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GUI/GUI_pysimpleGui/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-64">
+          <caret line="55" selection-start-line="55" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/get_sm_sign.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1134">
+          <caret line="78" column="102" selection-end-line="112" />
+          <folding>
+            <element signature="e#15#45#0" expanded="true" />
+            <element signature="e#805#1304#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tool/test1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="10" column="19" lean-forward="true" selection-end-line="23" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GUI/GUI_flexx/test.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/git.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="14" column="21" lean-forward="true" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
         </state>
       </provider>
     </entry>
