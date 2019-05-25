@@ -1,10 +1,10 @@
 import os
 import base64
-import tkinter
-import requests
-import datetime
 
-base_dir = os.getcwd()
+import requests
+
+
+# base_dir = os.getcwd()
 
 
 # base_dir = r"C:\Users\hewen\Desktop\新建文件夹"

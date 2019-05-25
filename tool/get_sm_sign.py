@@ -1,92 +1,77 @@
 # coding=utf-8
-from contextlib import closing
-import requests
-import chardet
 import os
-import datetime
 import time
 import json
-import itertools
+import chardet
+import datetime
+import requests
+today = datetime.datetime.today().strftime("%Y-%m-%d")
+# base_dir = r"C:\Users\hewen\Desktop\20190521\新建文件夹"
+# final_file = r"C:\Users\hewen\Desktop\20190521\新建文件夹\SIGN{}.db".format(today)
+base_dir = r"\\192.168.1.254\部门共享\TEST\朱亚玲\IMF\IMF手动分析\自动收集\源文件"
+final_file = r"\\192.168.1.254\部门共享\TEST\朱亚玲\IMF\IMF手动分析\自动收集\SIGN{}.db".format(today)
+'''
+        self.download_path = r"\\192.168.1.254\部门共享\TEST\朱亚玲\IMF\IMF手动分析\自动收集\源文件\%s" % self.today
+        self.target_path = r"\\192.168.1.254\部门共享\TEST\朱亚玲\IMF\IMF手动分析\自动收集"
+'''
 
 
-class get_smartccl_data():
+class GetSign:
 
     def __init__(self):
         self.session = self.get_login()
-        self.today, self.last_date = self.day_choose()
-        self.download_path = r"\\192.168.1.254\部门共享\TEST\朱亚玲\IMF\IMF手动分析\自动收集\源文件\%s" % self.today
-        self.target_path = r"\\192.168.1.254\部门共享\TEST\朱亚玲\IMF\IMF手动分析\自动收集"
-        # self.download_path = r"C:\Users\hewen\Desktop\Failed\原文件\%s" % self.today
-        # self.target_path = r"C:\Users\hewen\Desktop\Failed\自动收集"
-        if os.path.exists(self.download_path) is False:
-            os.makedirs(self.download_path)
-        self.get_all_info()
-        self.get_one()
+        self.start_date, self.end_date = self.download_date()
+        self.download_folder_path = self.get_download_dir()
+        self.start_download()
+        self.get_final_file()
 
-    def get_login(self):
+    @staticmethod
+    def get_login():
         url = "http://192.168.1.19/imfsmart/interface/serverlogin.php"
         data = {
             "username": "hewen",
             "password": "hewen"
         }
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36"
-        }
+        headers = {"User-Agent": "Mozilla/5.0 (X11; Linux i686; rv:1.9.7.20) Gecko/2015-04-30 08:02:26 Firefox/3.8"}
         session = requests.session()
         session.headers.update(headers)
         session.post(url, data=data)
-        print("login successful")
+        print("login successful\n")
         return session
 
-    def day_choose(self):
-        today = datetime.datetime.today().date()
-        user_choose = input(u"请输入要下载的开始日期, 默认7天. 回车继续")
-        if user_choose == "":
-            last_time = 7 - today.weekday() + 1
-            last_date = today - datetime.timedelta(days=last_time)
-            return str(today.strftime("%Y%m%d")), str(last_date)
-        else:
-            last_date = today - datetime.timedelta(days=int(user_choose))
-            return str(today.strftime("%Y%m%d")), str(last_date)
+    @staticmethod
+    def download_date():
+        start_date = input(u"请输入要下载的开始日期. 如2019-05-01 回车继续:\n")
+        end_date = input(u"请输入要下载的结束日期, 如2019-05-20 回车继续:\n")
+        # start_date = "2019-05-01"
+        # end_date = "2019-05-20"
+        return start_date, end_date
 
-    def get_file_encodeing(self, file_path):
+    @staticmethod
+    def get_file_encoding(file_path):
         try:
             with open(file_path, "rb")as file:
                 return chardet.detect(file.read())["encoding"]
         except:
             return "utf-8"
 
-    def get_one(self):
-        new_file_path = os.path.join(self.target_path, "SIGN%s.db" % self.today)
-        with open(new_file_path, "a", encoding="utf-8")as file_final:
-            for file_name in os.listdir(self.download_path):
-                file_path = os.path.join(self.download_path, file_name)
-                with open(file_path, "r")as file_target:
-                    file_final.write(file_target.read())
-        test_list = []
-        with open(new_file_path, "r", encoding=self.get_file_encodeing(new_file_path))as file:
-            ids = file.readlines()
-            ids.sort()
-            it = itertools.groupby(ids)
-            for k, g in it:
-                test_list.append(k)
-            # print(len(test_list))
-        with open(new_file_path, "w+", encoding=self.get_file_encodeing(new_file_path))as file:
-            for i in test_list:
-                file.writelines(i)
+    @staticmethod
+    def get_download_dir():
+        download_folder_path = os.path.join(base_dir, today)
+        if os.path.exists(download_folder_path)is False:
+            os.makedirs(download_folder_path)
+        return download_folder_path
 
-    def get_file(self, taskid):
-        download_link = "http://﻿﻿﻿192.168.1.19:8000/%s.db?action=downdb&taskid=%s" % (taskid, taskid)
-        file_path = os.path.join(self.download_path, "%s.db" % taskid)
-        try:
-            with closing(self.session.get(download_link))as respone:
-                if respone.status_code == 200:
-                    with open(file_path, "wb")as file:
-                        file.write(respone.content)
-        except:
-            print("error")
+    def write_file(self, taskid, user):
+        download_url = "http://﻿﻿﻿192.168.1.19:8000/{0}.db?action=downdb&taskid={0}".format(taskid)
+        response = self.session.get(download_url)
+        if response.status_code == 200:
+            file_path = os.path.join(self.download_folder_path, taskid + ".db")
+            with open(file_path, "wb")as file:
+                file.write(response.content)
 
-    def get_all_info(self):
+    def get_sign_dict(self):
+        sign_dict = {}
         data = {
             "action": "gettasks",
             "cpage": 0,
@@ -100,13 +85,32 @@ class get_smartccl_data():
             info_link = self.session.post(url=info_url, data=data)
             info_dict = json.loads(info_link.text[3:])["tasks"]
             for i in info_dict:
-                complete, createtime, user, taskid = i["complete"], i["createtime"], i["user"], i["taskid"]
-                if complete == 1 and createtime >= self.last_date:
-                    print(complete, createtime, taskid)
-                    self.get_file(taskid)
+                createtime, user, taskid = i["createtime"][:10], i["user"], i["taskid"]
+                if self.end_date >= createtime >= self.start_date:
+                    print(createtime, taskid)
+                    sign_dict[taskid] = user
+        return sign_dict
+
+    def start_download(self):
+        sign_dict = self.get_sign_dict()
+        for taskid, user in sign_dict.items():
+            self.write_file(taskid, user)
+
+    def get_final_file(self):
+        with open(final_file, "wb")as file:
+            for file_name in os.listdir(self.download_folder_path):
+                file_path = os.path.join(self.download_folder_path, file_name)
+                file.write(open(file_path, "rb").read())
+        final_dict = {}
+        with open(final_file, "rb+")as file:
+            for i in file.readlines():
+                final_dict[i] = 1
+            file.seek(0, 0)
+            for j in final_dict:
+                file.write(j)
 
 
 if __name__ == "__main__":
-    get_smartccl_data()
+    GetSign()
     print(u"全部下载处理完成, 可以关闭此窗口了")
     time.sleep(20)

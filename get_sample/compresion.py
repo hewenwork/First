@@ -1,3 +1,4 @@
+import datetime
 import os
 import shutil
 import hashlib
@@ -186,7 +187,14 @@ class FinallyDo:
         FinallyDo.copy_comp(folder_path)
 
 
+def get_date(days=1):
+    today = datetime.datetime.today()
+    time_interval = datetime.timedelta(days=days)
+    download_day = today - time_interval
+    return download_day.strftime("%Y-%m-%d")
+
+
 if __name__ == '__main__':
-    input_path = input(u"要解压的文件或文件夹").replace("\"", "")
+    input_path = os.path.join(base_dir, get_date())
     FinallyDo.s(input_path)
 

@@ -57,11 +57,25 @@ class SmartCclFunc:
         pages = json.loads(info_link.text[3:])["pages"]
         return pages
 
-    def get_page_info(self, url, page):
+    def get_sign_page_info(self, page):
+        url = "http://192.168.1.19/imfsmart/interface/it_taskmanager.php"
         self.data.update({"cpage": page})
         page_info = self.session.post(url=url, data=self.data).text[3:]
         page_dict = json.loads(page_info)
         for info in page_dict["tasks"]:
+            createtime, user, taskid = info["createtime"][:10], info["user"], info["taskid"]
+            if createtime <= self.sign_download_date:
+                self.sign_dict[taskid] = user
+            else:
+                break
+
+    def get_md5_page_info(self, page):
+        url = "http://192.168.1.19/imfsmart/interface/it_taskmanager.php"
+        self.data.update({"cpage": page})
+        page_info = self.session.post(url=url, data=self.data).text[3:]
+        print(page_info)
+        page_dict = json.loads(page_info)
+        for info in page_dict["md5s"]:
             createtime, user, taskid = info["createtime"][:10], info["user"], info["taskid"]
             if createtime <= self.sign_download_date:
                 self.sign_dict[taskid] = user
@@ -76,17 +90,21 @@ class SmartCclFunc:
         return pages
 
     def get_sign_dict(self):
-        url = "http://192.168.1.19/imfsmart/interface/it_taskmanager.php"
         pages = self.get_sign_pages()
-        for page in range(0, pages):
-            self.get_page_info(url, page)
-
+        list(map(self.get_sign_page_info, range(1, pages)))
         print(self.sign_dict)
         return self.sign_dict
+
+    def get_md5_dict(self):
+        pages = self.get_md5_pages()
+        list(map(self.get_sign_page_info, range(1, pages)))
+        print(self.md5_dict)
+        return self.md5_dict
+
 
     def get_md5(self):
         # self.session
         pass
 
 
-SmartCclFunc().get_sign_dict()
+SmartCclFunc().get_md5_page_info(0)
