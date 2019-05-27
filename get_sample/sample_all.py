@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from subprocess import check_output
 base_dir = os.getcwd()
-sample_copy_folder = r"\\192.168.1.39\f\Auto"
+# sample_copy_folder = r"\\192.168.1.39\f\Auto"
 
 
 class Base:
@@ -24,12 +24,12 @@ class Base:
             check_output(disconnect_command)
 
     @staticmethod
-    def get_sample_folder():
+    def get_download_folder():
         download_data = Base.get_date()
-        sample_folder = os.path.join(base_dir, download_data)
-        if os.path.exists(sample_folder) is False:
-            os.makedirs(sample_folder)
-        return sample_folder
+        download_folder = os.path.join(base_dir, download_data)
+        if os.path.exists(download_folder) is False:
+            os.makedirs(download_folder)
+        return download_folder
 
     @staticmethod
     def get_session():
@@ -66,7 +66,7 @@ class Base:
                 return False
 
     @staticmethod
-    def write_sample_md5(md5):
+    def write_sample_md5(md5, md5_file_path):
         download_date = Base.get_date()
         failed_fir = os.path.join(base_dir, "MD5&SHA256")
         if os.path.exists(failed_fir)is False:

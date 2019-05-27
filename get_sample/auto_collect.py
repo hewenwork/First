@@ -6,7 +6,8 @@ import datetime
 import requests
 from bs4 import BeautifulSoup
 
-base_dir = os.getcwd()
+# base_dir = os.getcwd()
+base_dir = r"C:\Users\hewen\Desktop\20190526\aa"
 sample_copy_folder = r"\\192.168.1.39\f\Auto"
 
 
@@ -103,7 +104,7 @@ class Base:
     @staticmethod
     def write_md5(md5):
         download_date = Base.get_date()
-        md5_file_path = os.path.join(base_dir, r"md5_info/%s.txt" % download_date)
+        md5_file_path = os.path.join(base_dir, r"md5_info\%s.txt" % download_date)
         if os.path.exists(md5_file_path):
             with open(md5_file_path, "r+")as file:
                 old_data = file.read()
@@ -695,30 +696,30 @@ class CompressionFunc:
 
 
 def start_func():
-    try:
-        SampleMalc0de.download_sample()
-    finally:
-        pass
-    try:
-        SampleVxvault.download_sample()
-    finally:
-        pass
-    try:
-        SampleHybrid.download_sample()
-    finally:
-        pass
-    try:
-        SampleVirusBay.download_sample()
-    finally:
-        pass
-    try:
-        SampleMalwareTrafficAnalysis.download_sample()
-    finally:
-        pass
-    try:
-        SampleVirusSign.download_sample()
-    finally:
-        pass
+    # try:
+    #     SampleMalc0de.download_sample()
+    # finally:
+    #     pass
+    # try:
+    #     SampleVxvault.download_sample()
+    # finally:
+    #     pass
+    # try:
+    #     SampleHybrid.download_sample()
+    # finally:
+    #     pass
+    # try:
+    #     SampleVirusBay.download_sample()
+    # finally:
+    #     pass
+    # try:
+    #     SampleMalwareTrafficAnalysis.download_sample()
+    # finally:
+    #     pass
+    # try:
+    #     SampleVirusSign.download_sample()
+    # finally:
+    #     pass
     try:
         SampleMalshare.download_sample()
     finally:
