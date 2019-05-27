@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22c862e1-573b-4963-b2d2-3dc6f3d94fdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/get_sample/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/First.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/First.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/auto_collect.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/auto_collect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/sample_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/sample_all.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/get_sample/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/test1.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,7 +19,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1134">
+            <state relative-caret-position="966">
               <caret line="47" selection-end-line="422" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
@@ -29,20 +29,31 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/get_sample/test1.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="427">
-              <caret line="164" lean-forward="true" selection-start-line="164" selection-end-line="164" />
+              <caret line="372" lean-forward="true" selection-start-line="372" selection-end-line="372" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
-                <element signature="e#259#440#0" />
-                <element signature="e#733#953#0" />
-                <element signature="e#1017#1297#0" />
-                <element signature="e#1411#1672#0" />
-                <element signature="e#1348#1588#0" />
-                <element signature="e#4888#5559#0" />
-                <element signature="e#13787#15024#0" />
+                <element signature="e#206#4329#0" />
+                <element signature="e#4512#6165#0" />
+                <element signature="e#6194#7519#0" />
+                <element signature="e#7598#8191#0" />
+                <element signature="e#8539#9627#0" />
+                <element signature="e#10546#10932#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/get_sample/sample_md5.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-138">
+              <caret line="6" selection-start-line="6" selection-end-line="6" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -51,11 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/get_sample/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="27">
-              <caret line="6" selection-start-line="6" selection-end-line="18" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="161">
+              <caret line="7" column="12" lean-forward="true" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -118,7 +126,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1456" />
@@ -162,7 +170,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/GUI/GUI_pysimpleGui" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -333,6 +341,7 @@
       <workItem from="1558749984093" duration="17417000" />
       <workItem from="1558871665425" duration="10110000" />
       <workItem from="1558947166636" duration="9924000" />
+      <workItem from="1558967298025" duration="1070000" />
     </task>
     <task id="LOCAL-00001" summary="修改为开机启动, 不展示cmd窗口">
       <created>1556433931258</created>
@@ -394,19 +403,19 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="277941000" />
+    <option name="totallyTimeSpent" value="279011000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1788269" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13500534" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3297587" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49928468" visible="true" weight="0.32841823" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3994638" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49928468" visible="true" weight="0.3278867" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39869282" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -438,7 +447,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="GUI" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/First$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1558963442533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1558967547530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$test1__1_.coverage" NAME="test1 (1) Coverage Results" MODIFIED="1558783745533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_tkinter" />
     <SUITE FILE_PATH="coverage/First$virussign_old.coverage" NAME="virussign_old Coverage Results" MODIFIED="1557753239229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$change_time.coverage" NAME="change_time Coverage Results" MODIFIED="1558057900167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
@@ -464,7 +473,7 @@
     <SUITE FILE_PATH="coverage/First$compression_func.coverage" NAME="compression_func Coverage Results" MODIFIED="1558260194066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
     <SUITE FILE_PATH="coverage/First$sample_hybird.coverage" NAME="sample_hybird Coverage Results" MODIFIED="1557383336126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$vt.coverage" NAME="vt Coverage Results" MODIFIED="1557909016610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
-    <SUITE FILE_PATH="coverage/First$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1558963683434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$test1.coverage" NAME="test1 Coverage Results" MODIFIED="1558968294373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/get_sample/2019-05-11.txt" />
@@ -547,26 +556,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://F:/python/Lib/site-packages/wget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8294">
-          <caret line="241" selection-start-line="241" selection-end-line="244" selection-end-column="58" />
-          <folding>
-            <element signature="e#22#498#1" />
-            <element signature="e#2155#8109#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/python/Lib/tkinter/ttk.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-567">
-          <folding>
-            <element signature="e#0#492#1" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://F:/python/Lib/site-packages/wget.py" />
+    <entry file="file://F:/python/Lib/tkinter/ttk.py" />
     <entry file="file://$PROJECT_DIR$/GUI/GUI_PyQt5/ui/untitled.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1461">
@@ -574,20 +565,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://F:/python/Lib/ntpath.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="112" selection-start-line="112" selection-end-line="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/python/Lib/subprocess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="357" lean-forward="true" selection-start-line="357" selection-end-line="357" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://F:/python/Lib/ntpath.py" />
+    <entry file="file://F:/python/Lib/subprocess.py" />
     <entry file="file://$PROJECT_DIR$/base/compression_func.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-783">
@@ -600,13 +579,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GUI/GUI_pysimpleGui/example.html" />
-    <entry file="file://F:/python/Lib/site-packages/flexx/ui/widgets/_dropdown.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4">
-          <caret line="270" column="17" lean-forward="true" selection-start-line="270" selection-start-column="17" selection-end-line="270" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://F:/python/Lib/site-packages/flexx/ui/widgets/_dropdown.py" />
     <entry file="file://$PROJECT_DIR$/GUI/GUI_pysimpleGui/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -675,13 +648,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1104749448/nt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="546" column="26" selection-start-line="546" selection-start-column="11" selection-end-line="546" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/-1104749448/nt.py" />
     <entry file="file://$PROJECT_DIR$/base/base_func.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -706,17 +673,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/get_sample/sample_md5.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-            <element signature="e#148#2900#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/base/make_app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1215">
@@ -737,80 +693,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://F:/python/Lib/site-packages/flexx/ui/widgets/_button.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-85">
-          <caret line="100" column="6" selection-start-line="100" selection-start-column="6" selection-end-line="100" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/python/Lib/site-packages/flexx/ui/layouts/_hv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="911" column="6" selection-start-line="911" selection-start-column="6" selection-end-line="911" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/python/Lib/tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3154">
-          <caret line="2002" column="8" selection-start-line="2002" selection-start-column="8" selection-end-line="2002" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#1086#1" />
-            <element signature="e#1647#2422#0" />
-            <element signature="e#2447#2666#0" />
-            <element signature="e#2756#3206#0" />
-            <element signature="e#3327#4024#0" />
-            <element signature="e#4064#5113#0" />
-            <element signature="e#5132#8595#0" />
-            <element signature="e#8670#8979#0" />
-            <element signature="e#9004#9037#0" />
-            <element signature="e#9062#9231#0" />
-            <element signature="e#9265#15695#0" />
-            <element signature="e#15728#16431#0" />
-            <element signature="e#16461#17233#0" />
-            <element signature="e#17266#17910#0" />
-            <element signature="e#17944#18869#0" />
-            <element signature="e#18894#18958#0" />
-            <element signature="e#19016#19208#0" />
-            <element signature="e#19282#65636#0" />
-            <element signature="e#65662#66287#0" />
-            <element signature="e#66307#67053#0" />
-            <element signature="e#67073#67815#0" />
-            <element signature="e#67832#79512#0" />
-            <element signature="e#84326#84384#0" />
-            <element signature="e#85309#86976#0" />
-            <element signature="e#86995#89087#0" />
-            <element signature="e#89105#91183#0" />
-            <element signature="e#91213#93552#0" />
-            <element signature="e#93603#93738#0" />
-            <element signature="e#93776#94906#0" />
-            <element signature="e#94934#96458#0" />
-            <element signature="e#96500#108316#0" />
-            <element signature="e#108349#109596#0" />
-            <element signature="e#109630#112570#0" />
-            <element signature="e#112597#113326#0" />
-            <element signature="e#113353#114034#0" />
-            <element signature="e#114077#118384#0" />
-            <element signature="e#118410#123078#0" />
-            <element signature="e#123110#123268#0" />
-            <element signature="e#123297#123487#0" />
-            <element signature="e#123520#124677#0" />
-            <element signature="e#124704#126196#0" />
-            <element signature="e#126227#128319#0" />
-            <element signature="e#128361#144890#0" />
-            <element signature="e#144911#145264#0" />
-            <element signature="e#145300#146813#0" />
-            <element signature="e#146832#148935#0" />
-            <element signature="e#148966#151591#0" />
-            <element signature="e#151623#151929#0" />
-            <element signature="e#152164#157750#0" />
-            <element signature="e#157859#158437#0" />
-            <element signature="e#158544#166300#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://F:/python/Lib/site-packages/flexx/ui/widgets/_button.py" />
+    <entry file="file://F:/python/Lib/site-packages/flexx/ui/layouts/_hv.py" />
+    <entry file="file://F:/python/Lib/tkinter/__init__.py" />
     <entry file="file://$PROJECT_DIR$/tool/get_bugreport.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -857,9 +742,11 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://F:/python/Lib/codecs.py" />
+    <entry file="file://F:/python/Lib/genericpath.py" />
     <entry file="file://$PROJECT_DIR$/get_sample/sample_all.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1134">
+        <state relative-caret-position="966">
           <caret line="47" selection-end-line="422" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
@@ -868,43 +755,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://F:/python/Lib/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="308" selection-start-line="308" selection-end-line="308" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/python/Lib/genericpath.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/get_sample/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27">
-          <caret line="6" selection-start-line="6" selection-end-line="18" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="161">
+          <caret line="7" column="12" lean-forward="true" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/get_sample/test1.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="427">
-          <caret line="164" lean-forward="true" selection-start-line="164" selection-end-line="164" />
+          <caret line="372" lean-forward="true" selection-start-line="372" selection-end-line="372" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-            <element signature="e#259#440#0" />
-            <element signature="e#733#953#0" />
-            <element signature="e#1017#1297#0" />
-            <element signature="e#1411#1672#0" />
-            <element signature="e#1348#1588#0" />
-            <element signature="e#4888#5559#0" />
-            <element signature="e#13787#15024#0" />
+            <element signature="e#206#4329#0" />
+            <element signature="e#4512#6165#0" />
+            <element signature="e#6194#7519#0" />
+            <element signature="e#7598#8191#0" />
+            <element signature="e#8539#9627#0" />
+            <element signature="e#10546#10932#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_sample/sample_md5.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-138">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>

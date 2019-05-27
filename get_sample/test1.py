@@ -53,22 +53,17 @@ class Base:
 
     @staticmethod
     def write_sample(sample_path, sample_download_url, session):
-        if session is None:
-            session = Base.get_session()
         if os.path.exists(sample_path):
             return True
         else:
             try:
                 response = session.get(url=sample_download_url, stream=True)
-                if response.status_code == 200:
-                    with open(sample_path, "wb")as file:
-                        for chunk in response.iter_content(chunk_size=1024):
-                            file.write(chunk)
-                    return True
-                else:
-                    return False
-            except:
+            except requests.RequestException:
                 return False
+            with open(sample_path, "wb")as file:
+                for chunk in response.iter_content(chunk_size=1024):
+                    file.write(chunk)
+            return True
 
     @staticmethod
     def write_sample_md5(file_path, md5):
@@ -238,7 +233,7 @@ class SampleHybrid:
                 is_virus = is_virus.getText().strip()
                 if is_virus in threat_level:
                     sample_info[file_name] = sample_download_url
-        Base.start_download(sample_info, session, url, download_folder, failed_path)
+        Base.start_download(sample_info, session, url, download_folder, failed_path, log_path)
 
 
 class SampleVirusBay:
@@ -260,7 +255,7 @@ class SampleVirusBay:
     def __init__(self):
         url = "https://beta.virusbay.io/sample/data"
         download_date = Base.get_date()
-        sample_info, session, download_folder, failed_path = Base.start_info()
+        sample_info, session, download_folder, failed_path, log_path = Base.start_info()
         session = SampleVirusBay.get_login()
         recent = session.get(url=url).json()["recent"]
         for info in recent:
@@ -272,14 +267,14 @@ class SampleVirusBay:
             sample_download_url = session.get(link).text
             if download_date == add_date:
                 sample_info[file_name] = sample_download_url
-        Base.start_download(sample_info, session, url, download_folder, failed_path)
+        Base.start_download(sample_info, session, url, download_folder, failed_path, log_path)
 
 
 class SampleMalwareTrafficAnalysis:
 
     def __init__(self):
         download_date = Base.get_date()
-        sample_info, session, download_folder, failed_path = Base.start_info()
+        sample_info, session, download_folder, failed_path, log_path = Base.start_info()
         download_date = download_date.replace("-", "/")
         url = "http://www.malware-traffic-analysis.net/%s/index.html" % download_date
         if session.get(url).status_code == 200:
@@ -289,14 +284,14 @@ class SampleMalwareTrafficAnalysis:
                     sample_name = download_url.get("href")
                     sample_download_url = url.replace("index.html", sample_name)
                     sample_info[sample_name] = sample_download_url
-        Base.start_download(sample_info, session, url, download_folder, failed_path)
+        Base.start_download(sample_info, session, url, download_folder, failed_path, log_path)
 
 
 class SampleVirusSign:
 
     def __init__(self):
         download_date = Base.get_date()
-        sample_info, session, download_folder, failed_path = Base.start_info()
+        sample_info, session, download_folder, failed_path, log_path = Base.start_info()
         session.auth = ("infected", "infected")
         url = "http://virusign.com/get_hashlist.php"
         params = {
@@ -311,13 +306,13 @@ class SampleVirusSign:
             file_name = sha256 + ".7z"
             sample_download_url = "http://virusign.com/file/%s" % file_name
             sample_info[file_name] = sample_download_url
-        Base.start_download(sample_info, session, url, download_folder, failed_path)
+        Base.start_download(sample_info, session, url, download_folder, failed_path, log_path)
 
 
 class SampleMalshare:
 
     def __init__(self):
-        sample_info, session, download_folder, failed_path = Base.start_info()
+        sample_info, session, download_folder, failed_path, log_path = Base.start_info()
         api_key = "1f36742f1f87e778ae1d4c370157581d746a4613fca10690f20949154b86589a"
         url = "https://malshare.com/api.php"
         params = {
@@ -330,7 +325,7 @@ class SampleMalshare:
             file_name = sample_md5 + ".vir"
             download_url = url + "?api_key=%s&action=getfile&hash=%s" % (api_key, sample_md5)
             sample_info[file_name] = download_url
-        Base.start_download(sample_info, session, url, download_folder, failed_path)
+        Base.start_download(sample_info, session, url, download_folder, failed_path, log_path)
 
 
 class SampleInfosec:
@@ -342,11 +337,12 @@ class SampleInfosec:
         return sample_download_url
 
     def __init__(self):
+        url = "https://infosec.cert-pa.it/"
         download_date = Base.get_date()
         sample_info, session, download_folder, failed_path, log_path = Base.start_info()
         for page in range(1, 10):
-            url = "https://infosec.cert-pa.it/analyze/submission-page-%s.html" % page
-            response = session.get(url)
+            base_url = "https://infosec.cert-pa.it/analyze/submission-page-%s.html" % page
+            response = session.get(base_url)
             date_list = BeautifulSoup(response.text, "lxml").select("tr > td:nth-of-type(1)")
             md5_list = BeautifulSoup(response.text, "lxml").select("tr > td:nth-of-type(3)")
             for add_date, sample_md5 in zip(date_list, md5_list):
@@ -361,17 +357,16 @@ class SampleInfosec:
                     break
         else:
             pass
-        url = "https://infosec.cert-pa.it/"
         Base.start_download(sample_info, session, url, download_folder, failed_path, log_path)
 
 
 if __name__ == "__main__":
-    SampleMalc0de()
+    # SampleMalc0de()
     # SampleVxvault()
     # SampleHybrid()
     # SampleVirusBay()
     # SampleMalwareTrafficAnalysis()
     # SampleVirusSign()
     # SampleMalshare()
-    # SampleInfosec()
+    SampleInfosec()
 
