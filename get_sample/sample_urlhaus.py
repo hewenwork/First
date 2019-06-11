@@ -61,7 +61,15 @@ class Urlhaus:
 
 
 if __name__ == "__main__":
-    Urlhaus().start_download()
+    start_date = input(u"Set the start time like 080000\n")
+    while True:
+        now_date = datetime.datetime.now().strftime("%H%M%S")
+        today_date = datetime.datetime.today()
+        if now_date == start_date:
+            print("start download")
+            Urlhaus().start_download()
+            print("\r{}\ndownload over, wait for next time".format(today_date), end="")
+
 
 
 

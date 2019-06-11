@@ -118,11 +118,11 @@ class VirusTotal:
                 return False
 
     @classmethod
-    def get_report_json(cls, api, resouce):
+    def get_report_json(cls, api, resource):
         url = "https://www.virustotal.com/vtapi/v2/file/report"
         params = {
             "apikey": api,
-            "resource": resouce
+            "resource": resource
         }
         try:
             session = VirusTotal.get_session()
@@ -131,7 +131,7 @@ class VirusTotal:
                 return response
             else:
                 return False
-        except:
+        except requests.RequestException:
             return False
 
     @classmethod

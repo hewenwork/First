@@ -1,9 +1,11 @@
 import os
 import re
+import shutil
+import hashlib
 import datetime
 import requests
 from bs4 import BeautifulSoup
-from subprocess import check_output
+from subprocess import check_output, SubprocessError
 # base_dir = os.getcwd()
 base_dir = r"C:\Users\hewen\Desktop\MyTest"
 
@@ -118,6 +120,44 @@ class Base:
             result = "{0} -- Failed:{1}  Total:{2}".format(target, failed_num, total_num)
         Base.write_download_log(log_path, result)
 
+    @staticmethod
+    def get_list(folder_path):
+        file_list = []
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+            file_list.append(file_path)
+        return file_list
+
+    @staticmethod
+    def get_file_md5(file_path):
+        try:
+            with open(file_path, 'rb')as md5_file:
+                md5_con = hashlib.md5()
+                md5_con.update(md5_file.read())
+                md5_result = str(md5_con.hexdigest())
+                return md5_result
+        except OSError:
+            return False
+
+    @staticmethod
+    def rename_file(file_path):
+        file_md5 = Base.get_file_md5(file_path)
+        file_dir = os.path.dirname(file_path)
+        new_file_name = file_md5 + ".vir"
+        new_file_path = os.path.join(file_dir, new_file_name)
+        try:
+            shutil.move(file_path, new_file_path)
+            return True
+        except PermissionError:
+            return file_path
+
+    @staticmethod
+    def get_deal_failed_folder(folder_path):
+        failed_folder = os.path.join(os.path.dirname(folder_path), r"处理失败")
+        if os.path.exists(failed_folder)is False:
+            os.makedirs(failed_folder)
+        return failed_folder
+
 
 class SampleMalc0de:
 
@@ -144,7 +184,6 @@ class SampleMalc0de:
 
     @staticmethod
     def switch_vpn(turn):
-        # connect_status = "netstat -an"
         connect_command = "rasdial  US usa vpn2014"
         disconnect_command = "rasdial US /DISCONNECT"
         command_dict = {
@@ -155,7 +194,7 @@ class SampleMalc0de:
             check_output("chcp 437", shell=True)
             check_output(command_dict[turn], shell=True)
             return True
-        except:
+        except SubprocessError:
             return False
 
 
@@ -301,11 +340,12 @@ class SampleVirusSign:
             "end_date": download_date
         }
         response = session.get(url, params=params).text
-        for sha256 in response.split("\n"):
-            sha256 = sha256.replace("\"", "")
-            file_name = sha256 + ".7z"
-            sample_download_url = "http://virusign.com/file/%s" % file_name
-            sample_info[file_name] = sample_download_url
+        if response is not "":
+            for sha256 in response.split("\n"):
+                sha256 = sha256.replace("\"", "")
+                file_name = sha256 + ".7z"
+                sample_download_url = "http://virusign.com/file/%s" % file_name
+                sample_info[file_name] = sample_download_url
         Base.start_download(sample_info, session, url, download_folder, failed_path, log_path)
 
 
@@ -360,13 +400,103 @@ class SampleInfosec:
         Base.start_download(sample_info, session, url, download_folder, failed_path, log_path)
 
 
-if __name__ == "__main__":
-    # SampleMalc0de()
-    # SampleVxvault()
-    # SampleHybrid()
-    # SampleVirusBay()
-    # SampleMalwareTrafficAnalysis()
-    # SampleVirusSign()
-    # SampleMalshare()
-    SampleInfosec()
+class Compression:
 
+    def __init__(self):
+        self.path_rar = r"C:\Program Files\WinRAR"
+        self.path_7z = r"C:\Program Files\7-Zip"
+
+    @staticmethod
+    def de_7z(file_path, password="infected"):
+        os.chdir(Compression().path_7z)
+        dir_path = os.path.dirname(file_path)
+        command_dict = {
+            ".gz": "7z e -tgzip -p%s -y \"%s\" -o\"%s\"" % (password, file_path, dir_path),
+            "zip": "7z e -tzip -p%s -y \"%s\" -o\"%s\"" % (password, file_path, dir_path),
+            ".7z": "7z e -t7z -p%s -y \"%s\" -o\"%s\"" % (password, file_path, dir_path),
+        }
+        file_type = file_path[-3:]
+        command = command_dict[file_type]
+        try:
+            check_output(command, shell=True)
+            return True
+        except SubprocessError:
+            return False
+
+    @staticmethod
+    def de_rar(file_path, password="infected"):
+        os.chdir(Compression().path_rar)
+        dir_path = os.path.dirname(file_path)
+        command = "rar e -p%s -y \"%s\" \"%s\"" % (password, file_path, dir_path)
+        try:
+            check_output(command)
+            return True
+        except SubprocessError:
+            return False
+
+    @staticmethod
+    def co_rar(file_path, password="infected"):
+        os.chdir(Compression().path_rar)
+        result_path = file_path + "[infected].rar"
+        command = "rar a -ep -p%s \"%s\" \"%s\"" % (password, result_path, file_path)
+        try:
+            check_output(command, shell=True)
+            return result_path
+        except SubprocessError:
+            return False
+
+    @staticmethod
+    def auto_de(file_path):
+        if file_path[-3:] in [".gz", ".7z", "zip"]:
+            if Compression.de_7z(file_path):
+                os.remove(file_path)
+                return True
+            else:
+                return file_path
+        elif file_path[-3:] == "rar":
+            if Compression.de_rar(file_path):
+                os.remove(file_path)
+                return True
+            else:
+                return file_path
+        else:
+            return True
+
+
+class Auto:
+
+    def __init__(self):
+        dist_dir = r"C:\Users\hewen\Desktop\MyTest\失败"
+        folder_path = self.download_sample()
+        self.deal_sample(folder_path)
+        sample_file = Compression.co_rar(folder_path)
+        shutil.copy(sample_file, dist_dir)
+
+    @staticmethod
+    def download_sample():
+        SampleMalc0de()
+        SampleVxvault()
+        SampleHybrid()
+        SampleVirusBay()
+        SampleMalwareTrafficAnalysis()
+        SampleVirusSign()
+        SampleMalshare()
+        SampleInfosec()
+        return Base.get_download_folder()
+
+    @staticmethod
+    def deal_sample(folder_path):
+        dist_dir = Base.get_deal_failed_folder(folder_path)
+        for file_path in list(map(Compression.auto_de, Base.get_list(folder_path))):
+            if file_path is not True:
+                shutil.move(file_path, dist_dir)
+        for file_path in list(map(Base.rename_file, Base.get_list(folder_path))):
+            if file_path is not True:
+                os.remove(file_path)
+
+    @staticmethod
+    def upload_sample():
+        shutil.move()
+
+
+Auto()
