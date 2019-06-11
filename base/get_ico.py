@@ -19,6 +19,7 @@ class Ico:
                     file_size += 1024
                     download_process = int(file_size/file_total_size*100)
                     print("\rDownload Ico:%s %s%%" % ("#"*download_process, download_process), end="")
+            print()
             return ico_path
 
     @staticmethod

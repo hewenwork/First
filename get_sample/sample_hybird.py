@@ -1,6 +1,6 @@
-import json
 import os
 import re
+import json
 import datetime
 import requests
 from bs4 import BeautifulSoup
@@ -10,51 +10,93 @@ from subprocess import check_output, SubprocessError
 class Base:
 
     def __init__(self):
+        self.base_dir = os.getcwd()
         self.download_date = self.get_download_date()
-        self.base_dir = r"C:\Users\hewen\Desktop\Download"
-        self.download_folder = os.path.join(self.base_dir, self.download_date)
-        self.download_log = os.path.join(self.base_dir, r"Log\{}.log".format(self.download_date))
-        self.failed_log = os.path.join(self.base_dir, r"SHA256\{}.db".format(self.download_date))
+        self.download_log = self.get_download_log_path()
+        self.download_folder = self.get_download_folder()
+        self.download_failed = self.get_download_failed_path()
 
     @staticmethod
     def get_download_date():
+        if os.path.exists("test.txt"):
+            with open("test.txt", "r")as file:
+                days = int(file.read())
+        else:
+            days = 1
         today = datetime.datetime.today()
-        time_interval = datetime.timedelta(days=1)
+        time_interval = datetime.timedelta(days=days)
         download_day = today - time_interval
         return download_day.strftime("%Y-%m-%d")
 
     @staticmethod
+    def get_session():
+        user_agent = "Mozilla/5.0 (X11; Linux i686; rv:1.9.7.20) Gecko/2015-04-30 08:02:26 Firefox/3.8"
+        headers = {"User-Agent": user_agent}
+        session = requests.session()
+        session.headers.update(headers)
+        return session
+
+    @staticmethod
     def write_sample(sample_path, sample_download_url, session):
-        init_size = 0
         if os.path.exists(sample_path):
-            print("\r{} download over".format(sample_download_url), end="")
             return True
         else:
             try:
-                response = session.get(url=sample_download_url, stream=True)
-                total_size = int(response.headers("content-length"))
+                response = session.get(url=sample_download_url, timeout=5).content
                 with open(sample_path, "wb")as file:
-                    for chunk in response.iter_content(chunk_size=1024):
-                        file.write(chunk)
-                        init_size += 1024
-                        download_process = int(init_size/total_size*10)
-                        print("\r{}".format(sample_download_url), "#"*download_process + "", end="")
+                    file.write(response)
                 return True
             except requests.RequestException:
                 return False
-
-    def write_failed_sha256(self, md5):
-        file_path = self.failed_log
-        if os.path.exists(file_path):
-            with open(file_path, "a+")as file:
-                file.write(md5 + "\n")
-        else:
-            with open(file_path, "a+")as file:
-                file.seek(0, 0)
-                file.write(md5 + "\n")
+            except OSError:
+                return False
 
     @staticmethod
-    def write_download_log(log_path, result):
+    def start_info():
+        sample_info = {}
+        session = Base.get_session()
+        download_date = Base.get_download_date()
+        return sample_info, session, download_date
+
+    def get_download_folder(self):
+        download_folder = os.path.join(self.base_dir, self.download_date)
+        if os.path.exists(download_folder) is False:
+            os.makedirs(download_folder)
+        return download_folder
+
+    def get_download_failed_path(self):
+        download_data = Base.get_download_date()
+        failed_dir = os.path.join(self.base_dir, r"MD5&SHA256")
+        failed_path = os.path.join(failed_dir, "Failed{}.txt".format(download_data))
+        if os.path.exists(failed_dir) is False:
+            os.makedirs(failed_dir)
+        return failed_path
+
+    def get_download_log_path(self):
+        download_data = Base.get_download_date()
+        log_dir = os.path.join(self.base_dir, r"Log")
+        log_path = os.path.join(log_dir, "{}.log".format(download_data))
+        if os.path.exists(log_dir) is False:
+            os.makedirs(log_dir)
+        return log_path
+
+    def write_sample_md5(self, md5):
+        file_path = self.download_failed
+        if os.path.exists(file_path):
+            if len(md5) == 64:
+                with open(file_path, "a+")as file:
+                    file.write(md5 + "\n")
+            else:
+                with open(file_path, "r+")as file:
+                    old_data = file.read()
+                    file.seek(0, 0)
+                    file.write(md5 + "\n" + old_data)
+        else:
+            with open(file_path, "a+")as file:
+                file.write(md5 + "\n")
+
+    def write_download_log(self, result):
+        log_path = self.download_log
         if os.path.exists(log_path):
             with open(log_path, "r+")as file:
                 old_data = file.read()
@@ -64,39 +106,33 @@ class Base:
             with open(log_path, "a+")as file:
                 file.write(result + "\n")
 
-    @staticmethod
-    def start_info():
-        sample_info = {}
-        session = Base.get_session()
-        download_folder = Base.get_download_folder()
-        failed_path = Base.get_download_failed_path()
-        log_path = Base.get_download_log_path()
-        return sample_info, session, download_folder, failed_path, log_path
-
-    @staticmethod
-    def start_download(sample_info, session, target, download_folder, failed_path, log_path):
+    def start_download(self, sample_info, session, target):
         failed_num = 0
         total_num = len(sample_info)
         if total_num is 0:
             result = "{}--has`t data".format(target)
         else:
+            download_num = 0
             for file_name, download_url in sample_info.items():
-                sample_md5 = file_name.split(".")[0]
-                file_path = os.path.join(download_folder, file_name)
-                download_result = Base.write_sample(file_path, download_url, session=session)
+                file_md5 = os.path.splitext(file_name)[0]
+                file_path = os.path.join(self.download_folder, file_name)
+                download_result = Base.write_sample(file_path, download_url, session)
                 if download_result is False:
                     failed_num += 1
-                    Base.write_failed_sha256(file_path=failed_path, md5=sample_md5)
+                    Base().write_sample_md5(file_md5)
+                download_num += 1
+                print("\rdownload", "{} / {}".format(download_num, total_num), end="")
             result = "{0} -- Failed:{1}  Total:{2}".format(target, failed_num, total_num)
-        Base.write_download_log(log_path, result)
+        print("\n", result)
+        Base().write_download_log(result=result)
 
 
 class SampleHybrid:
 
     def __init__(self):
         self.session = self.get_login_session()
-        sample_info = {}
-        download_folder = Base().download_folder
+        a = self.get_page_info(1)
+        print(a)
 
     @staticmethod
     def get_login_session():
@@ -114,8 +150,8 @@ class SampleHybrid:
             }
             session.post(url, data=data)
             return session
-        except requests.RequestException:
-            exit("Login Failed")
+        except requests.RequestException as e:
+            exit(e)
 
     def get_page_info(self, page):
         url = "https://www.hybrid-analysis.com/recent-submissions"
@@ -143,21 +179,26 @@ class SampleHybrid:
             return page_dict
 
 
-# SampleHybrid()
+SampleHybrid()
 
 # url = "https://www.hybrid-analysis.com/feed?json"
 # headers = {"User-Agent": "Falcon Sandbox"}
 # #
 # a = requests.get(url, headers=headers).content
-with open(r"C:\Users\hewen\Desktop\aa.txt", "r")as file:
-    # file.write(a)
-    text = file.read()
-    # print(text)
-aa = json.loads(text)
-for i in aa["data"]:
-    for j in i:
-        print(j)
-    break
+# with open(r"C:\Users\hewen\Desktop\aa.txt", "r")as file:
+#     # file.write(a)
+#     text = file.read()
+# aa = json.loads(text)
+# a = 1
+# for i in aa["data"]:
+#     md5 = i["md5"]
+#     sha256 = i["sha256"]
+#     environmentId = i["environmentId"]
+#     threatlevel = i["threatlevel"]
+#     if threatlevel != 0:
+#         print(md5, environmentId, threatlevel)
+#         a += 1
+# print(a)
 
 # # print(a)
 # apikey = "0ccgsgk0w00w4ogwcgk4o4s0ggw8gg4og04wsko8kw4s8wgocks400cgsg88400g"

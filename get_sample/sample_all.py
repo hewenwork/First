@@ -5,10 +5,6 @@ import datetime
 import requests
 from bs4 import BeautifulSoup
 from subprocess import check_output, SubprocessError
-if os.path.exists("test.txt"):
-    days = int(input("days:\n"))
-else:
-    days = 1
 
 
 class Base:
@@ -22,6 +18,11 @@ class Base:
 
     @staticmethod
     def get_download_date():
+        if os.path.exists("test.txt"):
+            with open("test.txt", "r")as file:
+                days = int(file.read())
+        else:
+            days = 1
         today = datetime.datetime.today()
         time_interval = datetime.timedelta(days=days)
         download_day = today - time_interval
@@ -204,7 +205,7 @@ class SampleVxvault:
 #
 #     def __init__(self):
 #         url = "https://www.hybrid-analysis.com/recent-submissions"
-#         download_date, sample_info, session, download_folder, download_failed_path, download_log_path = Base.start_info()
+#         sample_info, session, download_date = Base.start_info()
 #         session = SampleHybrid.get_login_session()
 #         if session:
 #             for page in range(1, 11):
