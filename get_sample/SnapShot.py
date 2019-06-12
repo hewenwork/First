@@ -30,7 +30,7 @@ class SnapShot:
 
 	@staticmethod
 	def download(download_url, session):
-		base_dir = os.getcwd()
+		base_dir = r"E:\交换样本"
 		file_name = download_url.split("/")[-1]
 		file_path = os.path.join(base_dir, file_name)
 		try:

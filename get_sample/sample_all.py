@@ -11,6 +11,7 @@ class Base:
 
     def __init__(self):
         self.base_dir = os.getcwd()
+        # self.base_dir = r"C:\Users\hewen\Desktop\新建文件夹"
         self.download_date = self.get_download_date()
         self.download_log = self.get_download_log_path()
         self.download_folder = self.get_download_folder()
@@ -42,10 +43,13 @@ class Base:
             return True
         else:
             try:
-                response = session.get(url=sample_download_url, timeout=5).content
-                with open(sample_path, "wb")as file:
-                    file.write(response)
-                return True
+                response = session.get(url=sample_download_url, timeout=5)
+                if response.status_code == 200:
+                    with open(sample_path, "wb")as file:
+                        file.write(response.content)
+                    return True
+                else:
+                    return False
             except requests.RequestException:
                 return False
             except OSError:
@@ -107,6 +111,7 @@ class Base:
                 file.write(result + "\n")
 
     def start_download(self, sample_info, session, target):
+        print("\n", target)
         failed_num = 0
         total_num = len(sample_info)
         if total_num is 0:
@@ -123,8 +128,8 @@ class Base:
                 download_num += 1
                 print("\rdownload", "{} / {}".format(download_num, total_num), end="")
             result = "{0} -- Failed:{1}  Total:{2}".format(target, failed_num, total_num)
-        print("\n", result)
         Base().write_download_log(result=result)
+        print("\n", result)
 
 
 class SampleMalc0de:
@@ -132,29 +137,14 @@ class SampleMalc0de:
     def __init__(self):
         url = "http://malc0de.com/database/"
         sample_info, session, download_date = Base.start_info()
-        if self.switch_vpn("on"):
-            try:
-                response = session.get(url)
-                suop = BeautifulSoup(response.text, "lxml")
-                sample_data_list = suop.select("tr > td:nth-of-type(1)")
-                sample_url_list = suop.select("tr > td:nth-of-type(2)")
-                sample_md5_list = suop.select("tr > td:nth-of-type(7)")
-                for sample_date, sample_url, sample_md5 in zip(sample_data_list, sample_url_list, sample_md5_list):
-                    add_date = sample_date.getText()
-                    sample_md5 = sample_md5.getText()
-                    file_name = sample_md5 + ".vir"
-                    sample_url = "http://" + sample_url.getText()
-                    if add_date == download_date:
-                        sample_info[file_name] = sample_url
-                Base().start_download(sample_info=sample_info, session=session, target=url)
-            except requests.RequestException:
-                Base().write_download_log(result=url + "-" * 4 + "VPN Error")
-        else:
-            Base().write_download_log(result=url + "-" * 4 + "VPN Error")
+        self.switch_vpn("on")
+        sample_info = self.get_dict()
         self.switch_vpn("off")
+        Base().start_download(sample_info=sample_info, session=session, target=url)
 
     @staticmethod
     def switch_vpn(turn):
+        print("Switch VPN " + turn)
         connect_command = "rasdial  US usa vpn2014"
         disconnect_command = "rasdial US /DISCONNECT"
         command_dict = {
@@ -162,12 +152,31 @@ class SampleMalc0de:
             "off": disconnect_command
         }
         try:
-            print("Switch VPN " + turn)
             check_output(command_dict[turn], shell=True)
             return True
         except SubprocessError as e:
-            print(e)
-            return False
+            exit(e)
+
+    @staticmethod
+    def get_dict():
+        url = "http://malc0de.com/database/"
+        sample_info, session, download_date = Base.start_info()
+        try:
+            response = session.get(url)
+            suop = BeautifulSoup(response.text, "lxml")
+            sample_data_list = suop.select("tr > td:nth-of-type(1)")
+            sample_url_list = suop.select("tr > td:nth-of-type(2)")
+            sample_md5_list = suop.select("tr > td:nth-of-type(7)")
+            for sample_date, sample_url, sample_md5 in zip(sample_data_list, sample_url_list, sample_md5_list):
+                add_date = sample_date.getText()
+                sample_md5 = sample_md5.getText()
+                file_name = sample_md5 + ".vir"
+                sample_url = "http://" + sample_url.getText()
+                if add_date == download_date:
+                    sample_info[file_name] = sample_url
+            return sample_info
+        except requests.RequestException as e:
+            exit(e)
 
 
 class SampleVxvault:
@@ -201,60 +210,79 @@ class SampleVxvault:
         return file_name, sample_download_url
 
 
-# class SampleHybrid:
-#
-#     def __init__(self):
-#         url = "https://www.hybrid-analysis.com/recent-submissions"
-#         sample_info, session, download_date = Base.start_info()
-#         session = SampleHybrid.get_login_session()
-#         if session:
-#             for page in range(1, 11):
-#                 sample_info.update(SampleHybrid.get_page_info(session, url, page))
-#             Base.start_download(sample_info, session, url, download_folder, download_failed_path, download_log_path)
-#         else:
-#             Base.write_download_log(download_log_path, url + "login Error")
-#
-#     @staticmethod
-#     def get_login_session():
-#         session = requests.session()
-#         session.headers["User-Agent"] = "Falcon Sandbox"
-#         url = "https://www.hybrid-analysis.com/login"
-#         try:
-#             response = session.get(url).text
-#             token = re.findall("name=\"token\" value=\"(.*?)\">", response)[0]
-#             data = {
-#                 "email": "cicely@iobit.com",
-#                 "password": "IObit2018",
-#                 "token": token
-#             }
-#             session.post(url, data=data)
-#             return session
-#         except requests.RequestException:
-#             return False
-#
-#     @staticmethod
-#     def get_page_info(session, url, page):
-#         page_dict = {}
-#         threat_level = ["malicious", "ambiguous", "suspicious", "-"]
-#         params = {
-#             "filter": "file",
-#             "sort": "^timestamp",
-#             "page": page
-#         }
-#         response = session.get(url, params=params)
-#         suop = BeautifulSoup(response.text, "lxml")
-#         sample_date_list = suop.select("td.submission-timestamp.hidden-xs")
-#         sample_download_list = suop.select("a.btn.btn-default.btn-xs.pull-right.sampledl.download-url")
-#         is_virus_list = suop.select("dd:nth-of-type(3)")
-#         for sample_date, sample_download_url, is_virus in zip(sample_date_list, sample_download_list,
-#                                                               is_virus_list):
-#             sample_sha256 = sample_download_url.get("href").split("?")[0][17:]
-#             file_name = sample_sha256 + ".gz"
-#             sample_download_url = "https://www.hybrid-analysis.com%s" % sample_download_url.get("href")
-#             is_virus = is_virus.getText().strip()
-#             if is_virus in threat_level:
-#                 page_dict[file_name] = sample_download_url
-#         return page_dict
+class SampleHybrid:
+
+    def __init__(self):
+        url = "https://www.hybrid-analysis.com"
+        self.session = self.get_login_session()
+        sample_info, session, download_date = Base.start_info()
+        sample_info.update(self.get_last_info())
+        sample_info.update(self.get_page_info())
+        Base().start_download(sample_info=sample_info, session=self.session, target=url)
+
+    @staticmethod
+    def get_login_session():
+        headers = {"User-Agent":  "Falcon Sandbox"}
+        session = requests.session()
+        session.headers.update(headers)
+        url = "https://www.hybrid-analysis.com/login"
+        try:
+            response = session.get(url)
+            token = re.findall("name=\"token\" value=\"(.*?)\">", response.text)[0]
+            data = {
+                "email": "cicely@iobit.com",
+                "password": "IObit2018",
+                "token": token
+            }
+            session.post(url, data=data)
+        except requests.RequestException as e:
+            exit(e)
+        return session
+
+    def get_last_info(self):
+        json_dict = {}
+        url = "https://www.hybrid-analysis.com/feed?json"
+        try:
+            base_url = "https://www.hybrid-analysis.com/download-sample/"
+            json_content = self.session.get(url).json()
+            for data_type in json_content["data"]:
+                md5 = data_type["md5"]
+                file_name = md5 + ".gz"
+                sha256 = data_type["sha256"]
+                environmentId = data_type["environmentId"]
+                threatlevel = data_type["threatlevel"]
+                if threatlevel != 0:
+                    download_url = base_url + sha256 + "?environmentId=%s" % environmentId
+                    json_dict[file_name] = download_url
+        except requests.RequestException as e:
+            exit(e)
+        return json_dict
+
+    def get_page_info(self):
+        page_dict = {}
+        url = "https://www.hybrid-analysis.com/recent-submissions"
+        threat_level = ["malicious", "ambiguous", "suspicious", "-"]
+        for page in range(11):
+            params = {
+                "filter": "file",
+                "sort": "^timestamp",
+                "page": page
+            }
+            try:
+                response = self.session.get(url, params=params)
+                suop = BeautifulSoup(response.text, "lxml")
+                sample_download_list = suop.select("a.btn.btn-default.btn-xs.pull-right.sampledl.download-url")
+                is_virus_list = suop.select("dd:nth-of-type(3)")
+                for sample_download_url, is_virus in zip(sample_download_list, is_virus_list):
+                    sample_sha256 = sample_download_url.get("href").split("?")[0][17:]
+                    file_name = sample_sha256 + ".gz"
+                    sample_download_url = "https://www.hybrid-analysis.com{}".format(sample_download_url.get("href"))
+                    is_virus = is_virus.getText().strip()
+                    if is_virus in threat_level:
+                        page_dict[file_name] = sample_download_url
+            except requests.RequestException as e:
+                exit(e)
+        return page_dict
 
 
 class SampleVirusBay:
@@ -279,11 +307,9 @@ class SampleVirusBay:
                     break
             session = Base().get_session()
             Base().start_download(sample_info=sample_info, session=session, target=url)
-            result = url + "-" * 4 + "Download over"
         else:
             result = url + "-" * 4 + "Login Error"
             Base().write_download_log(result=result)
-        print(result)
 
     @staticmethod
     def get_login_session():
@@ -298,10 +324,8 @@ class SampleVirusBay:
             token = response.json()["token"]
             authorization = {"Authorization": "JWT %s" % token}
             session.headers.update(authorization)
-            print(url + "-" * 4 + "Login Successful")
             return session
         except requests.RequestException as e:
-            print(url + "-" * 4 + "Login Failed")
             print(e)
             return False
 
@@ -320,11 +344,9 @@ class SampleMalwareTrafficAnalysis:
                     sample_download_url = url.replace("index.html", sample_name)
                     sample_info[sample_name] = sample_download_url
             Base().start_download(sample_info=sample_info, session=session, target=url)
-            result = url + "download over"
         else:
             result = url + "--has`t data"
             Base().write_download_log(result=result)
-        print(result)
 
 
 class SampleVirusSign:
@@ -347,11 +369,9 @@ class SampleVirusSign:
                 sample_download_url = "http://virusign.com/file/%s" % file_name
                 sample_info[file_name] = sample_download_url
             Base().start_download(sample_info=sample_info, session=session, target=url)
-            result = url + "----download over"
         else:
             result = url + "--has`t data"
             Base().write_download_log(result=result)
-        print(result)
 
 
 class SampleMalshare:
@@ -372,17 +392,12 @@ class SampleMalshare:
                 download_url = url + "?api_key=%s&action=getfile&hash=%s" % (api_key, sample_md5)
                 sample_info[file_name] = download_url
             Base().start_download(sample_info=sample_info, session=session, target=url)
-            result = url + "Download over"
         except requests.RequestException as e:
-            print(e)
             result = url + "RequestException Error"
-            Base.write_download_log(result=result)
+            Base().write_download_log(result=result)
         except json.decoder.JSONDecodeError as j:
-            result = url + "-- JSON Error"
-            response = session.get(url=url, params=params).json()
-            print(response)
-            print(j)
-        print(result)
+            result = url + "decoder.JSONDecodeError Error"
+            Base().write_download_log(result=result)
 
 
 class SampleInfosec:
@@ -394,12 +409,10 @@ class SampleInfosec:
             for page in range(1, 10):
                 sample_info.update(SampleInfosec.get_page_info(download_date, session, page))
             Base().start_download(sample_info=sample_info, session=session, target=url)
-            result = url + "Download over"
         except requests.RequestException as e:
-            print(e)
             result = url + "Error"
             Base.write_download_log(result=result)
-        print(result)
+            exit(e)
 
     @staticmethod
     def get_page_info(download_date, session, page):
@@ -446,4 +459,5 @@ if __name__ == "__main__":
     SampleVirusSign()
     SampleMalshare()
     SampleInfosec()
+    SampleHybrid()
 

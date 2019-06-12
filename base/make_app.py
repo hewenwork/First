@@ -17,7 +17,7 @@ class MakeApplication:
         command = "where python"
         try:
             python_path = check_output(command)
-            python_dir = os.path.dirname(bytes.decode(python_path))
+            python_dir = os.path.dirname(bytes.decode(python_path).split("\n")[0])
             script_dir = os.path.join(python_dir, "Scripts")
             return script_dir
         except SubprocessError as e:

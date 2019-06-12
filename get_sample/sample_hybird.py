@@ -1,10 +1,39 @@
 import os
 import re
-import json
+import sqlite3
 import datetime
 import requests
 from bs4 import BeautifulSoup
 from subprocess import check_output, SubprocessError
+
+
+class Database:
+
+    def __init__(self):
+        init_sql = '''
+        create table if not exists hybird(
+        datetime varchar ,
+        file_name varchar unique ,
+        download_url varchar
+        );'''
+        self.connect = sqlite3.connect("database.db")
+        self.cursor = self.connect.cursor()
+        self.cursor.execute(init_sql)
+        self.connect.commit()
+        self.datetime = datetime.datetime.now().date()
+
+    def select_table(self, file_name):
+        sql = "select * from hybird where file_name='{}';".format(file_name)
+        result = self.cursor.execute(sql).fetchall()
+        return result
+
+    def execute_sql(self, sql):
+        self.cursor.execute(sql)
+        self.connect.commit()
+
+    def insert_info(self, file_name, download_url):
+        sql = "insert into hybird values ('{}', '{}', '{}')".format(self.datetime, file_name, download_url)
+        self.execute_sql(sql)
 
 
 class Base:
@@ -95,7 +124,7 @@ class Base:
             with open(file_path, "a+")as file:
                 file.write(md5 + "\n")
 
-    def write_download_log(self, result):
+    def write_download_log(self, result: object) -> object:
         log_path = self.download_log
         if os.path.exists(log_path):
             with open(log_path, "r+")as file:
@@ -130,12 +159,6 @@ class Base:
 class SampleHybrid:
 
     def __init__(self):
-        self.session = self.get_login_session()
-        a = self.get_page_info(1)
-        print(a)
-
-    @staticmethod
-    def get_login_session():
         headers = {"User-Agent":  "Falcon Sandbox"}
         session = requests.session()
         session.headers.update(headers)
@@ -149,57 +172,68 @@ class SampleHybrid:
                 "token": token
             }
             session.post(url, data=data)
-            return session
+            self.session = session
         except requests.RequestException as e:
             exit(e)
 
-    def get_page_info(self, page):
-        url = "https://www.hybrid-analysis.com/recent-submissions"
-        params = {
-            "filter": "file",
-            "sort": "^timestamp",
-            "page": page
-        }
-        page_dict = {}
-        threat_level = ["malicious", "ambiguous", "suspicious", "-"]
+    @staticmethod
+    def write_database(info_dict):
+        for file_name, download_url in info_dict.items():
+            if len(Database().select_table(file_name)) < 1:
+                Database().insert_info(file_name, download_url)
+
+    def get_last_info(self):
+        json_dict = {}
+        url = "https://www.hybrid-analysis.com/feed?json"
         try:
-            response = self.session.get(url, params=params)
-            suop = BeautifulSoup(response.text, "lxml")
-            sample_download_list = suop.select("a.btn.btn-default.btn-xs.pull-right.sampledl.download-url")
-            is_virus_list = suop.select("dd:nth-of-type(3)")
-            for sample_download_url, is_virus in zip(sample_download_list, is_virus_list):
-                sample_sha256 = sample_download_url.get("href").split("?")[0][17:]
-                file_name = sample_sha256 + ".gz"
-                sample_download_url = "https://www.hybrid-analysis.com{}".format(sample_download_url.get("href"))
-                is_virus = is_virus.getText().strip()
-                if is_virus in threat_level:
-                    page_dict[file_name] = sample_download_url
-            return page_dict
-        except requests.RequestException:
-            return page_dict
+            base_url = "https://www.hybrid-analysis.com/download-sample/"
+            json_content = self.session.get(url).json()
+            for data_type in json_content["data"]:
+                md5 = data_type["md5"]
+                file_name = md5 + ".gz"
+                sha256 = data_type["sha256"]
+                environmentId = data_type["environmentId"]
+                threatlevel = data_type["threatlevel"]
+                if threatlevel != 0:
+                    download_url = base_url + sha256 + "?environmentId=%s" % environmentId
+                    json_dict[file_name] = download_url
+        except requests.RequestException as e:
+            print(e)
+        self.write_database(json_dict)
+
+    def get_page_info(self):
+        page_dict = {}
+        url = "https://www.hybrid-analysis.com/recent-submissions"
+        threat_level = ["malicious", "ambiguous", "suspicious", "-"]
+        for page in range(11):
+            params = {
+                "filter": "file",
+                "sort": "^timestamp",
+                "page": page
+            }
+            try:
+                response = self.session.get(url, params=params)
+                suop = BeautifulSoup(response.text, "lxml")
+                sample_download_list = suop.select("a.btn.btn-default.btn-xs.pull-right.sampledl.download-url")
+                is_virus_list = suop.select("dd:nth-of-type(3)")
+                for sample_download_url, is_virus in zip(sample_download_list, is_virus_list):
+                    sample_sha256 = sample_download_url.get("href").split("?")[0][17:]
+                    file_name = sample_sha256 + ".gz"
+                    sample_download_url = "https://www.hybrid-analysis.com{}".format(sample_download_url.get("href"))
+                    is_virus = is_virus.getText().strip()
+                    if is_virus in threat_level:
+                        page_dict[file_name] = sample_download_url
+            except requests.RequestException as e:
+                exit(e)
+        self.write_database(page_dict)
 
 
-SampleHybrid()
+if __name__ == "__main__":
+    SampleHybrid().get_last_info()
+    while True:
+        datetime_now = datetime.datetime.now().strftime("%H%M%S")
+        if datetime_now in ["060000", "120000", "180000", "235900"]:
+            SampleHybrid().get_page_info()
+        elif datetime_now == "040000":
+            SampleHybrid().get_last_info()
 
-# url = "https://www.hybrid-analysis.com/feed?json"
-# headers = {"User-Agent": "Falcon Sandbox"}
-# #
-# a = requests.get(url, headers=headers).content
-# with open(r"C:\Users\hewen\Desktop\aa.txt", "r")as file:
-#     # file.write(a)
-#     text = file.read()
-# aa = json.loads(text)
-# a = 1
-# for i in aa["data"]:
-#     md5 = i["md5"]
-#     sha256 = i["sha256"]
-#     environmentId = i["environmentId"]
-#     threatlevel = i["threatlevel"]
-#     if threatlevel != 0:
-#         print(md5, environmentId, threatlevel)
-#         a += 1
-# print(a)
-
-# # print(a)
-# apikey = "0ccgsgk0w00w4ogwcgk4o4s0ggw8gg4og04wsko8kw4s8wgocks400cgsg88400g"
-# pwd = "606bb32347177d5fa05dec56f2e97329ce4f24fc535c4c77"
