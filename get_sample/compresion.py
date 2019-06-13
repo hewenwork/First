@@ -10,8 +10,18 @@ class Compression:
         self.path_7z = r"C:\Program Files\7-Zip"
 
     @staticmethod
-    def de_7z(file_path, password="infected"):
-        os.chdir(Compression().path_7z)
+    def get_failed_folder(file_path):
+        try:
+            file_dir = os.path.dirname(file_path)
+            dist_dir = os.path.join(os.path.dirname(file_dir), r"处理失败")
+            if os.path.exists(dist_dir) is False:
+                os.makedirs(dist_dir)
+            return dist_dir
+        except OSError as e:
+            print(e)
+
+    def de_7z(self, file_path, password="infected"):
+        os.chdir(self.path_7z)
         dir_path = os.path.dirname(file_path)
         command_dict = {
             ".gz": "7z e -tgzip -p%s -y \"%s\" -o\"%s\"" % (password, file_path, dir_path),
@@ -23,39 +33,35 @@ class Compression:
         try:
             check_output(command, shell=True)
             return True
-        except SubprocessError:
+        except SubprocessError as e:
+            print(e)
             return False
 
-    @staticmethod
-    def de_rar(file_path, password="infected"):
-        os.chdir(Compression().path_rar)
+    def de_rar(self, file_path, password="infected"):
+        os.chdir(self.path_rar)
         dir_path = os.path.dirname(file_path)
         command = "rar e -p%s -y \"%s\" \"%s\"" % (password, file_path, dir_path)
         try:
             check_output(command)
             return True
-        except SubprocessError:
+        except SubprocessError as e:
+            print(e)
             return False
 
-    @staticmethod
-    def co_rar(file_path, password="infected"):
-        os.chdir(Compression().path_rar)
+    def co_rar(self, file_path, password="infected"):
+        os.chdir(self.path_rar)
         result_path = file_path + "[infected].rar"
         command = "rar a -ep -p%s \"%s\" \"%s\"" % (password, result_path, file_path)
         try:
             check_output(command, shell=True)
             return result_path
-        except SubprocessError:
+        except SubprocessError as e:
+            print(e)
             return False
 
-    @staticmethod
-    def auto_de(file_path):
-        file_dir = os.path.dirname(file_path)
-        dist_dir = os.path.join(os.path.dirname(file_dir), r"处理失败")
-        if os.path.exists(dist_dir)is False:
-            os.makedirs(dist_dir)
+    def auto_de_file(self, file_path, dist_dir):
         if file_path[-3:] in [".gz", ".7z", "zip"]:
-            if Compression.de_7z(file_path):
+            if self.de_7z(file_path):
                 os.remove(file_path)
             else:
                 try:
@@ -63,17 +69,23 @@ class Compression:
                 except PermissionError:
                     os.remove(file_path)
         elif file_path[-3:] == "rar":
-            if Compression.de_rar(file_path):
+            if self.de_rar(file_path):
                 os.remove(file_path)
             else:
                 try:
                     shutil.move(file_path, dist_dir)
                 except PermissionError:
                     os.remove(file_path)
-        else:
-            return True
+
+    def auto_de_folder(self, folder_path):
+        dist_dir = os.path.join(os.path.dirname(folder_path), r"处理失败")
+        if os.path.exists(dist_dir) is False:
+            os.makedirs(dist_dir)
+        for file_name in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file_name)
+            self.auto_de_file(file_path, dist_dir)
 
 
 if __name__ == "__main__":
     input_folder = input(u"Drag the folder:\n")
-    Compression.auto_de(input_folder)
+    Compression().auto_de_folder(input_folder)

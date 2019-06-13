@@ -155,7 +155,7 @@ class SampleMalc0de:
             check_output(command_dict[turn], shell=True)
             return True
         except SubprocessError as e:
-            exit(e)
+            print(e)
 
     @staticmethod
     def get_dict():
@@ -176,7 +176,7 @@ class SampleMalc0de:
                     sample_info[file_name] = sample_url
             return sample_info
         except requests.RequestException as e:
-            exit(e)
+            print(e)
 
 
 class SampleVxvault:
@@ -236,7 +236,7 @@ class SampleHybrid:
             }
             session.post(url, data=data)
         except requests.RequestException as e:
-            exit(e)
+            print(e)
         return session
 
     def get_last_info(self):
@@ -255,7 +255,7 @@ class SampleHybrid:
                     download_url = base_url + sha256 + "?environmentId=%s" % environmentId
                     json_dict[file_name] = download_url
         except requests.RequestException as e:
-            exit(e)
+            print(e)
         return json_dict
 
     def get_page_info(self):
@@ -281,7 +281,7 @@ class SampleHybrid:
                     if is_virus in threat_level:
                         page_dict[file_name] = sample_download_url
             except requests.RequestException as e:
-                exit(e)
+                print(e)
         return page_dict
 
 
@@ -410,9 +410,8 @@ class SampleInfosec:
                 sample_info.update(SampleInfosec.get_page_info(download_date, session, page))
             Base().start_download(sample_info=sample_info, session=session, target=url)
         except requests.RequestException as e:
-            result = url + "Error"
+            result = url + str(e)
             Base.write_download_log(result=result)
-            exit(e)
 
     @staticmethod
     def get_page_info(download_date, session, page):
@@ -451,7 +450,7 @@ class SampleInfosec:
             return False
 
 
-if __name__ == "__main__":
+def start():
     SampleMalc0de()
     SampleVxvault()
     SampleVirusBay()
@@ -460,4 +459,9 @@ if __name__ == "__main__":
     SampleMalshare()
     SampleInfosec()
     SampleHybrid()
+    return Base().download_folder
+
+
+if __name__ == "__main__":
+    start()
 
