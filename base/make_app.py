@@ -21,7 +21,7 @@ class MakeApplication:
             script_dir = os.path.join(python_dir, "Scripts")
             return script_dir
         except SubprocessError as e:
-            exit(e)
+            print(e)
 
     def start_make(self):
         input_file = input(u"需要打包的文件").replace("\"", "")

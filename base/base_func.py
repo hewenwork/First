@@ -91,6 +91,3 @@ class Base:
             print(e)
         except shutil.Error as e:
             print(e)
-
-
-list(map(Base.rename_file, Base.get_list(r"C:\Users\hewen\Desktop\处理失败")))

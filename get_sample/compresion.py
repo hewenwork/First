@@ -81,11 +81,16 @@ class Compression:
         dist_dir = os.path.join(os.path.dirname(folder_path), r"处理失败")
         if os.path.exists(dist_dir) is False:
             os.makedirs(dist_dir)
+        init_num = 0
+        total_num = len(os.listdir(folder_path))
         for file_name in os.listdir(folder_path):
             file_path = os.path.join(folder_path, file_name)
             self.auto_de_file(file_path, dist_dir)
+            deal_process = int(init_num/total_num*100)
+            print("\r Deal %s / %s -- %s%%" % (init_num, total_num, deal_process), end="")
 
 
 if __name__ == "__main__":
     input_folder = input(u"Drag the folder:\n")
     Compression().auto_de_folder(input_folder)
+    Compression().co_rar(input_folder)
