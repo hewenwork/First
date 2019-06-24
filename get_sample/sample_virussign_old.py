@@ -8,6 +8,7 @@ class VirusSign:
     def __init__(self):
         self.base_dir = os.getcwd()
         self.session = self.get_session()
+        self.download_date = self.get_download_date()
 
     @staticmethod
     def get_session():
@@ -19,7 +20,7 @@ class VirusSign:
         session.auth = auth
         return session
 
-    def sample_dict(self, download_date):
+    def get_sample_dict(self, download_date):
         download_dict = {}
         download_dir = os.path.join(self.base_dir, download_date)
         os.makedirs(download_dir)
@@ -45,23 +46,24 @@ class VirusSign:
             return True
         else:
             try:
-                response = self.session.get(download_url, timeout=40)
+                response = self.session.get(download_url, timeout=5, stream=True)
                 with open(file_path, "wb")as file:
                     file.write(response.content)
                 return True
             except requests.RequestException as e:
-                print(e)
                 if os.path.exists(file_path):
                     os.remove(file_path)
+                print(e)
                 return False
 
-    @staticmethod
-    def get_start_download_date():
-        start_download_date = "2012-02-02"
-        for file_name in os.listdir(base_dir):
-            file_path = os.path.join(base_dir, file_name)
+    def get_download_date(self):
+        start_date = "2012-02-02"
+        end_date = "2019-04-01"
+
+        for file_name in os.listdir(self.base_dir):
+            file_path = os.path.join(self.base_dir, file_name)
             if os.path.isdir(file_path):
-                if file_name > start_download_date and file_name[:2] == "20":
+                if file_name > start_date and file_name[:2] == "20":
                     start_download_date = file_name
         download_date = datetime.datetime.strptime(start_download_date, "%Y-%m-%d") + datetime.timedelta(days=1)
         return download_date.strftime("%Y-%m-%d")
@@ -75,7 +77,7 @@ class VirusSign:
             VirusSign.write_sample(session, file_path, download_url)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     VirusSign.download_sample()
 
 

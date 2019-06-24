@@ -85,9 +85,9 @@ class GetSign:
             info_link = self.session.post(url=info_url, data=data)
             info_dict = json.loads(info_link.text[3:])["tasks"]
             for i in info_dict:
-                createtime, user, taskid = i["createtime"][:10], i["user"], i["taskid"]
-                if self.end_date >= createtime >= self.start_date:
-                    print(createtime, taskid)
+                completetime, user, taskid = i["completetime"][:10], i["user"], i["taskid"]
+                if self.end_date >= completetime >= self.start_date:
+                    print(completetime, taskid)
                     sign_dict[taskid] = user
         return sign_dict
 

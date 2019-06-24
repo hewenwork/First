@@ -27,7 +27,7 @@ class TestGui:
     def init_window():
         window = Tk()
         # 图标
-        window.iconbitmap(r"C:\Users\hewen\Desktop\ico.ico")
+        # window.iconbitmap(r"C:\Users\hewen\Desktop\ico.ico")
         # 显示位置
         window.geometry("+600+100")
         # 最小/大窗口

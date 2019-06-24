@@ -4,7 +4,6 @@ import sqlite3
 import datetime
 import requests
 from bs4 import BeautifulSoup
-from subprocess import check_output, SubprocessError
 
 
 class Database:

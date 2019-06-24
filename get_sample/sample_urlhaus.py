@@ -1,7 +1,6 @@
 import os
 import datetime
 import requests
-from subprocess import check_output, SubprocessError
 
 
 class Urlhaus:
@@ -40,20 +39,23 @@ class Urlhaus:
                 file.write(data)
 
     def write_sample(self, file_path, download_url):
-        try:
-            file_size = 0
-            response = self.session.get(url=download_url, stream=True)
-            file_total_size = int(response.headers["content-length"])
-            with open(file_path, "wb")as file:
-                for chunk in response.iter_content(chunk_size=1024):
-                    file.write(chunk)
-                    file_size += 1024
-                    download_process = int(file_size/file_total_size*100)
-                    print("\rDownload %s %s%%" % ("#"*download_process, download_process), end="")
+        if os.path.exists(file_path):
             return "Successful"
-        except requests.RequestException as e:
-            print(e)
-            return "Failed"
+        else:
+            try:
+                file_size = 0
+                response = self.session.get(url=download_url, stream=True)
+                file_total_size = int(response.headers["content-length"])
+                with open(file_path, "wb")as file:
+                    for chunk in response.iter_content(chunk_size=1024):
+                        file.write(chunk)
+                        file_size += 1024
+                        download_process = int(file_size/file_total_size*100)
+                        print("\rDownload %s %s%%" % ("#"*download_process, download_process), end="")
+                return "Successful"
+            except requests.RequestException as e:
+                print(e)
+                return "Failed"
 
     def start_download(self):
         file_name = "%s.zip" % self.download_date
@@ -62,14 +64,30 @@ class Urlhaus:
         download_result = self.write_sample(file_path, download_url)
         try:
             command = "copy %s %s" % (file_path, self.dist_dir)
-            check_output(command)
-        except SubprocessError as e:
+            os.system(command)
+        except OSError as e:
             print(e)
         self.write_log(download_result, download_url)
 
 
+class Auto:
+    def __init__(self, mode):
+        if mode == "1":
+            Urlhaus().start_download()
+        elif mode == "2":
+            while True:
+                date_now = datetime.datetime.now().strftime("%H:%M:%S")
+                print("\rNow time: %s  Start time: 09:00:00" % date_now, end="")
+                if date_now == "09:00:00":
+                    print("Start Download")
+                    Urlhaus().start_download()
+        else:
+            print("Pls input the Num of Download Mode")
+
+
 if __name__ == "__main__":
-    Urlhaus().start_download()
+    download_mode = input("Choose Download Mode:\nDownload Once: 1\nDownload Everyday: 2\nMode:")
+    Auto(download_mode)
 
 
 

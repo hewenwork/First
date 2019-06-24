@@ -65,8 +65,8 @@ class Base:
     def copy_file(file_path, dist_dir):
         command = "copy \"%s\" \"%s\"" % (file_path, dist_dir)
         try:
-            os.system(command, shell=True)
-        except OSError as e:
+            check_output(command, shell=True)
+        except SubprocessError as e:
             print(e)
 
     @staticmethod
@@ -91,3 +91,7 @@ class Base:
             print(e)
         except shutil.Error as e:
             print(e)
+
+
+if __name__ == "__main__":
+    print(1)

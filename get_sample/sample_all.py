@@ -10,8 +10,7 @@ from subprocess import check_output, SubprocessError
 class Base:
 
     def __init__(self):
-        self.base_dir = os.getcwd()
-        # self.base_dir = r"C:\Users\hewen\Desktop\新建文件夹"
+        self.base_dir = r"G:\auto_collect"
         self.download_date = self.get_download_date()
         self.download_log = self.get_download_log_path()
         self.download_folder = self.get_download_folder()
@@ -162,7 +161,7 @@ class SampleMalc0de:
         url = "http://malc0de.com/database/"
         sample_info, session, download_date = Base.start_info()
         try:
-            response = session.get(url)
+            response = session.get(url, timeout=10)
             suop = BeautifulSoup(response.text, "lxml")
             sample_data_list = suop.select("tr > td:nth-of-type(1)")
             sample_url_list = suop.select("tr > td:nth-of-type(2)")
