@@ -1,11 +1,18 @@
 import os
+import time
 import datetime
 import requests
-sample_dir = os.getcwd()
-log_file = os.path.join(sample_dir, r"下载日志.log")
+import configparser
+from multiprocessing import Pool, freeze_support
+freeze_support()
 
 
 class VirusSign:
+
+    def __init__(self):
+        self.session = self.get_session()
+        self.download_dir = self.get_setting("main", "download_folder")
+        self.download_date = self.get_download_date()
 
     @staticmethod
     def get_session():
@@ -18,71 +25,73 @@ class VirusSign:
         return session
 
     @staticmethod
-    def get_download_date(days=1):
+    def write_log(result):
+        log = r"下载日志.log"
+        log_time = datetime.datetime.now()
+        data = f"{log_time}:  {result}\n"
+        with open(log, "a+")as file:
+            file.write(data)
+
+    @classmethod
+    def get_setting(cls, section, option):
+        con = configparser.ConfigParser()
+        setting_path = "setting.ini"
+        try:
+            con.read(setting_path)
+            result = con.get(section, option)
+            return result
+        except configparser.NoSectionError as e:
+            VirusSign.write_log(u"没有配置文件或section--" + str(e))
+            print(e)
+        except configparser.NoOptionError as e:
+            VirusSign.write_log(u"没有配置节点--" + str(e))
+            print(e)
+
+    def get_download_date(self):
+        days = int(self.get_setting("main", "days"))
         today = datetime.datetime.today()
         date_interval = datetime.timedelta(days=days)
-        download_date = today - date_interval
-        return download_date.strftime("%Y%m%d")
+        download_date = (today - date_interval).strftime("%Y%m%d")
+        return download_date
 
-    @staticmethod
-    def write_log(result, download_url):
-        download_date = VirusSign.get_download_date()
-        if os.path.exists(log_file):
-            with open(log_file, "r+")as file:
-                old_data = file.read()
-                new_data = "%s: download %s %s\n" % (download_date, result, download_url)
-                file.seek(0, 0)
-                file.write(new_data + old_data)
-        else:
-            with open(log_file, "a+")as file:
-                data = "%s: download %s %s\n" % (download_date, result, download_url)
-                file.write(data)
+    def write_sample(self, download_path, download_url):
+        try:
+            response = self.session.get(url=download_url, stream=True)
+            total_size = int(response.headers["content-length"])
+            download_size = 0
+            start_download_time = time.time()
+            time.sleep(1)
+            with open(download_path, "ab")as file:
+                for chunk in response.iter_content(chunk_size=1024):
+                    file.write(chunk)
+                    file.flush()
+                    download_size += 1024
+                    have_done = time.time() - start_download_time
+                    remaining_time = (total_size - download_size) / (download_size / have_done)
+                    print(f"\r{download_size} / {total_size} 剩余时间:{remaining_time/3600:.2f}小时 ", end="")
+            return "Success"
+        except requests.RequestException as e:
+            self.write_log(e)
+            return "Failed"
 
-    @staticmethod
-    def write_sample(download_path, download_url):
-        session = VirusSign.get_session()
-        if os.path.exists(download_path):
-            start_size = os.path.getsize(download_path)
-            response = session.get(url=download_url, stream=True)
-            total_size = response.headers["content-length"]
-            if abs(total_size - start_size) < 1024:
-                return True
-            else:
-                session.headers.update({'Range': 'bytes=%d-' % start_size})
-                response = session.get(url=download_url, stream=True)
-                try:
-                    with open(download_path, "ab")as file:
-                        for chunk in response.iter_content(chunk_size=1024):
-                            if chunk:
-                                file.write(chunk)
-                                file.flush()
-                    return True
-                except:
-                    return False
-        else:
-            try:
-                response = session.get(url=download_url, stream=True)
-                with open(download_path, "wb")as file:
-                    for chunk in response.iter_content(chunk_size=1024):
-                        if chunk:
-                            file.write(chunk)
-                            file.flush()
-                return True
-            except:
-                return False
-
-    @staticmethod
-    def start_download():
-        download_date = VirusSign.get_download_date()
-        download_name = "virussign.com_%s_Free.zip" % download_date
-        download_path = os.path.join(sample_dir, download_name)
-        download_url = "http://samples.virussign.com/samples/%s" % download_name
-        result = VirusSign.write_sample(download_path, download_url)
-        while result is False:
-            result = VirusSign.write_sample(download_path, download_url)
-        VirusSign.write_log("True", download_url)
+    def start_download(self):
+        result = u"没有下载"
+        if self.get_setting("main", "autorun") == "yes":
+            download_name = "virussign.com_%s_Free.zip" % self.download_date
+            download_path = os.path.join(self.download_dir, download_name)
+            download_url = "http://samples.virussign.com/samples/%s" % download_name
+            result = self.write_sample(download_path, download_url)
+        self.write_log(result)
 
 
 if __name__ == '__main__':
-    VirusSign.start_download()
+    pool = Pool(3)
+    start_time = VirusSign.get_setting("main", "start")
+    while True:
+        now_time = datetime.datetime.now().strftime("%H:%M:%S")
+        showinfo = f"\rNow Time:{now_time}  Start Time:{start_time}"
+        print(showinfo, end="")
+        if now_time == start_time:
+            pool.apply_async(func=VirusSign().start_download, args=())
+
 

@@ -1,4 +1,6 @@
 import os
+import sys
+
 from base.get_ico import Ico
 from subprocess import check_output, SubprocessError
 
@@ -32,4 +34,6 @@ class MakeApplication:
 
 
 if __name__ == "__main__":
-    MakeApplication()
+    # MakeApplication()
+    if getattr(sys, 'temp', False):
+        print(sys._MEI)

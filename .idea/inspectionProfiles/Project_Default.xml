@@ -13,6 +13,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="get_sample.sample_all.compresion" />
+          <option value="sys._MEIPASS" />
         </list>
       </option>
     </inspection_tool>

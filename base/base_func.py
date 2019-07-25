@@ -2,7 +2,6 @@ import os
 import shutil
 import chardet
 import hashlib
-import requests
 import datetime
 from subprocess import check_output, SubprocessError
 
@@ -91,3 +90,6 @@ class Base:
             print(e)
         except shutil.Error as e:
             print(e)
+
+
+

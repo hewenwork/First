@@ -71,9 +71,11 @@ class TestGui:
         return combobox
 
     def label_p(self):
-        label = Label(self.app)
+        label = Label(self.app, textvariable=year)
         label["text"] = u"产品选择"
         return label
+
+
 
 
 class GetBugreport:

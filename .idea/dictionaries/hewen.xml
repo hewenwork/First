@@ -1,10 +1,12 @@
 <component name="ProjectDictionaryState">
   <dictionary name="hewen">
     <words>
+      <w>autorun</w>
       <w>bugcontent</w>
       <w>bugreport</w>
       <w>chcp</w>
       <w>distpath</w>
+      <w>downloadfolder</w>
       <w>hewen</w>
       <w>hxxp</w>
       <w>hybird</w>
@@ -29,9 +31,11 @@
       <w>tzip</w>
       <w>urlhaus</w>
       <w>virusbay</w>
+      <w>virusign</w>
       <w>virusshare</w>
       <w>virussign</w>
       <w>vxvault</w>
+      <w>winrar</w>
       <w>yestoday</w>
       <w>yunwing</w>
     </words>

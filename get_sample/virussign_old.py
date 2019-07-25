@@ -22,23 +22,25 @@ class VirusSign:
     def sample_dict(self, download_date):
         download_dict = {}
         download_dir = os.path.join(self.base_dir, download_date)
-        os.makedirs(download_dir)
-        session = VirusSign.get_session()
-        url = "http://virusign.com/get_hashlist.php"
-        params = {
-            "sha256": "",
-            "n": "ANY",
-            "start_date": download_date,
-            "end_date": download_date
-        }
-        response = session.get(url, params=params).text
-        for sha256 in response.split("\n")[:-1]:
-            sha256 = sha256.replace("\"", "")
-            sample_name = sha256 + ".7z"
-            sample_path = os.path.join(download_dir, sample_name)
-            sample_download_url = "http://virusign.com/file/%s" % sample_name
-            download_dict[sample_path] = sample_download_url
-        return download_dict
+        if os.path.exists(download_dir):
+            return "Have Download"
+        else:
+            os.makedirs(download_dir)
+            url = "http://virusign.com/get_hashlist.php"
+            params = {
+                "sha256": "",
+                "n": "ANY",
+                "start_date": download_date,
+                "end_date": download_date
+            }
+            response = self.session.get(url, params=params).text
+            for sha256 in response.split("\n")[:-1]:
+                sha256 = sha256.replace("\"", "")
+                sample_name = sha256 + ".7z"
+                sample_path = os.path.join(download_dir, sample_name)
+                sample_download_url = "http://virusign.com/file/%s" % sample_name
+                download_dict[sample_path] = sample_download_url
+            return download_dict
 
     def write_sample(self, file_path, download_url):
         if os.path.exists(file_path):
@@ -55,28 +57,35 @@ class VirusSign:
                     os.remove(file_path)
                 return False
 
-    @staticmethod
-    def get_start_download_date():
-        start_download_date = "2012-02-02"
-        for file_name in os.listdir(base_dir):
-            file_path = os.path.join(base_dir, file_name)
-            if os.path.isdir(file_path):
-                if file_name > start_download_date and file_name[:2] == "20":
-                    start_download_date = file_name
-        download_date = datetime.datetime.strptime(start_download_date, "%Y-%m-%d") + datetime.timedelta(days=1)
-        return download_date.strftime("%Y-%m-%d")
+    def start_download(self):
+        download_dict = self.sample_dict(download_date="2019-05-16")
+        if type(download_dict) is dict:
+            print("1")
+        for download_url in download_dict:
+            print(download_url)
 
-    @staticmethod
-    def download_sample():
-        download_date = VirusSign.get_start_download_date()
-        sample_dict = VirusSign.sample_dict(download_date)
-        session = VirusSign.get_session()
-        for file_path, download_url in sample_dict.items():
-            VirusSign.write_sample(session, file_path, download_url)
+    # @staticmethod
+    # def get_start_download_date():
+    #     start_download_date = "2012-02-02"
+    #     for file_name in os.listdir(base_dir):
+    #         file_path = os.path.join(base_dir, file_name)
+    #         if os.path.isdir(file_path):
+    #             if file_name > start_download_date and file_name[:2] == "20":
+    #                 start_download_date = file_name
+    #     download_date = datetime.datetime.strptime(start_download_date, "%Y-%m-%d") + datetime.timedelta(days=1)
+    #     return download_date.strftime("%Y-%m-%d")
+    #
+    # @staticmethod
+    # def download_sample():
+    #     download_date = VirusSign.get_start_download_date()
+    #     sample_dict = VirusSign.sample_dict(download_date)
+    #     session = VirusSign.get_session()
+    #     for file_path, download_url in sample_dict.items():
+    #         VirusSign.write_sample(session, file_path, download_url)
 
 
 if __name__ == '__main__':
-    VirusSign.download_sample()
+    VirusSign.start_download()
 
 
 

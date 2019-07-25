@@ -1,57 +1,70 @@
 import os
 import shutil
+import datetime
+import configparser
 from subprocess import check_output, SubprocessError
 
 
 class Compression:
 
     def __init__(self):
-        self.path_rar = r"C:\Program Files\WinRAR"
-        self.path_7z = r"C:\Program Files\7-Zip"
+        self.set_path = r"C:\Users\hewen\Desktop\setting.ini"
+        self.path_rar = self.get_setting(self.set_path, "winrar", "path")
+        self.path_7z = self.get_setting(self.set_path, "7-zip", "path")
+        self.password = self.get_setting(self.set_path, "main", "password")
+        self.failed_folder = self.get_failed_folder()
 
     @staticmethod
-    def get_failed_folder(file_path):
+    def get_setting(set_file, section, option):
+        con = configparser.ConfigParser()
         try:
-            file_dir = os.path.dirname(file_path)
-            dist_dir = os.path.join(os.path.dirname(file_dir), r"处理失败")
-            if os.path.exists(dist_dir) is False:
-                os.makedirs(dist_dir)
-            return dist_dir
-        except OSError as e:
-            print(e)
+            con.read(set_file)
+            result = con.get(section, option)
+            return result
+        except configparser.NoSectionError as e:
+            with open("Error.log", "a+")as file:
+                file.write(f"{datetime.datetime.now()}:没有配置文件或Section--{e}")
+        except configparser.NoOptionError as e:
+            with open("Error.log", "a+")as file:
+                file.write(f"{datetime.datetime.now()}:没有配置文件或Option--{e}")
 
-    def de_7z(self, file_path, password="infected"):
-        os.chdir(self.path_7z)
-        dir_path = os.path.dirname(file_path)
+    def get_failed_folder(self):
+        file_path = self.get_setting(self.set_path, "failed", "path")
+        if os.path.exists(file_path) is False:
+            os.makedirs(file_path)
+        return file_path
+
+    def de(self, file_input):
+        dir_path = os.path.dirname(file_input)
         command_dict = {
-            ".gz": "7z e -tgzip -p%s -y \"%s\" -o\"%s\"" % (password, file_path, dir_path),
-            "zip": "7z e -tzip -p%s -y \"%s\" -o\"%s\"" % (password, file_path, dir_path),
-            ".7z": "7z e -t7z -p%s -y \"%s\" -o\"%s\"" % (password, file_path, dir_path),
+            "rar": {
+                "path": self.path_rar,
+                "command": f"rar e -p{self.password} \"{file_input}\" \"{dir_path}\" -y"},
+            "zip": {
+                "path": self.path_7z,
+                "command": f"7z e -tzip -p{self.password} \"{file_input}\" -o\"{dir_path}\" -y"},
+            ".gz": {
+                "path": self.path_7z,
+                "command": f"7z e -tgzip -p{self.password} \"{file_input}\" -o\"{dir_path}\" -y"},
+            ".7z": {
+                "path": self.path_7z,
+                "command": f"7z e -t7z -p{self.password} \"{file_input}\" -o\"{dir_path}\" -y"}
         }
-        file_type = file_path[-3:]
-        command = command_dict[file_type]
+
         try:
-            check_output(command, shell=True)
+            os.chdir(command_dict[file_input[-3:]]["path"])
+            check_output(command_dict[file_input[-3:]]["command"], shell=True)
+            os.remove(file_input)
             return True
         except SubprocessError as e:
             print(e)
-            return False
+        except KeyError:
+            pass
 
-    def de_rar(self, file_path, password="infected"):
-        os.chdir(self.path_rar)
-        dir_path = os.path.dirname(file_path)
-        command = "rar e -p%s -y \"%s\" \"%s\"" % (password, file_path, dir_path)
-        try:
-            check_output(command)
-            return True
-        except SubprocessError as e:
-            print(e)
-            return False
-
-    def co_rar(self, file_path, password="infected"):
+    def co(self, file_path, password="infected"):
         os.chdir(self.path_rar)
         result_path = file_path + "[infected].rar"
-        command = "rar a -ep -p%s \"%s\" \"%s\"" % (password, result_path, file_path)
+        command = f"rar a -ep -p{password} \"{result_path}\" \"{file_path}\""
         try:
             check_output(command, shell=True)
             return result_path
@@ -59,38 +72,11 @@ class Compression:
             print(e)
             return False
 
-    def auto_de_file(self, file_path, dist_dir):
-        if file_path[-3:] in [".gz", ".7z", "zip"]:
-            if self.de_7z(file_path):
-                os.remove(file_path)
-            else:
-                try:
-                    shutil.move(file_path, dist_dir)
-                except PermissionError:
-                    os.remove(file_path)
-        elif file_path[-3:] == "rar":
-            if self.de_rar(file_path):
-                os.remove(file_path)
-            else:
-                try:
-                    shutil.move(file_path, dist_dir)
-                except PermissionError:
-                    os.remove(file_path)
-
-    def auto_de_folder(self, folder_path):
-        dist_dir = os.path.join(os.path.dirname(folder_path), r"处理失败")
-        if os.path.exists(dist_dir) is False:
-            os.makedirs(dist_dir)
-        init_num = 0
-        total_num = len(os.listdir(folder_path))
-        for file_name in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, file_name)
-            self.auto_de_file(file_path, dist_dir)
-            deal_process = int(init_num/total_num*100)
-            print("\r Deal %s / %s -- %s%%" % (init_num, total_num, deal_process), end="")
-
 
 if __name__ == "__main__":
-    input_folder = input(u"Drag the folder:\n")
-    Compression().auto_de_folder(input_folder)
-    Compression().co_rar(input_folder)
+    input_folder = r"C:\Users\hewen\Desktop\11"
+    # for i in os.listdir(input_folder):
+    #     ii = os.path.join(input_folder, i)
+    #     Compression().de(ii)
+    Compression().co(input_folder)
+

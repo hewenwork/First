@@ -1,14 +1,15 @@
 import os
 import datetime
 import requests
+import configparser
+from contextlib import closing
 
 
 class VirusSign:
 
     def __init__(self):
-        self.base_dir = os.getcwd()
         self.session = self.get_session()
-        self.download_date = self.get_download_date()
+        self.base_dir = self.get_setting("main", "dir")
 
     @staticmethod
     def get_session():
@@ -20,11 +21,31 @@ class VirusSign:
         session.auth = auth
         return session
 
+    @staticmethod
+    def write_log(result):
+        log = r"下载日志.log"
+        log_time = datetime.datetime.now()
+        data = f"{log_time}:  {result}\n"
+        with open(log, "a+")as file:
+            file.write(data)
+
+    @classmethod
+    def get_setting(cls, section, option):
+        con = configparser.ConfigParser()
+        setting_path = "VirusSign.ini"
+        try:
+            con.read(setting_path)
+            result = con.get(section, option)
+            return result
+        except configparser.NoSectionError as e:
+            VirusSign.write_log(u"没有配置文件或section--" + str(e))
+            print(e)
+        except configparser.NoOptionError as e:
+            VirusSign.write_log(u"没有配置节点--" + str(e))
+            print(e)
+
     def get_sample_dict(self, download_date):
         download_dict = {}
-        download_dir = os.path.join(self.base_dir, download_date)
-        os.makedirs(download_dir)
-        session = VirusSign.get_session()
         url = "http://virusign.com/get_hashlist.php"
         params = {
             "sha256": "",
@@ -32,53 +53,38 @@ class VirusSign:
             "start_date": download_date,
             "end_date": download_date
         }
-        response = session.get(url, params=params).text
-        for sha256 in response.split("\n")[:-1]:
-            sha256 = sha256.replace("\"", "")
-            sample_name = sha256 + ".7z"
-            sample_path = os.path.join(download_dir, sample_name)
-            sample_download_url = "http://virusign.com/file/%s" % sample_name
-            download_dict[sample_path] = sample_download_url
+        with closing(self.session.get(url, params=params, timeout=20))as response:
+            if len(response.text) != 0:
+                for sha256 in response.text.split("\n")[:-1]:
+                    sha256 = sha256.replace("\"", "")
+                    sample_name = sha256 + ".7z"
+                    sample_download_url = "http://virusign.com/file/%s" % sample_name
+                    download_dict[sample_download_url] = sample_download_url
         return download_dict
 
     def write_sample(self, file_path, download_url):
-        if os.path.exists(file_path):
-            return True
-        else:
-            try:
+        try:
+            if os.path.exists(file_path)is False:
                 response = self.session.get(download_url, timeout=5, stream=True)
                 with open(file_path, "wb")as file:
                     file.write(response.content)
                 return True
-            except requests.RequestException as e:
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-                print(e)
-                return False
+        except requests.exceptions as e:
+            self.write_log(e)
 
     def get_download_date(self):
-        start_date = "2012-02-02"
-        end_date = "2019-04-01"
-
-        for file_name in os.listdir(self.base_dir):
-            file_path = os.path.join(self.base_dir, file_name)
-            if os.path.isdir(file_path):
-                if file_name > start_date and file_name[:2] == "20":
-                    start_download_date = file_name
-        download_date = datetime.datetime.strptime(start_download_date, "%Y-%m-%d") + datetime.timedelta(days=1)
-        return download_date.strftime("%Y-%m-%d")
-
-    @staticmethod
-    def download_sample():
-        download_date = VirusSign.get_start_download_date()
-        sample_dict = VirusSign.sample_dict(download_date)
-        session = VirusSign.get_session()
-        for file_path, download_url in sample_dict.items():
-            VirusSign.write_sample(session, file_path, download_url)
+        start_date = datetime.datetime.strptime("2012-02-02", "%Y-%m-%d")
+        end_date = datetime.datetime.strptime("2019-04-01", "%Y-%m-%d")
+        date_interval = end_date - start_date
+        for days in range(date_interval.days):
+            run_date = (start_date + datetime.timedelta(days=days)).strftime("%Y-%m-%d")
+            print(run_date)
+            print(self.get_sample_dict(run_date))
 
 
 if __name__ == "__main__":
-    VirusSign.download_sample()
+    a = VirusSign().get_sample_dict("2011-07-01")
+    print(a)
 
 
 
