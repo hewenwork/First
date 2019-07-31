@@ -1,30 +1,36 @@
-import time
-from multiprocessing import Pool, freeze_support
-freeze_support()
+import os
 
 
-class Aaa:
+def c(fu):
+    def ss(*args, **kwargs):
+        try:
+            fu(*args, **kwargs)
+        except os.error as e:
+            print(e)
+        except TypeError as e:
+            print(e)
+        return fu
+
+    return ss
+
+
+class A:
 
     def __init__(self):
-        print("__init__")
+        self.aa = "a"
+        self.a("aaa")
 
-    @classmethod
-    def ab(cls):
-        print("classmethod")
+    @c
+    def a(self, cc):
+        xx = os.path.exists("a")
+        print(cc)
+        print(xx)
 
 
-# def aa(i):
-#     print(f"I am {i}: Running")
-#     time.sleep(15)
-#     print(f"I am {i}:", time.time())
-#
-#
-if __name__ == "__main__":
-    Aaa.ab()
-#     po = Pool(2)
-#     a = 1
-#     while True:
-#         if time.strftime("%S")[-1] == "2":
-#             time.sleep(1)
-#             po.apply_async(func=aa, args=(a, ))
-#             a += 1
+class B(A):
+
+    def d(self):
+        print(self.aa)
+
+
+A()

@@ -50,7 +50,9 @@ class Fang:
         url = url + "detail.html"
         try:
             with closing(self.session.get(url))as response:
-                suop = BeautifulSoup(response.content, "html.parser").select("div.fl.new_list_l.new_detail_info_box.mb20")[0]
+                suop = \
+                    BeautifulSoup(response.content, "html.parser").select("div.fl.new_list_l.new_detail_info_box.mb20")[
+                        0]
                 for title in suop.select("div[class=\"center new_info_item\"]"):
                     info_title = title.select("p[class=\"item\"]")
                     for base in info_title:
@@ -110,5 +112,3 @@ class Fang:
 
 if __name__ == "__main__":
     Fang().get_page()
-
-

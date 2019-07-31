@@ -2,11 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22c862e1-573b-4963-b2d2-3dc6f3d94fdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GUI/GUI_tkinter/test_proscess.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/hewen.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI_tkinter/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI_tkinter/test1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/sample_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/sample_all.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_sample/virussign_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/virussign_old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/base_func.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/class_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/compression_func.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/file_func.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/get_cogfig.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/make_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/make_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/temp_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/base/temp_file.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/base/test1.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/auto_collect.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/auto_collect.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/base.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/get_sample/compresion.py" beforeDir="false" afterPath="$PROJECT_DIR$/get_sample/compresion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/lol.py" beforeDir="false" afterPath="$PROJECT_DIR$/tool/lol.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/tool/test1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tool/wangqian.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -289,7 +301,8 @@
       <workItem from="1564122956218" duration="11784000" />
       <workItem from="1564366282877" duration="19299000" />
       <workItem from="1564451132769" duration="1204000" />
-      <workItem from="1564453027495" duration="12849000" />
+      <workItem from="1564453027495" duration="13809000" />
+      <workItem from="1564536929926" duration="3516000" />
     </task>
     <task id="LOCAL-00001" summary="修改为开机启动, 不展示cmd窗口">
       <created>1556433931258</created>
@@ -361,7 +374,14 @@
       <option name="project" value="LOCAL" />
       <updated>1560490659945</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="学习使用Git">
+      <created>1564481984068</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1564481984068</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,7 +392,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -394,7 +416,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/First$get_ico.coverage" NAME="get_ico Coverage Results" MODIFIED="1560260160386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
     <SUITE FILE_PATH="coverage/First$sample_virussign.coverage" NAME="sample_virussign Coverage Results" MODIFIED="1563432144568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
-    <SUITE FILE_PATH="coverage/First$temp_file.coverage" NAME="temp_file Coverage Results" MODIFIED="1564481818204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
+    <SUITE FILE_PATH="coverage/First$temp_file.coverage" NAME="temp_file Coverage Results" MODIFIED="1564543015649" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/base" />
     <SUITE FILE_PATH="coverage/First$test.coverage" NAME="test Coverage Results" MODIFIED="1558764763355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_flexx" />
     <SUITE FILE_PATH="coverage/First$zqq.coverage" NAME="zqq Coverage Results" MODIFIED="1562927113611" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
     <SUITE FILE_PATH="coverage/First$test_proscess.coverage" NAME="test_proscess Coverage Results" MODIFIED="1561979827782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_tkinter" />
@@ -431,7 +453,7 @@
     <SUITE FILE_PATH="coverage/First$mkapp.coverage" NAME="mkapp Coverage Results" MODIFIED="1563343758034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$doudizu.coverage" NAME="doudizu Coverage Results" MODIFIED="1564025681409" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
     <SUITE FILE_PATH="coverage/First$change_time.coverage" NAME="change_time Coverage Results" MODIFIED="1558057900167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
-    <SUITE FILE_PATH="coverage/First$auto_collect.coverage" NAME="auto_collect Coverage Results" MODIFIED="1564480222217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
+    <SUITE FILE_PATH="coverage/First$auto_collect.coverage" NAME="auto_collect Coverage Results" MODIFIED="1564482439788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$get_dayanzai.coverage" NAME="get_dayanzai Coverage Results" MODIFIED="1562062321597" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tool" />
     <SUITE FILE_PATH="coverage/First$sample_virussign_old.coverage" NAME="sample_virussign_old Coverage Results" MODIFIED="1563762045631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/get_sample" />
     <SUITE FILE_PATH="coverage/First$app.coverage" NAME="app Coverage Results" MODIFIED="1558335369533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GUI/GUI_pysimpleGui" />
