@@ -61,16 +61,16 @@ class _Server:
 
     def __init__(self):
         self.card_list = list(self.card_dict.keys())
-        self.player1 = self._fapai()
-        self.player2 = self._fapai()
-        self.player3 = self._fapai()
-        self.last_card = self._fapai()
+        self.player1 = self._fapai(17)
+        self.player2 = self._fapai(17)
+        self.player3 = self._fapai(17)
+        self.last_card = self._fapai(3)
         print(self.player1, self.player2, self.player3)
         print(self.last_card)
 
-    def _fapai(self):
+    def _fapai(self, get_num):
         # 随机取牌17张
-        player = random.sample(self.card_list, 17)
+        player = random.sample(self.card_list, get_num)
         # 从总牌里面去除取走的牌
         for card in player:
             if card in self.card_list:
