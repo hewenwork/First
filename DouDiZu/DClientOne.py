@@ -11,9 +11,13 @@ class _Client:
         return object.__new__(cls)
 
     def __init__(self):
-        self.client.send("玩家1发牌".encode("utf-8"))
-        re_data = self.client.recv(1024).decode("utf-8")
-        print(list(re_data))
+        # start
+        self.client.send("发牌".encode("utf-8"))
+        self.card = eval(self.client.recv(1024).decode("utf-8"))
+        print(self.card)
+        self.client.send("叫地主".encode("utf-8"))
+        self.card_re = eval(self.client.recv(1024).decode("utf-8"))
+        print(self.card_re)
 
 
 if __name__ == "__main__":

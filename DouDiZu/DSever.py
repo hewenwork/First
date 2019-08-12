@@ -65,27 +65,19 @@ class _Server(object):
     def __new__(cls, *args, **kwargs):
         host = gethostbyname(gethostname())
         port = 8010
-        cls.player1 = cls._fapai(17)
-        cls.player2 = cls._fapai(17)
-        cls.player3 = cls._fapai(17)
-        cls.last_card = cls._fapai(3)
+        cls.player_num = 0
+        cls.call_dizhu = False
+        cls.player1 = cls.get_card(17)
+        cls.player2 = cls.get_card(17)
+        cls.player3 = cls.get_card(17)
+        cls.last_card = cls.get_card(3)
+        cls.player_card = [cls.player1, cls.player2, cls.player3]
         cls._server = socket(AF_INET, SOCK_STREAM)
         cls._server.bind((host, port))
         return object.__new__(cls)
 
-    def __init__(self):
-        self._server.listen(3)
-        while True:
-            client, addr = self._server.accept()
-            re_data = client.recv(1024).decode("utf-8")
-            print(re_data)
-            if re_data == "玩家1发牌":
-                se_data = json.dumps(self.player1)
-                print(se_data)
-                client.send(se_data, addr)
-
     @classmethod
-    def _fapai(cls, get_num):
+    def get_card(cls, get_num):
         # 随机取牌17张
         player = random.sample(cls.card_list, get_num)
         # 从总牌里面去除取走的牌
@@ -99,6 +91,28 @@ class _Server(object):
                 if cls.card_dict[card_before] >= cls.card_dict[card_after]:
                     player[num], player[num + 1] = card_after, card_before
         return player
+
+    def __init__(self):
+        self._server.listen(3)
+        while True:
+            client, addr = self._server.accept()
+            re_command = client.recv(1024).decode("utf-8")
+            self.send_card(client, re_command, addr)
+
+    def send_card(self, client, re_command, addr):
+        if re_command == "发牌" and self.player_num < 3:
+            self.send_data(client, self.player_card.pop(), addr)
+            self.player_num += 1
+        elif re_command == "叫地主":
+            if self.call_dizhu == True:
+                self.send_data(client, "nn", addr)
+            else:
+                self.send_data(client, self.last_card, addr)
+                self.call_dizhu = True
+
+    def send_data(self, client, data, addr):
+        se_data = bytes(str(data), encoding="utf-8")
+        client.sendto(se_data, addr)
 
 
 if __name__ == "__main__":

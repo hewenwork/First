@@ -14,8 +14,11 @@ class Base:
 
     def __new__(cls, *args, **kwargs):
         cls.sample_dict = {}
-        cls.config_file = r"C:\Users\hewen\Desktop\Auto.ini"
-        return object.__new__(cls)
+        cls.config_file = "Auto.ini"
+        if os.path.exists(cls.config_file):
+            return object.__new__(cls)
+        else:
+            return
 
     def __init__(self, section):
         self.target = self.get_config(section, "url")
@@ -523,6 +526,7 @@ class Compression(Base):
 
 
 if __name__ == "__main__":
-    with closing(asyncio.get_event_loop())as loop:
-        tasks = [SampleInfosec().start_download(), SampleHybrid.start_download()]
-        loop.run_until_complete(asyncio.wait(tasks))
+    pass
+    # with closing(asyncio.get_event_loop())as loop:
+    #     tasks = [SampleInfosec().start_download(), SampleHybrid.start_download()]
+    #     loop.run_until_complete(asyncio.wait(tasks))
