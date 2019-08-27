@@ -6,7 +6,7 @@ from subprocess import check_output, SubprocessError
 class MakeApplication:
 
     def __init__(self):
-        self.icon_path = Ico().get_ico_path()
+        self.icon_path = Ico().ico_path()
         self.script_dir = self.get_script_dir()
         self.dist_dir = os.path.join(os.path.expanduser("~"), r"Desktop")
         self.tempdir = os.path.join(os.path.expanduser("~"), r"AppData\Local\Temp")

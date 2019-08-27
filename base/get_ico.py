@@ -7,9 +7,9 @@ class Ico:
     def __init__(self):
         user_dir = os.path.join(os.path.expanduser("~"), r"AppData\Local\Temp")
         self.ico_path = os.path.join(user_dir, "ico.ico")
-        self.get_ico_path()
+        self.get_path()
 
-    def get_ico_path(self):
+    def get_path(self):
         if os.path.exists(self.ico_path):
             return self.ico_path
         else:
@@ -35,3 +35,6 @@ class Ico:
         except requests.RequestException as e:
             print(e)
 
+
+if __name__ == "__main__":
+    Ico()

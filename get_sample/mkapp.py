@@ -1,24 +1,37 @@
-# encoding = utf-8
-import time
-import sys
+# coding:utf-8
 import os
+import PyInstaller.__main__
 
 
-def run_path(file_path):
-    file_name = os.path.split(file_path)[-1]
-    if getattr(sys, 'frozen', False):
-        # we are running in a bundle
-        frozen = 'ever so'
-        bundle_dir = sys._MEIPASS
-    else:
-        bundle_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(bundle_dir, file_name)
+class MakeApp:
+
+    def __init__(self, file_path):
+        self.a = r"C:\Users\hewen\Desktop"
+        self.icon = r"C:\Users\hewen\Desktop\ico.ico"
+        self.temp = os.path.join(os.path.expanduser("~"), r"AppData\Local\Temp")
+        self.distpath = os.path.join(os.path.expanduser("~"), "Desktop")
+        self.workpath = r"F:\ss"
+        self.specpath = r"F:\ss"
+        self.make(file_path)
+
+    def make(self, file_path):
+        os.chdir(r"F:\python\Scripts")
+        command = f"pyinstaller.exe -F {file_path} -i {self.icon} –-distpath {self.distpath} –-workpath {self.workpath} –-specpath {self.temp} –-clean -y"
+        try:
+            PyInstaller.__main__.run(
+                [
+                    # f"--name=dd"
+                    f"--icon={self.icon}",
+                    f"--onefile",
+                    "--noconfirm",
+                    # "--clear",
+                    __file__
+                ]
+            )
+        except Exception as e:
+            print(e)
 
 
-f = r"C:\Users\hewen\Desktop\Error.log"
-with open(run_path(f), "r+", encoding="utf-8")as file:
-    aa = file.read()
-    print(aa)
-print(os.path.dirname(os.path.abspath(__file__)))
-input("aa")
-
+if __name__ == "__main__":
+    file_make = r"F:\Workspace\First\get_sample\mkapp.py"
+    MakeApp(file_make)

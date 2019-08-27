@@ -1,90 +1,75 @@
 import os
-import asyncio
 import time
+import asyncio
 import aiohttp
 import requests
-
-
-class Down:
-
-    def __init__(self):
-        start_time = time.time()
-        self.url = "http://update.iobit.com/dl/test/ASCv13.0.0.100_Setup_Beta_20190806_1938.exe"
-        self.file = open(r"C:\Users\hewen\Desktop\aa.exe", "wb")
-        self.loop = asyncio.get_event_loop()
-        self.get_total_size()
-        self.file.close()
-        self.loop.close()
-        print(time.time()-start_time)
-
-    def get_total_size(self):
-        response = requests.get(self.url, stream=True)
-        total_size = int(response.headers["Content-Length"])
-        start_size = 0
-        chunk_size = 1024 * 1024
-        task = []
-        for i in range(int(total_size / chunk_size) + 1):
-            end_size = chunk_size + start_size
-            task.append(self.loop.create_task(self._star(start_size, end_size)))
-            start_size = end_size + 1
-        self.loop.run_until_complete(asyncio.wait(task))
-
-    async def _star(self, start_size, end_size):
-        print(time.time())
-        self.file.seek(start_size, 0)
-        headers = {"range": f"bytes={start_size}-{end_size}"}
-        chunk = requests.get(self.url, stream=True, headers=headers)
-        self.file.write(chunk.content)
-        self.file.flush()
+from faker import Faker
 
 
 class DownUp:
 
-    def __init__(self):
-        start_time = time.time()
-        self.url = "http://update.iobit.com/dl/test/ASCv13.0.0.100_Setup_Beta_20190806_1938.exe"
-        self.file = open(r"C:\Users\hewen\Desktop\aa.exe", "wb")
-        self.loop = asyncio.get_event_loop()
-        self.get_total_size()
+    def __new__(cls, *args, **kwargs):
+        cls.user_desk = os.path.join(os.path.expanduser("~"), "Desktop")
+        cls.start_time = time.time()
+        cls.headers = {
+            "Accept-Encoding": "gzip, deflate, br",
+            "User-Agent": Faker().user_agent()
+        }
+        return object.__new__(cls)
+
+    def __init__(self, aa, auth=None):
+        self.url = aa
+        file_name = "aaa.json"
+        self.file = open(r"{}\{}".format(self.user_desk, file_name), "wb")
+        response = requests.get(self.url, stream=True, headers=self.headers, auth=auth)
+        if "Accept-Ranges" in response.headers.keys():  # ["Accept-Ranges"] == "bytes":
+            aiohttp.BasicAuth = auth
+            print(response.status_code)
+            self.task = []
+            self.total_size = int(response.headers["Content-Length"])
+            self.chunk_size = 1024 * 1024
+            self.chunk_num = int(self.total_size / self.chunk_size) + 1
+            self.loop = asyncio.get_event_loop()
+            self.loop.run_until_complete(self.get_total_size())
+            self.loop.close()
+        else:
+            self.alone(self.url)
         self.file.close()
-        self.loop.close()
-        print(time.time()-start_time)
+        print(time.time() - self.start_time)
 
-    def get_total_size(self):
-        response = requests.get(self.url, stream=True)
-        total_size = int(response.headers["Content-Length"])
-        start_size = 0
-        chunk_size = 1024 * 1024 * 10
-        task = []
-        for i in range(int(total_size / chunk_size) + 1):
-            end_size = chunk_size + start_size
-            self.loop.run_until_complete(self._star(start_size, end_size))
-            # task.append(self.loop.create_task(self._star(start_size, end_size)))
-            start_size = end_size + 1
-        # self.loop.run_until_complete(asyncio.wait(task))
+    async def get_total_size(self):
+        async with aiohttp.ClientSession() as session:
+            # session.auth = ("f_yunwing1", "9kkSkk3dSd")
+            start_size = 0
+            for i in range(self.chunk_num):
+                end_size = self.chunk_size + start_size
+                if self.chunk_num - i == 1:
+                    end_size = self.total_size
+                self.task.append(self.loop.create_task(self._star(start_size, end_size, session)))
+                start_size = end_size + 1
+            await asyncio.wait(self.task)
 
-    async def _star(self, start_size, end_size):
-        print(time.time())
-        self.file.seek(start_size, 0)
-        headers = {"range": f"bytes={start_size}-{end_size}"}
-        async with aiohttp.ClientSession as session:
-            async with session.get(self.url, headers=headers)as chunk:
-                self.file.write(await chunk.read())
-                self.file.flush()
+    async def _star(self, start_size, end_size, session):
+        self.headers["range"] = f"bytes={start_size}-{end_size}"
+        async with session.get(self.url, headers=self.headers)as chunk:
+            self.continue_download = False
+            content = await chunk.read()
+            self.file.seek(start_size, 0)
+            self.file.write(content)
+            self.file.flush()
 
-
-def tt():
-    s = time.time()
-    url = "http://update.iobit.com/dl/test/ASCv13.0.0.100_Setup_Beta_20190806_1938.exe"
-    file = open(r"C:\Users\hewen\Desktop\ab.exe", "wb")
-    ff = requests.get(url).content
-    file.write(ff)
-    file.close()
-    print(time.time() - s)
+    def alone(self, url):
+        try:
+            with requests.get(url).content as content:
+                self.file.write(content)
+            print(time.time() - self.start_time)
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
-    # Down()
-    DownUp()
-
-
+    download_url = "http://backup.iobit.com.php56-23.dfw3-2.websitetestlink.com/bugReport/export.php?action=bugreport_today&name=iu_bugreport_v2"
+    DownUp(download_url)
+    # with open(r"C:\Users\hewen\Desktop\virussign.com_20190806_Free.zip", "rb")as file:
+    #     a = file.read(11111)
+    #     print(a)

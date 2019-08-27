@@ -8,13 +8,14 @@ class DeDuplication:
         pass
 
     @staticmethod
-    def get_file_encoding(file_path):
+    def get_encoding(file_path):
         try:
             with open(file_path, "rb")as file:
                 encoding = chardet.detect(file.read())["encoding"]
             return encoding
-        except chardet.UniversalDetector as e:
-            return "utf-8"
+        except Exception as e:
+            print(e)
+            return
 
     @staticmethod
     def get_all_file(folder):
