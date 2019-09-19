@@ -17,10 +17,10 @@ class DownUp:
         }
         return object.__new__(cls)
 
-    def __init__(self, aa, auth=None):
-        self.url = aa
-        file_name = "aaa.json"
-        self.file = open(r"{}\{}".format(self.user_desk, file_name), "wb")
+    def __init__(self, download_url, file_path, auth=None):
+        self.url = download_url
+        # file_name = download_url.split("/")[-1]
+        self.file = open(file_path, "wb")
         response = requests.get(self.url, stream=True, headers=self.headers, auth=auth)
         if "Accept-Ranges" in response.headers.keys():  # ["Accept-Ranges"] == "bytes":
             aiohttp.BasicAuth = auth
@@ -67,9 +67,9 @@ class DownUp:
             print(e)
 
 
-if __name__ == "__main__":
-    download_url = "http://backup.iobit.com.php56-23.dfw3-2.websitetestlink.com/bugReport/export.php?action=bugreport_today&name=iu_bugreport_v2"
-    DownUp(download_url)
-    # with open(r"C:\Users\hewen\Desktop\virussign.com_20190806_Free.zip", "rb")as file:
-    #     a = file.read(11111)
-    #     print(a)
+# if __name__ == "__main__":
+#     download_url = input("Downlaod url:\n ")
+#     DownUp(download_url)
+#     # with open(r"C:\Users\hewen\Desktop\virussign.com_20190806_Free.zip", "rb")as file:
+#     #     a = file.read(11111)
+#     #     print(a)

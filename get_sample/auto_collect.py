@@ -2,12 +2,68 @@ import os
 import re
 import json
 import asyncio
+import aiohttp
 import datetime
 import requests
-import configparser
+from faker import Faker
 from bs4 import BeautifulSoup
 from contextlib import closing
 from subprocess import check_output, SubprocessError
+
+
+class DownSpeed:
+
+    headers = {
+        "Accept-Encoding": "gzip, deflate, br",
+        "User-Agent": Faker().user_agent()
+    }
+
+    def __init__(self, file_path, download_url, auth=None):
+        file = open(file_path, "wb")
+        response = requests.get(download_url, stream=True, headers=self.headers, auth=auth)
+        if "Accept-Ranges" in response.headers.keys():
+            self.async_downlaod(response, auth)
+        else:
+            self.alone(download_url, file)
+        file.close()
+
+    def async_downlaod(self, response, auth):
+        aiohttp.BasicAuth = auth
+        task = []
+        total_size = int(response.headers["Content-Length"])
+        chunk_size = 1024 * 1024
+        chunk_num = int(total_size / chunk_size) + 1
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.get_total_size(chunk_num, chunk_size, total_size, task, loop))
+        loop.close()
+
+    async def get_total_size(self, chunk_num, chunk_size, total_size, task, loop):
+        async with aiohttp.ClientSession() as session:
+            start_size = 0
+            for i in range(chunk_num):
+                end_size = chunk_size + start_size
+                if chunk_num - i == 1:
+                    end_size = total_size
+                task.append(loop.create_task(self._star(self.download_url, self.file, start_size, end_size, session)))
+                start_size = end_size + 1
+            await asyncio.wait(task)
+
+    async def _star(self, download_url, file, start_size, end_size, session):
+        self.headers["range"] = f"bytes={start_size}-{end_size}"
+        async with session.get(download_url, headers=self.headers)as chunk:
+            self.continue_download = False
+            content = await chunk.read()
+            file.seek(start_size, 0)
+            file.write(content)
+            file.flush()
+
+    @staticmethod
+    def alone(download_url, file):
+        try:
+            with requests.get(download_url).content as content:
+                file.write(content)
+        except Exception as e:
+            print(e)
 
 
 class Base:
@@ -44,7 +100,6 @@ class Base:
                 with open("Error.log", "a+", encoding="UTF-8")as file:
                     file.write(f"{datetime.datetime.now()}:{e}")
             return func
-
         return execute()
 
     def write_log(self, result):
@@ -470,7 +525,7 @@ class SampleInfosec(Base):
 class Compression(Base):
 
     def __init__(self):
-        super().__init__()
+        super().__init__(self)
         self.path_7z = self.get_config("7-zip", "path")
         self.path_rar = self.get_config("winrar", "path")
         self.password = self.get_config("main", "password")

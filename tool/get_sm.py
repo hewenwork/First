@@ -1,6 +1,6 @@
-import datetime
 import json
 import requests
+import datetime
 dir_folder = r"C:\Users\hewen\Desktop\20190520"
 
 

@@ -65,5 +65,5 @@ class DownUp:
 
 
 if __name__ == "__main__":
-    download_url = "http://update.iobit.com/dl/IObit-Malware-Fighter-Setup.exe"
+    download_url = "http://update.iobit.com/dl/imf7/bd/bdfull-190830.exe"
     DownUp(download_url)

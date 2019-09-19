@@ -1,12 +1,14 @@
 import os
 import base64
+import re
+
 import requests
 
 
 class GetBugreport:
 
     def __init__(self):
-        self.download_date = self.get_date()
+        self.download_date = self.input_check(u"想要")
         self.product = self.get_product()
         self.base_dir = self.get_base_dir()
 
@@ -33,10 +35,13 @@ class GetBugreport:
         product = product_dict[product_name]
         return product
 
-    @staticmethod
-    def get_date():
-        download_date = input(u"请输入下载日期如2019-05-14\n")
-        return download_date
+    def input_check(self, what):
+        result = input(u"请输入%s下载的日期, 格式XXXX-XX-XX, 如2019-09-01\n" % what)
+        if re.match(r"^\d{4}-\d{2}-\d{2}$", result):
+            return result
+        else:
+            print(u"\r输入错误, 请重新输入. 格式XXXX-XX-XX, 如2019-09-01\n")
+            return self.input_check(what)
 
     def get_report(self):
         download_dir = os.path.join(self.base_dir, r"%s\%s" % (self.product, self.download_date))
