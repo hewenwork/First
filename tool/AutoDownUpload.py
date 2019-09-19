@@ -1,10 +1,13 @@
 # coding = utf-8
 import re
 import os
+import shutil
+
 import urllib3
 import datetime
 import requests
 from ftplib import FTP
+
 agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"
 download_dir = r"G:\Exchange\Download"
 upload_dir = r"G:\Exchange\Upload"
@@ -60,8 +63,9 @@ class Upload:
     def __init__(self):
         result_upload = self.upload_file()
         print(result_upload)
-        result_make = self.make_rar()
-        print(result_make)
+        print(111)
+        # result_make = self.make_rar()
+        # print(result_make)
 
     @staticmethod
     def upload_file():
@@ -72,25 +76,15 @@ class Upload:
         ftp.login(user, pwd)
         upload_file_name = datetime.datetime.now().strftime("samples-%Y%m%d.rar")
         upload_file_path = os.path.join(upload_dir, upload_file_name)
-        if "ready" in ftp.getwelcome() and os.path.exists(upload_file_path):
+        if os.path.exists(upload_file_path):
             ftp.cwd("/web/content")
-            bufsize = 1024
-            file = open(upload_file_path, "rb")
-            ftp.storbinary(f"STOR {upload_file_name}", file, bufsize)
-            file.close()
-            ftp.quit()
+            with open(upload_file_path, "rb")as file:
+                result = ftp.storbinary("STOR " + upload_file_name, file)
+                print(result)
+            ftp.close()
             return "Upload Finish\nStart Make Archive"
         else:
             return "Today has`t sample,\n Make New Sample Archvie...\n"
-
-    @staticmethod
-    def force_delete(file_path):
-        try:
-            command = f"rar a -ep1 -df test.rar {file_path}"
-            os.system(command)
-            os.remove(r"test.rar")
-        except Exception as e:
-            print(e)
 
     @staticmethod
     def get_last_upload_data():
@@ -119,63 +113,70 @@ class Upload:
         file_list = []
         for file_name in os.listdir(folder):
             file_path = os.path.join(folder, file_name)
-            file_list.append(file_path)
-        for file_path in file_list:
             try:
-                os.path.getsize(file_path)
+                if os.path.isfile(file_path) and os.path.getsize(file_path):
+                    file_list.append(file_path)
             except Exception as e:
                 print(e)
                 command = f"rar a -ep1 -df test.rar {file_path}"
                 os.system(command)
                 os.remove(r"test.rar")
-        file_list = []
-        for file_name in os.listdir(folder):
-            file_path = os.path.join(folder, file_name)
-            file_list.append(file_path)
         return file_list
 
     def make_rar(self):
+        folder_dict = {}
+        dict_key = self.get_last_upload_data() + datetime.timedelta(days=1)
+        if datetime.datetime.weekday(dict_key) is 5:
+            dict_key += datetime.timedelta(days=2)
+        dict_values = []
+        folder_size = 0
+        sample_size = 1024 * 1024 * 600
         dir_path = self.get_first_download_dir()
         file_list = self.get_file_list(dir_path)
-        co_size = 1024 * 1024 * 600
-        init_size = 0
-        init_data = self.get_last_upload_data()
-        init_data += datetime.timedelta(days=1)
-        if datetime.datetime.weekday(init_data) is 5:
-            init_data += datetime.timedelta(days=2)
         for file_path in file_list:
-            if init_size <= co_size:
-                sample_path = os.path.join(upload_dir, datetime.datetime.strftime(init_data, "samples-%Y%m%d"))
-                command_line = f"rar a -ep1 -y -id[c,d,p,q] -pinfected {sample_path}.rar {file_path}"
-                os.system(command_line)
-                init_size += os.path.getsize(file_path)
+            if folder_size <= sample_size:
+                dict_values.append(file_path)
+                folder_size += os.path.getsize(file_path)
             else:
-                init_size = 0
-                init_data += datetime.timedelta(days=1)
-                if datetime.datetime.weekday(init_data) is 5:
-                    init_data += datetime.timedelta(days=2)
-                elif datetime.datetime.weekday(init_data) is 6:
-                    init_data += datetime.timedelta(days=1)
-        os.rename(dir_path, dir_path + u"已上传")
+                folder_dict[dict_key] = dict_values
+                dict_key += datetime.timedelta(days=1)
+                if datetime.datetime.weekday(dict_key) is 5:
+                    dict_key += datetime.timedelta(days=2)
+                elif datetime.datetime.weekday(dict_key) is 6:
+                    dict_key += datetime.timedelta(days=1)
+                folder_size = 0
+                dict_values = []
+        for key, values in folder_dict.items():
+            sample_folder = os.path.join(dir_path, datetime.datetime.strftime(key, "samples-%Y%m%d"))
+            if os.path.exists(sample_folder)is False:
+                os.makedirs(sample_folder)
+            for file_path in values:
+                shutil.move(file_path, sample_folder)
+        for file_name in os.listdir(dir_path):
+            file_path = os.path.join(dir_path, file_name)
+            if os.path.isdir(file_path):
+                target_path = os.path.join(upload_dir, file_name)
+                command_line = f"rar a -ep1 -y -id[c,d,p,q] -pinfected {target_path}.rar {file_path}"
+                try:
+                    os.system(command_line)
+                except Exception as e:
+                    print(e)
         rar_size = 1024 * 1024 * 100
         for file_name in os.listdir(upload_dir):
             file_path = os.path.join(upload_dir, file_name)
             if os.path.getsize(file_path) <= rar_size:
                 os.remove(file_path)
+        shutil.rmtree(dir_path)
         return "Finish"
 
 
 if __name__ == "__main__":
-    Upload().make_rar()
-    # print(__file__)
-    # if __file__[-2:] == "py":
-    #     MakeApp(__file__)
-    # start_time_str = "15:00:00"
-    # while True:
-    #     date_now = datetime.datetime.now().strftime("%H:%M:%S")
-    #     print(f"\rNow time: {date_now}  Start time: {start_time_str}", end="")
-    #     if date_now == start_time_str:
-    #         print("Start Download\n")
-    #         Down()
-    #         print("Start Upload")
-    #         Upload()
+    start_time_str = "15:00:00"
+    while True:
+        date_now = datetime.datetime.now().strftime("%H:%M:%S")
+        print(f"\rNow time: {date_now}  Start time: {start_time_str}", end="")
+        if date_now == start_time_str:
+            print("Start Download\n")
+            Down()
+            print("Start Upload")
+            Upload()
