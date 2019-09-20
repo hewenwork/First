@@ -2,7 +2,6 @@
 import re
 import os
 import shutil
-
 import urllib3
 import datetime
 import requests
@@ -63,9 +62,8 @@ class Upload:
     def __init__(self):
         result_upload = self.upload_file()
         print(result_upload)
-        print(111)
-        # result_make = self.make_rar()
-        # print(result_make)
+        result_make = self.make_rar()
+        print(result_make)
 
     @staticmethod
     def upload_file():
@@ -77,14 +75,23 @@ class Upload:
         upload_file_name = datetime.datetime.now().strftime("samples-%Y%m%d.rar")
         upload_file_path = os.path.join(upload_dir, upload_file_name)
         if os.path.exists(upload_file_path):
+            total = os.path.getsize(upload_file_path)
+            sent_size = 0
+            global total, sent_size
             ftp.cwd("/web/content")
             with open(upload_file_path, "rb")as file:
-                result = ftp.storbinary("STOR " + upload_file_name, file)
-                print(result)
+                ftp.storbinary("STOR " + upload_file_name, file, callback=Upload.call)
             ftp.close()
             return "Upload Finish\nStart Make Archive"
         else:
             return "Today has`t sample,\n Make New Sample Archvie...\n"
+
+    @staticmethod
+    def call(*args):
+        global total, sent_size
+        sent_size += len(*args)
+        process = int(sent_size/total * 100)
+        print(f"\rUpload file: {sent_size} of {total} The process is {process}%", end="")
 
     @staticmethod
     def get_last_upload_data():
@@ -171,12 +178,13 @@ class Upload:
 
 
 if __name__ == "__main__":
-    start_time_str = "15:00:00"
-    while True:
-        date_now = datetime.datetime.now().strftime("%H:%M:%S")
-        print(f"\rNow time: {date_now}  Start time: {start_time_str}", end="")
-        if date_now == start_time_str:
-            print("Start Download\n")
-            Down()
-            print("Start Upload")
-            Upload()
+    Upload()
+    # start_time_str = "15:00:00"
+    # while True:
+    #     date_now = datetime.datetime.now().strftime("%H:%M:%S")
+    #     print(f"\rNow time: {date_now}  Start time: {start_time_str}", end="")
+    #     if date_now == start_time_str:
+    #         print("Start Download\n")
+    #         Down()
+    #         print("Start Upload")
+    #         Upload()
