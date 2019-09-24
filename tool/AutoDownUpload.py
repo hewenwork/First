@@ -6,15 +6,30 @@ import urllib3
 import datetime
 import requests
 from ftplib import FTP
+from functools import wraps
 
-agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"
-download_dir = r"G:\Exchange\Download"
-upload_dir = r"G:\Exchange\Upload"
 auto_dir = r"G:\auto_collect"
+upload_dir = r"G:\Exchange\Upload"
+download_dir = r"G:\Exchange\Download"
+agent = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 5.2; Trident/5.0)"
+
+
+def log(func):
+    @wraps(func)
+    def decorator(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except Exception as e:
+            with open(r"Error.log", "a+")as file:
+                file.write(f"{datetime.datetime.now()}: {e}\n")
+        return func(*args, **kwargs)
+
+    return decorator
 
 
 class Down:
 
+    @log
     def __init__(self):
         urllib3.disable_warnings()
         download_data = self.get_download_date()
@@ -38,63 +53,38 @@ class Down:
         session.headers["User-Agent"] = agent
         file_name = url.split("/")[-1][:-4]
         file_path = os.path.join(download_dir, "[infected]" + file_name)
-        file_size = 0
-        chunk_size = 1024 * 10
+        chunk_size = 1024 * 8
         final_dir = r"\\192.168.1.39\f\Auto"
-        try:
-            response = session.get(url, stream=True, verify=False, auth=(user, pwd))
-            file_total_size = int(response.headers["content-length"])
-            with open(file_path, "wb")as file:
-                for chunk in response.iter_content(chunk_size=chunk_size):
-                    if chunk:
-                        file.write(chunk)
-                        file_size += len(chunk)
-                        percent = int(
-                            file_size / file_total_size * 100) if file_size != file_total_size else "Download Over \n"
-                        print(f"\rDownload: {file_name} {percent}%", end=" ")
-            os.system(f"copy \"{file_path}\" \"{final_dir}\"")
-        except Exception as e:
-            print(e)
+        response = session.get(url, stream=True, verify=False, auth=(user, pwd))
+        with open(file_path, "wb")as file:
+            for chunk in response.iter_content(chunk_size=chunk_size):
+                if chunk:
+                    file.write(chunk)
+        os.system(f"copy \"{file_path}\" \"{final_dir}\"")
 
 
 class Upload:
 
+    @log
     def __init__(self):
-        result_upload = self.upload_file()
-        print(result_upload)
-        result_make = self.make_rar()
-        print(result_make)
-
-    @staticmethod
-    def upload_file():
-        ftp = FTP()
-        host, port = "98.129.229.244", 21
-        user, pwd = "pftpiobit", "IObit20110617"
-        ftp.connect(host, port)
-        ftp.login(user, pwd)
         upload_file_name = datetime.datetime.now().strftime("samples-%Y%m%d.rar")
         upload_file_path = os.path.join(upload_dir, upload_file_name)
         if os.path.exists(upload_file_path):
-            total = os.path.getsize(upload_file_path)
-            sent_size = 0
-            global total, sent_size
+            ftp = FTP()
+            host, port = "98.129.229.244", 21
+            user, pwd = "pftpiobit", "IObit20110617"
+            ftp.connect(host, port)
+            ftp.login(user, pwd)
             ftp.cwd("/web/content")
             with open(upload_file_path, "rb")as file:
-                ftp.storbinary("STOR " + upload_file_name, file, callback=Upload.call)
+                ftp.storbinary("STOR " + upload_file_name, file)
             ftp.close()
-            return "Upload Finish\nStart Make Archive"
-        else:
-            return "Today has`t sample,\n Make New Sample Archvie...\n"
+
+
+class MakeRar:
 
     @staticmethod
-    def call(*args):
-        global total, sent_size
-        sent_size += len(*args)
-        process = int(sent_size/total * 100)
-        print(f"\rUpload file: {sent_size} of {total} The process is {process}%", end="")
-
-    @staticmethod
-    def get_last_upload_data():
+    def get_last_upload_date():
         file_list = []
         for file_name in os.listdir(upload_dir):
             file_path = os.path.join(upload_dir, file_name)
@@ -121,18 +111,25 @@ class Upload:
         for file_name in os.listdir(folder):
             file_path = os.path.join(folder, file_name)
             try:
-                if os.path.isfile(file_path) and os.path.getsize(file_path):
+                if os.path.isfile(file_path) and os.path.getsize(file_path) != 0:
                     file_list.append(file_path)
-            except Exception as e:
-                print(e)
+            except OSError:
                 command = f"rar a -ep1 -df test.rar {file_path}"
                 os.system(command)
                 os.remove(r"test.rar")
         return file_list
 
+    @staticmethod
+    def force_delete(file_path):
+        command = f"rar a -ep1 -df test.rar {file_path}"
+        os.system(command)
+        os.remove(r"test.rar")
+
+    @log
     def make_rar(self):
+        # 获取
         folder_dict = {}
-        dict_key = self.get_last_upload_data() + datetime.timedelta(days=1)
+        dict_key = self.get_last_upload_date() + datetime.timedelta(days=1)
         if datetime.datetime.weekday(dict_key) is 5:
             dict_key += datetime.timedelta(days=2)
         dict_values = []
@@ -144,8 +141,8 @@ class Upload:
             if folder_size <= sample_size:
                 dict_values.append(file_path)
                 folder_size += os.path.getsize(file_path)
-            else:
                 folder_dict[dict_key] = dict_values
+            else:
                 dict_key += datetime.timedelta(days=1)
                 if datetime.datetime.weekday(dict_key) is 5:
                     dict_key += datetime.timedelta(days=2)
@@ -155,36 +152,32 @@ class Upload:
                 dict_values = []
         for key, values in folder_dict.items():
             sample_folder = os.path.join(dir_path, datetime.datetime.strftime(key, "samples-%Y%m%d"))
-            if os.path.exists(sample_folder)is False:
+            if os.path.exists(sample_folder) is False:
                 os.makedirs(sample_folder)
             for file_path in values:
-                shutil.move(file_path, sample_folder)
+                try:
+                    shutil.move(file_path, sample_folder)
+                except shutil.Error:
+                    self.force_delete(file_path)
         for file_name in os.listdir(dir_path):
             file_path = os.path.join(dir_path, file_name)
             if os.path.isdir(file_path):
                 target_path = os.path.join(upload_dir, file_name)
                 command_line = f"rar a -ep1 -y -id[c,d,p,q] -pinfected {target_path}.rar {file_path}"
-                try:
-                    os.system(command_line)
-                except Exception as e:
-                    print(e)
+                os.system(command_line)
         rar_size = 1024 * 1024 * 100
         for file_name in os.listdir(upload_dir):
             file_path = os.path.join(upload_dir, file_name)
             if os.path.getsize(file_path) <= rar_size:
                 os.remove(file_path)
-        shutil.rmtree(dir_path)
-        return "Finish"
+        shutil.rmtree(dir_path, ignore_errors=True)
 
 
 if __name__ == "__main__":
-    Upload()
+    MakeRar()
     # start_time_str = "15:00:00"
     # while True:
     #     date_now = datetime.datetime.now().strftime("%H:%M:%S")
-    #     print(f"\rNow time: {date_now}  Start time: {start_time_str}", end="")
     #     if date_now == start_time_str:
-    #         print("Start Download\n")
     #         Down()
-    #         print("Start Upload")
     #         Upload()

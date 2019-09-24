@@ -3,46 +3,44 @@ import os
 import re
 import json
 import time
-from functools import wraps
-
 import aiohttp
 import asyncio
 import datetime
 import requests
-import configparser
 from faker import Faker
+from functools import wraps
 from bs4 import BeautifulSoup
 from contextlib import closing
 from subprocess import check_output, SubprocessError
 
 base_dir = r"G:\auto_collect"
-download_failed_path = r"G:\auto_collect\a"
-download_log_dir = r"G:\auto_collect"
+session = requests.session()
+UserAgent = Faker().user_agent()
+session.headers["User-Agent"] = UserAgent
 
 
-class Log:
+def log(func):
 
-    def __call__(self, func):
-        @wraps(func)
-        def execute_func(*args, **kwargs):
-            try:
-                return func(*args, **kwargs)
-            except Exception as e:
-                with open("Error.log", "a+", encoding="UTF-8")as file:
-                    file.write(f"{datetime.datetime.now()}:{e}\n")
-                print("dasdas")
-                return
+    @wraps(func)
+    def derater(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            with open("Error.log", "a+", encoding="UTF-8")as file:
+                file.write(f"{datetime.datetime.now()}:{e}\n")
+            return func(*args, **kwargs)
 
-        return execute_func
+    return derater
 
 
 class DownUp:
     headers = {
         "Accept-Encoding": "gzip, deflate, br",
-        "User-Agent": Faker().user_agent()
+        "User-Agent": UserAgent
     }
 
     def __init__(self, download_url, file_path, auth=None):
+        print(auth)
         self.file = open(file_path, "wb")
         response = requests.get(download_url, stream=True, headers=self.headers, auth=auth)
         if "Accept-Ranges" in response.headers.keys():
@@ -55,17 +53,17 @@ class DownUp:
             self.loop.run_until_complete(self.get_total_size(download_url))
             self.loop.close()
         else:
-            self.alone(download_url)
+            self.alone(download_url, auth)
         self.file.close()
 
     async def get_total_size(self, download_url):
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession() as asysession:
             start_size = 0
             for i in range(self.chunk_num):
                 end_size = self.chunk_size + start_size
                 if self.chunk_num - i == 1:
                     end_size = self.total_size
-                self.task.append(self.loop.create_task(self._star(download_url, start_size, end_size, session)))
+                self.task.append(self.loop.create_task(self._star(download_url, start_size, end_size, asysession)))
                 start_size = end_size + 1
             await asyncio.wait(self.task)
 
@@ -78,39 +76,37 @@ class DownUp:
             self.file.write(content)
             self.file.flush()
 
-    def alone(self, url):
+    def alone(self, download_url, auth):
         try:
-            with requests.get(url).content as content:
-                self.file.write(content)
+
+            self.file.write(session.get(download_url, auth=auth).content)
         except Exception as e:
-            print(e)
+            print(e, "aaa")
 
 
 class Download:
-    sample_dict = {}
-    session = requests.session()
-    session.headers["User-Agent"] = Faker().user_agent()
 
-    @Log()
-    def __init__(self):
-        self.download_sample()
+    def __init__(self, auth=None):
+
+        self.sample_dict = {}
+        self.download_sample(auth=auth)
 
     @staticmethod
     def get_download_date():
         data_today = datetime.datetime.today()
-        data_interval = datetime.timedelta(days=3)
+        data_interval = datetime.timedelta(days=1)
         download_date = (data_today - data_interval).strftime("%Y-%m-%d")
         return download_date
 
     def get_sample_dict(self):
         target_url = "http://www.malware-traffic-analysis.net/2019/09/13/index.html"
-        with closing(self.session.get(target_url))as response:
+        with closing(session.get(target_url))as response:
             if response.status_code is 200:
                 return self.sample_dict
             else:
                 return False
 
-    def download_sample(self):
+    def download_sample(self, auth=None):
         download_dir = os.path.join(base_dir, self.get_download_date())
         if os.path.exists(download_dir) is False:
             os.makedirs(download_dir)
@@ -118,9 +114,7 @@ class Download:
         if download_dict:
             for file_name, download_url in download_dict.items():
                 file_path = os.path.join(download_dir, file_name)
-                DownUp(download_url, file_path)
-        else:
-            print("Has`t data")
+                DownUp(download_url, file_path, auth=auth)
 
 
 class Compression:
@@ -136,7 +130,6 @@ class Compression:
         }
         try:
             check_output(command_dict[file_path[-3:]], shell=True)
-            os.remove(file_path)
             return True
         except Exception as e:
             print(e)
@@ -158,8 +151,8 @@ class SampleMalwareTrafficAnalysis(Download):
     def get_sample_dict(self):
         download_date = self.get_download_date().replace("-", "/")
         target = f"http://www.malware-traffic-analysis.net/{download_date}/index.html"
-        if self.session.get(target).status_code == 200:
-            sample_suop = BeautifulSoup(self.session.get(target).text, "lxml").select("ul > li > a")
+        if session.get(target).status_code == 200:
+            sample_suop = BeautifulSoup(session.get(target).text, "lxml").select("ul > li > a")
             for download_url in sample_suop:
                 if "-malware" in download_url.get("href"):
                     sample_name = download_url.get("href")
@@ -168,5 +161,30 @@ class SampleMalwareTrafficAnalysis(Download):
         return self.sample_dict
 
 
+class VirusSign(Download):
+
+    def __init__(self):
+        auth = ("infected", "infected")
+        super().__init__(auth=auth)
+
+    def get_sample_dict(self):
+        url = "http://virusign.com/get_hashlist.php"
+        params = {
+            "sha256": "",
+            "n": "ANY",
+            "start_date": self.get_download_date(),
+            "end_date": self.get_download_date()
+        }
+        with closing(session.get(url, params=params, timeout=30))as response:
+            if len(response.text) != 0:
+                for sha256 in response.text.split("\n")[:-1]:
+                    sha256 = sha256.replace("\"", "")
+                    sample_name = sha256 + ".7z"
+                    sample_download_url = "http://virusign.com/file/%s" % sample_name
+                    self.sample_dict[sample_name] = sample_download_url
+        return self.sample_dict
+
+
+
 if __name__ == "__main__":
-    SampleMalwareTrafficAnalysis()
+    VirusSign()

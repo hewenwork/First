@@ -21,6 +21,7 @@ class MakeApp:
                     "--specpath",
                     self.temp,
                     "--clean",
+                    # "--noconsole",
                     file_path
                 ]
             )

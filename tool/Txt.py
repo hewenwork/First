@@ -1,50 +1,95 @@
 # coding = utf-8
-import chardet
+import os
+import urllib3
+import datetime
 import requests
-from bs4 import BeautifulSoup
+from ftplib import FTP
+from functools import wraps
+
+agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"
+download_dir = r"G:\Exchange\Download"
+upload_dir = r"G:\Exchange\Upload"
+auto_dir = r"G:\auto_collect"
 
 
-class Demo:
+def log(func):
 
+    @wraps(func)
+    def decode(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except Exception as e:
+            with open(r"Error.log", "a+")as file:
+                file.write(f"{datetime.datetime.now()}: {e}\n")
+        return func(*args, **kwargs)
+    return decode
+
+
+class Down:
+
+    @log
     def __init__(self):
-        self.session = requests.session()
-        url_home = r"https://www.yuanzunxs.cc/go/7755/"
-        home_text = self.session.get(url_home).content
-        suop = BeautifulSoup(home_text.decode(self.get_encoding(home_text)), "lxml").select("#list-chapterAll")[0]
-        with open(r"C:\Users\hewen\Desktop\x.txt", "w", encoding="utf-8")as file:
-            for page in suop.select("a"):
-                url_page = url_home + page.get("href")
-                try:
-                    text = self.get_page(url_page)
-                    file.write(text)
-                except Exception as e:
-                    print(e)
+        urllib3.disable_warnings()
+        download_data = self.get_download_date()
+        url_all = f"https://www.snapshot.clamav.net/daily/snapshot-all-{download_data}.zip.001"
+        url_critical = f"https://www.snapshot.clamav.net/daily/snapshot-critical-{download_data}.zip.001"
+        self.download(url_critical)
+        self.download(url_all)
 
     @staticmethod
-    def get_encoding(content):
-        try:
-            encoding = chardet.detect(content)["encoding"]
-            return encoding
-        except Exception as e:
-            print(e)
+    def get_download_date():
+        date_today = datetime.datetime.now()
+        date_in = datetime.timedelta(days=3)
+        download_data = (date_today - date_in).strftime("%Y%m%d")
+        return download_data
 
-    def get_page(self, url_page):
-        page_content = self.session.get(url_page).content
-        selector = "body > div.container > div.content > div.book.read > div.readcontent"
-        page_next_select = "#linkNext"
-        page_suop = BeautifulSoup(page_content.decode(self.get_encoding(page_content)), "lxml")
-        page_text = page_suop.select(selector)[0].getText()[:-18]
-        page_next_url = page_suop.select(page_next_select)[0].get("href")
-        self.get_page_next(page_next_url, page_text)
-        return page_text
+    @staticmethod
+    def download(url):
+        user = "iobit"
+        pwd = "iobit#@6sample"
+        session = requests.session()
+        session.headers["User-Agent"] = agent
+        file_name = url.split("/")[-1][:-4]
+        file_path = os.path.join(download_dir, "[infected]" + file_name)
+        chunk_size = 1024 * 8
+        final_dir = r"\\192.168.1.39\f\Auto"
+        response = session.get(url, stream=True, verify=False, auth=(user, pwd))
+        with open(file_path, "wb")as file:
+            for chunk in response.iter_content(chunk_size=chunk_size):
+                if chunk:
+                    file.write(chunk)
+        os.system(f"copy \"{file_path}\" \"{final_dir}\"")
 
-    def get_page_next(self, url_page, page_text):
-        page_content = self.session.get(url_page).content
-        selector = "body > div.container > div.content > div.book.read > div.readcontent"
-        page_suop = BeautifulSoup(page_content.decode(self.get_encoding(page_content)), "lxml")
-        page_text += page_suop.select(selector)[0].getText()[:-18]
-        return page_text
+
+class Upload:
+
+    @log
+    def __init__(self):
+        self.upload_file()
+
+    @staticmethod
+    def upload_file():
+        upload_file_name = datetime.datetime.now().strftime("samples-%Y%m%d.rar")
+        upload_file_path = os.path.join(upload_dir, upload_file_name)
+        if os.path.exists(upload_file_path):
+            ftp = FTP()
+            host, port = "98.129.229.244", 21
+            user, pwd = "pftpiobit", "IObit20110617"
+            ftp.connect(host, port)
+            ftp.login(user, pwd)
+            ftp.cwd("/web/content")
+            with open(upload_file_path, "rb")as file:
+                ftp.storbinary("STOR " + upload_file_name, file)
+            ftp.close()
 
 
 if __name__ == "__main__":
-    Demo()
+    start_time_str = "15:00:00"
+    while True:
+        date_now = datetime.datetime.now().strftime("%H:%M:%S")
+        if date_now == start_time_str:
+            print(f"{date_now}: Start Tasks\n")
+            Down()
+            Upload()
+            print("Task Complete")
+        print(f"\rNow Time: {date_now}, Start at {start_time_str}", end="")
