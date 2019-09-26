@@ -3,11 +3,10 @@
 # @Time:  4:32 PM
 import os
 import datetime
-from functools import wraps
-
 import requests
-from bs4 import BeautifulSoup
 from faker import Faker
+from functools import wraps
+from bs4 import BeautifulSoup
 
 
 class AutoDownload:
@@ -16,7 +15,7 @@ class AutoDownload:
         base_dir = r"G:\auto_collect"
         cls.download_date = cls.get_downlaod_date()
         cls.download_dir = os.path.join(base_dir, cls.download_date)
-        if os.path.exists(cls.download_dir)is False:
+        if os.path.exists(cls.download_dir) is False:
             os.makedirs(cls.download_dir)
         cls.session = requests.session()
         cls.session.headers["User-Agent"] = Faker().user_agent()
@@ -128,8 +127,25 @@ class AutoDownload:
             sample_info[file_name] = download_url
         print(len(sample_info))
 
-class MakeSample:
+    def sample_urlhas(self):
+        sample_info = {}
+        download_dir = r""
+        file_path = os.path.join(download_dir, f"urlhaus[infected]{self.download_date}.zip")
+        download_url = f"https://urlhaus-api.abuse.ch/downloads/{self.download_date}.zip"
+        sample_info[file_path] = download_url
+        print(len(sample_info))
 
+
+class AutoUpload:
+    pass
+
+
+class MakeSample:
+    pass
+
+
+class AutoGui:
+    pass
 
 
 if __name__ == "__main__":

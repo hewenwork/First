@@ -1,10 +1,11 @@
 # coding = utf-8
 import os
+import time
 import urllib3
 import datetime
 import requests
 from ftplib import FTP
-from functools import wraps
+
 
 agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"
 download_dir = r"G:\Exchange\Download"
@@ -12,22 +13,9 @@ upload_dir = r"G:\Exchange\Upload"
 auto_dir = r"G:\auto_collect"
 
 
-def log(func):
-
-    @wraps(func)
-    def decode(*args, **kwargs):
-        try:
-            func(*args, **kwargs)
-        except Exception as e:
-            with open(r"Error.log", "a+")as file:
-                file.write(f"{datetime.datetime.now()}: {e}\n")
-        return func(*args, **kwargs)
-    return decode
-
 
 class Down:
 
-    @log
     def __init__(self):
         urllib3.disable_warnings()
         download_data = self.get_download_date()
@@ -63,7 +51,6 @@ class Down:
 
 class Upload:
 
-    @log
     def __init__(self):
         self.upload_file()
 
@@ -84,12 +71,8 @@ class Upload:
 
 
 if __name__ == "__main__":
-    start_time_str = "15:00:00"
-    while True:
-        date_now = datetime.datetime.now().strftime("%H:%M:%S")
-        if date_now == start_time_str:
-            print(f"{date_now}: Start Tasks\n")
-            Down()
-            Upload()
-            print("Task Complete")
-        print(f"\rNow Time: {date_now}, Start at {start_time_str}", end="")
+    Down()
+    Upload()
+    print("Task Complete")
+    time.sleep(10)
+
