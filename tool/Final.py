@@ -8,7 +8,7 @@ from kivy import resources
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.core.window import Window
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.progressbar import ProgressBar
 from kivy.graphics.vertex_instructions import Rectangle
 
@@ -16,34 +16,55 @@ font_name = resources.resource_find("simfang.ttf")
 source_background = r"background.png"
 
 
-class UIMain(BoxLayout):
+class UIMain(GridLayout):
 
-    def __init__(self, **kwargs):
-        super(UIMain, self).__init__(**kwargs)
+    def __init__(self):
+        super().__init__()
         with self.canvas.before:
             self.rect = Rectangle(size=Window.size, pos=self.pos, source=source_background)
-        self.orientation = 'vertical'
+        self.cols = 3
         self.add_widget(UIAutoDownload())
         self.add_widget(UIAutoUpload())
 
 
-class UIAutoDownload(BoxLayout):
+class UIAutoDownload(GridLayout):
 
     def __init__(self, **kwargs):
         super(UIAutoDownload, self).__init__(**kwargs)
+        self.cols = 4
+        self.add_widget(self.label_title())
+        self.add_widget(UIAutoDownloadUrlhash(size_hint=(.5, 1)))
+
+    @staticmethod
+    def label_title():
+        label = Label()
+        label.text = u"自动收集样本"
+        label.font_name = font_name
+        label.size_hint = (.1, 1)
+        label.halign = "justify"
+        return label
+
+
+class UIAutoDownloadUrlhash(GridLayout):
+    def __init__(self, **kwargs):
+        super(UIAutoDownloadUrlhash, self).__init__(**kwargs)
+        self.cols = 3
+        self.add_widget(self.progress())
+
+    @staticmethod
+    def progress():
         pb = ProgressBar(max=1000)
         pb.value = 0
-        self.add_widget(Label(text=u"自动收集样本", font_name=font_name))
-        self.add_widget(Label(text=u"状态:", font_name=font_name))
-        self.add_widget(pb)
-        self.add_widget(Button(text="aa"))
+        return pb
 
 
-class UIAutoUpload(BoxLayout):
+class UIAutoUpload(GridLayout):
 
-    def __init__(self, **kwargs):
-        super(UIAutoUpload, self).__init__(**kwargs)
-        self.add_widget(Button(text="bb"))
+    pass
+        # return self.layout
+
+        # super(UIAutoUpload, self).__init__(**kwargs)
+        # self.add_widget(Button(text="bb"))
 
 
 class UI(App):
