@@ -1,29 +1,21 @@
 import os
-import time
 import asyncio
 import aiohttp
 import requests
 from faker import Faker
 
 
-class DownUp:
+class DownSpeed:
 
-    def __new__(cls, *args, **kwargs):
-        cls.user_desk = os.path.join(os.path.expanduser("~"), "Desktop")
-        cls.headers = {
-            "Accept-Encoding": "gzip, deflate, br",
-            "User-Agent": Faker().user_agent()
-        }
-        cls.chunk_size = 1024 * 1024
-        cls.task = []
-        return object.__new__(cls)
-
-    def __init__(self, url, auth=None):
-        self.url = url
-        file_name = self.url.split("/")[-1]
-        file_path = r"{}\{}".format(self.user_desk, file_name)
+    def __init__(self, file_path, download_url, auth=None):
+        self.headers = {"Accept-Encoding": "gzip, deflate, br", "User-Agent": Faker().user_agent()}
+        self.session = requests.session()
+        self.session.headers.update(self.headers)
+        self.chunk_size = 1024 * 1024
+        self.task = []
+        self.url = download_url
         self.file = open(file_path, "wb")
-        response = requests.get(self.url, stream=True, headers=self.headers, auth=auth)
+        response = self.session.get(self.url, stream=True, auth=auth)
         if "Accept-Ranges" in response.headers.keys():
             aiohttp.BasicAuth = auth
             self.total_size = int(response.headers["Content-Length"])
@@ -66,4 +58,4 @@ class DownUp:
 
 if __name__ == "__main__":
     download_url = "http://update.iobit.com/dl/imf7/bd/bdfull-190830.exe"
-    DownUp(download_url)
+    DownSpeed(download_url)
