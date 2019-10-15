@@ -5,6 +5,8 @@ import os
 import time
 import aiohttp
 import asyncio
+
+import requests
 from faker import Faker
 
 
@@ -67,6 +69,7 @@ class Speed:
             print(time.time() - self.start_time)
         except Exception as e:
             print(e)
+
 
 if __name__ == "__main__":
     print(1)
