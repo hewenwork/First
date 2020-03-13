@@ -1,7 +1,6 @@
 import os
-import base64
 import re
-
+import base64
 import requests
 
 
@@ -16,7 +15,7 @@ class GetBugreport:
     def get_base_dir():
         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
         base_dir = os.path.join(desktop_path, "BugReport")
-        if os.path.exists(base_dir)is False:
+        if os.path.exists(base_dir) is False:
             os.mkdir(base_dir)
         return base_dir
 
@@ -64,7 +63,7 @@ class GetBugreport:
                     with open(file_path, "wb")as file:
                         bugcontent = base64.b64decode(user_num["bugcontent"])
                         file.write(bugcontent)
-                    print("#"*len(response.json()))
+                    print("#" * len(response.json()))
         except requests.RequestException as e:
             print(e)
 

@@ -10,7 +10,7 @@ class Test2:
     def __init__(self):
         self.windows = Tk()
         canvas = Canvas(self.windows, bg="white")
-        image = PhotoImage(file=r"C:\Users\hewen\Desktop\background.png")
+        image = PhotoImage(file=r"F:\我的收藏\ICO\background.png")
         canvas.create_image(250, 0, image=image)
         canvas.pack()
         self.windows.mainloop()
