@@ -1,5 +1,5 @@
 # encoding = utf-8
-# @Author: Hewen
+# @Author: He wen
 # @Time: 10/11/2019 3:41 PM
 # @File: FtpFunc.py
 import os
@@ -17,7 +17,7 @@ class FtpFunc:
         return object.__new__(cls)
 
     def __init__(self):
-        # self.delete_outdate()
+        # self.delete_outdated()
         # self.upload_today()
         self.ftp.quit()
         quit()
@@ -36,8 +36,8 @@ class FtpFunc:
             return ftp
 
     def delete(self, file_path):
-        dirname = os.path.dirname(file_path)
-        self.ftp.cwd(dirname)
+        dir_name = os.path.dirname(file_path)
+        self.ftp.cwd(dir_name)
         self.ftp.delete(file_path)
 
     def upload(self, file_path, target_dir, file_name=None):
@@ -55,7 +55,7 @@ class FtpFunc:
                 conn.sendall(buf)
         file.close()
 
-    def delete_outdate(self):
+    def delete_outdated(self):
         dir_name = r"/web/content"
         date_delete = (self.date_today - datetime.timedelta(days=31)).strftime("%Y%m%d")
         self.ftp.cwd(dir_name)
