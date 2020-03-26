@@ -20,7 +20,7 @@ def sample_malshare():
             sample_url = "https://malshare.com/api.php"
             option["params"].update({"hash": sample_md5})
             sample_info = {
-                "sample_path": os.path.join(sample_dir, sample_name),
+                "sample_path": os.path.join(sample_all_dir, sample_name),
                 "sample_url": sample_url,
                 "option": option
             }

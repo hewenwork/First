@@ -15,7 +15,7 @@ def sample_vxvault():
                 sample_md5 = re.findall(r"<B>MD5:</B> (.*?)<BR>", result.text)[0]
                 sample_url = f"http://" + re.findall(r"<B>Link:</B> hxxp://(.*?)<BR>", result.text)[0]
                 sample_info = {
-                    "sample_path": os.path.join(sample_dir, sample_md5 + ".vir"),
+                    "sample_path": os.path.join(sample_all_dir, sample_md5 + ".vir"),
                     "sample_url": sample_url
                 }
                 sample_dict.update({sample_md5: sample_info})

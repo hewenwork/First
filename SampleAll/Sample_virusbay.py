@@ -23,8 +23,8 @@ def sample_virusbay():
                 sample_link = "https://beta.virusbay.io/api/sample/%s/download/link" % sample["_id"]
                 sample_url = session.get(sample_link).text
                 sample_info = {
-                    "sample_path": os.path.join(sample_dir, sample_name),
-                    "sample_url": sample_url
+                    "sample_path": os.path.join(sample_all_dir, sample_name),
+                    "sample_url": sample_url,
                 }
                 sample_dict.update({sample_md5: sample_info})
         return True, sample_dict

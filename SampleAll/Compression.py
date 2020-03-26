@@ -13,7 +13,7 @@ def compression(file_path, dist_path, pwd="infected"):
         return False, f"compression error: {e}"
 
 
-def decompression(file_path, pwd="infected"):
+def decompression2file(file_path, pwd="infected"):
     if os.path.exists(file_path) is False:
         return False, "File don`t exists"
     file_type = file_path[-3:]
@@ -24,12 +24,43 @@ def decompression(file_path, pwd="infected"):
         "zip": f"7z e -p{pwd} -y \"{file_path}\" -so > \"{dist_path}\"",
         ".gz": f"7z e -p{pwd} -y \"{file_path}\" -so > \"{dist_path}\"",
     }
-    if file_type in type_command is False:
+    if file_type in type_command:
+        try:
+            command = type_command[file_type]
+            check_output(command, shell=True)
+            os.remove(file_path)
+            return True, "Decompression successful"
+        except Exception as e:
+            return False, f"Decompression Error: {e}"
+    else:
         return False, "File isn`t compression"
-    try:
-        command = type_command[file_type]
-        check_output(command, shell=True)
-        os.remove(file_path)
-        return True, "Decompression successful"
-    except Exception as e:
-        return False, f"Decompression Error: {e}"
+
+
+def decompression2folder(file_path, pwd="infected"):
+    if os.path.exists(file_path) is False:
+        return False, "File don`t exists"
+    file_type = file_path[-3:]
+    dist_path = os.path.dirname(file_path)
+    type_command = {
+        "rar": f"rar e -p{pwd} -y \"{file_path}\" \"{dist_path}\"",
+        "7z": f"7z e -p{pwd} -y \"{file_path}\" -o\"{dist_path}\"",
+        "zip": f"7z e -p{pwd} -y \"{file_path}\" -o\"{dist_path}\"",
+        ".gz": f"7z e -p{pwd} -y \"{file_path}\" -o\"{dist_path}\"",
+    }
+    if file_type in type_command:
+        try:
+            command = type_command[file_type]
+            check_output(command, shell=True)
+            os.remove(file_path)
+            return True, "Decompression successful"
+        except Exception as e:
+            return False, f"Decompression Error: {e}"
+    else:
+        return False, "File isn`t compression"
+
+
+if __name__ == "__main__":
+    e_path = r"G:\AutoCollect\2020-03-25\2.zip"
+    print(os.path.dirname(e_path))
+    a = decompression2folder(e_path)
+    print(a)

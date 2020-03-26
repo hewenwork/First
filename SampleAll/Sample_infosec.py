@@ -14,7 +14,7 @@ def sample_infosec():
             link = re.findall(r"rel=\"nofollow\">.*?\.(.*?)</span><span class", sample_response)[0]
             sample_url = "http://" + link.strip("[").strip("]")
             sample_info = {
-                "sample_path": os.path.join(sample_dir, sample_md5 + ".vir"),
+                "sample_path": os.path.join(sample_all_dir, sample_md5 + ".vir"),
                 "sample_url": sample_url
             }
             sample_dict.update({sample_md5: sample_info})

@@ -1,6 +1,7 @@
 from First.SampleAll.InitFile import *
 
 
+download_date = "2020-03-20"
 def sample_traffic():
     sample_dict = {}
     sample_date = download_date.replace("-", "/")
@@ -15,7 +16,7 @@ def sample_traffic():
             if "-malware" in sample_name:
                 sample_url = url + sample_name
                 sample_info = {
-                    "sample_path": os.path.join(sample_dir, sample_name),
+                    "sample_path": os.path.join(sample_all_dir, sample_name),
                     "sample_url": sample_url
                 }
                 sample_dict.update({sample_name: sample_info})
