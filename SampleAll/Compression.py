@@ -1,8 +1,40 @@
 import os
+import chardet
 from subprocess import check_output
 
 
-def compression(file_path, dist_path, pwd="infected"):
+def encoding(string):
+    if type(string) is bytes:
+        return chardet.detect(string)["encoding"]
+    if type(string) is str and os.path.exists(string):
+        try:
+            with open(string, "rb")as file:
+                return chardet.detect(file.read())["encoding"]
+        except Exception as e:
+            return e
+
+
+def extract(file_path, pwd="infected"):
+    # Determine if the file exists
+    if os.path.exists(file_path) is False:
+        return f"File isn`t exists: {file_path}."
+    # Determine if the file is a compressed file supported by 7z
+    try:
+        command = f"7z t \"{file_path}\" -p{pwd}"
+        result = check_output(command, shell=True)
+        result_string = result.decode(encoding(result))
+        if "Everything is Ok" in result_string:
+            dist_dir = os.path.dirname(file_path)
+            extract_command = f"7z e -y -aot -p{pwd} \"{file_path}\" -o\"{dist_dir}\""
+            check_output(extract_command, shell=True)
+            return f"{file_path} has extract over."
+        else:
+            return "File error"
+    except Exception as e:
+        return f"Command error: {e}."
+
+
+def archive(file_path, dist_path, pwd="infected"):
     if os.path.exists(file_path) is False:
         return False, "file don`t exists"
     try:
@@ -13,54 +45,6 @@ def compression(file_path, dist_path, pwd="infected"):
         return False, f"compression error: {e}"
 
 
-def decompression2file(file_path, pwd="infected"):
-    if os.path.exists(file_path) is False:
-        return False, "File don`t exists"
-    file_type = file_path[-3:]
-    dist_path = file_path.split(".")[0] + ".vir"
-    type_command = {
-        "rar": f"rar e -p{pwd} -y \"{file_path}\" \"{dist_path}\"",
-        "7z": f"7z e -p{pwd} -y \"{file_path}\" -so > \"{dist_path}\"",
-        "zip": f"7z e -p{pwd} -y \"{file_path}\" -so > \"{dist_path}\"",
-        ".gz": f"7z e -p{pwd} -y \"{file_path}\" -so > \"{dist_path}\"",
-    }
-    if file_type in type_command:
-        try:
-            command = type_command[file_type]
-            check_output(command, shell=True)
-            os.remove(file_path)
-            return True, "Decompression successful"
-        except Exception as e:
-            return False, f"Decompression Error: {e}"
-    else:
-        return False, "File isn`t compression"
-
-
-def decompression2folder(file_path, pwd="infected"):
-    if os.path.exists(file_path) is False:
-        return False, "File don`t exists"
-    file_type = file_path[-3:]
-    dist_path = os.path.dirname(file_path)
-    type_command = {
-        "rar": f"rar e -p{pwd} -y \"{file_path}\" \"{dist_path}\"",
-        "7z": f"7z e -p{pwd} -y \"{file_path}\" -o\"{dist_path}\"",
-        "zip": f"7z e -p{pwd} -y \"{file_path}\" -o\"{dist_path}\"",
-        ".gz": f"7z e -p{pwd} -y \"{file_path}\" -o\"{dist_path}\"",
-    }
-    if file_type in type_command:
-        try:
-            command = type_command[file_type]
-            check_output(command, shell=True)
-            os.remove(file_path)
-            return True, "Decompression successful"
-        except Exception as e:
-            return False, f"Decompression Error: {e}"
-    else:
-        return False, "File isn`t compression"
-
-
 if __name__ == "__main__":
-    e_path = r"G:\AutoCollect\2020-03-25\2.zip"
-    print(os.path.dirname(e_path))
-    a = decompression2folder(e_path)
-    print(a)
+    test_path = r"G:\AutoCollect\2020-03-25\a.rar"
+    print(extract(test_path))

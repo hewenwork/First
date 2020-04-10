@@ -29,28 +29,6 @@ def write_log(info):
         file.write(f"{datetime.today()}:  {info}\n")
 
 
-def decompression_file(target_path, pwd="infected"):
-    if os.path.exists(target_path) is False:
-        return False, "File don`t exists"
-    file_type = target_path[-3:]
-    dist_path = target_path.split(".")[0] + ".vir"
-    type_command = {
-        "rar": f"rar e -p{pwd} -y \"{target_path}\" \"{dist_path}\"",
-        "7z": f"7z e -p{pwd} -y \"{target_path}\" -so > \"{dist_path}\"",
-        "zip": f"7z e -p{pwd} -y \"{target_path}\" -so > \"{dist_path}\"",
-        ".gz": f"7z e -p{pwd} -y \"{target_path}\" -so > \"{dist_path}\"",
-    }
-    if file_type in type_command is False:
-        return False, "File isn`t compression"
-    try:
-        command = type_command[file_type]
-        check_output(command, shell=True)
-        os.remove(target_path)
-        return True, "Decompression successful"
-    except Exception as e:
-        return False, f"Decompression Error: {e}"
-
-
 def compression(file_path, dist_path, pwd="infected"):
     if os.path.exists(file_path) is False:
         return False, "file don`t exists"
@@ -62,21 +40,38 @@ def compression(file_path, dist_path, pwd="infected"):
         return False, f"compression error: {e}"
 
 
-def download(kwargs):
-    path = kwargs["sample_path"]
-    url = kwargs["sample_url"]
-    auth = kwargs["auth"] if "auth" in kwargs else None
-    sessions = kwargs["session"] if "session" in kwargs else session
-    params = kwargs["params"] if "params" in kwargs else None
-    if os.path.exists(path):
+def decompression(file_path, pwd="infected"):
+    if os.path.exists(file_path) is False:
+        return False, "File don`t exists"
+    file_type = file_path[-3:]
+    dist_path = file_path.split(".")[0] + ".vir"
+    type_command = {
+        "rar": f"rar e -p{pwd} -y \"{file_path}\" \"{dist_path}\"",
+        "7z": f"7z e -p{pwd} -y \"{file_path}\" -so > \"{dist_path}\"",
+        "zip": f"7z e -p{pwd} -y \"{file_path}\" -so > \"{dist_path}\"",
+        ".gz": f"7z e -p{pwd} -y \"{file_path}\" -so > \"{dist_path}\"",
+    }
+    if file_type in type_command is False:
+        return False, "File isn`t compression"
+    try:
+        command = type_command[file_type]
+        check_output(command, shell=True)
+        os.remove(file_path)
+        return True, "Decompression successful"
+    except Exception as e:
+        return False, f"Decompression Error: {e}"
+
+
+def download(file_path, link, auth=None, params=None):
+    if os.path.exists(file_path):
         return False, "file exists"
     try:
-        content = sessions.get(url, auth=auth, params=params)
+        content = session.get(link, auth=auth, params=params)
         if content.status_code == 200:
             content = content.content
-            with open(path, "wb")as file:
+            with open(file_path, "wb")as file:
                 file.write(content)
-            return True, path
+            return True, file_path
         else:
             return False, "file download failed"
     except Exception as e:
@@ -150,7 +145,7 @@ class Sample:
                 sample_info = {
                     "sample_path": file_path,
                     "sample_url": download_url,
-                    "session": session
+                    # "session": session
                 }
                 sample_dict.update({sample_md5: sample_info})
             return sample_dict
@@ -286,32 +281,3 @@ class Sample:
             return sample_dict
         except Exception as e:
             return e
-
-
-def run():
-    for website, sample_dict in Sample().sample_dict.items():
-        write_log(f"START WEBSITE: {website}")
-        if type(sample_dict) is dict:
-            if len(sample_dict) == 0:
-                write_log(f"{website} today`s data is 0\n")
-            else:
-                for sample_md5, download_info in sample_dict.items():
-                    result, info = download(download_info)
-                    if result:
-                        de_result, de_info = decompression_file(info)
-                        write_log(de_info)
-                    else:
-                        write_log(info)
-        else:
-            write_log(f"{website} {sample_dict}\n")
-    try:
-        compression_path = os.path.join(Init_dir, "[infected]" + download_date + ".rar")
-        compression(sample_dir, compression_path)
-        os.system(f"copy \"{compression_path}\" \"{smart_file_dir}\"")
-        write_log("-------ALL DONE--------")
-    except Exception as e:
-        write_log(e)
-
-
-if __name__ == "__main__":
-    run()

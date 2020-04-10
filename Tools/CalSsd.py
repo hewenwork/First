@@ -267,4 +267,7 @@ class UI:
 
 
 if __name__ == "__main__":
-    UI()
+    # UI()
+    a = "192:PusBLPmDsJESQFhpPQvupwyMrj6Pu72rQKJg+vBdOr9ZCspE+TM4r2douN:RBM/pLMCPEURdneM9dou"
+    b = "192:PusBLPmDsJESQFhpPQvupwyMrj6Pu72rQKJg+vBdOr9ZCspE+TM4r2douNa:RBM/pLMCPEURdneM9douE"
+    print(ssdeep.compare(a, b))
