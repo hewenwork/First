@@ -2,14 +2,16 @@
 """
 @author: Hewen
 """
-from re import findall
-from chardet import detect
+# todo: ALL Done
 from urllib.parse import unquote
+from os import makedirs, path, popen
 from urllib3 import disable_warnings
 from requests_html import HTMLSession
 from datetime import datetime, timedelta
-from os import makedirs, path, popen, listdir
-from subprocess import check_output, SubprocessError
+
+sm_dir = r"G:\Auto"
+sample_dir = r"G:\AutoSample\Abuse"
+date = datetime.today() - timedelta(days=1)
 
 log_dir = path.join(path.dirname(__file__), "Log")
 makedirs(log_dir) if path.exists(log_dir) is False else None
@@ -18,7 +20,7 @@ log_path = path.join(log_dir, log_name)
 
 
 def log(function):
-    def run(*args, **kwargs):
+    def execute(*args, **kwargs):
         function_name = function.__name__
         try:
             result = function(*args, **kwargs)
@@ -29,35 +31,7 @@ def log(function):
             file.write(line)
         return result
 
-    return run
-
-
-@log
-def archive(file_path, pwd="infected", **kwargs):
-    file_dir = path.dirname(file_path)
-    archive_name = kwargs.setdefault("archive_name", path.basename(file_path).split(".")[0])
-    archive_path = kwargs.setdefault("archive_path", path.join(file_dir, archive_name))
-    command = "7z a \"{}\" \"{}\\*\" -p{} -y".format(archive_path, file_path, pwd)
-    output = check_output(command, shell=False)
-    encoding = detect(output)["encoding"]
-    out = output.decode(encoding=encoding)
-    return archive_path if "Ok" in out else out
-
-
-@log
-def extract(file_path, **kwargs):
-    password = kwargs.setdefault("password", "infected")
-    dist_dir = kwargs.setdefault("dist_dir", path.dirname(file_path))
-    makedirs(dist_dir) if path.isdir(dist_dir) and path.exists(dist_dir) is False else None
-    command = "7z e \"{}\" -o\"{}\" -p{} -y -r".format(file_path, dist_dir, password)
-    try:
-        output = check_output(command, shell=False)
-        encoding = detect(output)["encoding"]
-        out = output.decode(encoding=encoding)
-        return True if "Ok" in out else out
-    except SubprocessError as out:
-        cmd_delete(file_path)
-        return out
+    return execute
 
 
 @log
@@ -67,32 +41,6 @@ def cmd_copy(file_path, dist_path):
     output = popen(command)
     out = output.read()
     return True if "copied" in out else out
-
-
-@log
-def cmd_delete(file_path):
-    command = "RD /S /Q \"{}\"".format(file_path) if path.isdir(file_path) else "DEl /Q \"{}\"".format(file_path)
-    output = popen(command)
-    out = output.read()
-    return True if out == "" else out
-
-
-@log
-def cmd(command, **kwargs):
-    file_path = kwargs.setdefault("file_path")
-    dist_dir = kwargs.setdefault("dist_dir")
-    dist_path = kwargs.setdefault("dist_path")
-    command_dict = {
-        "copy": f"copy /y \"{file_path}\" \"{dist_dir}\"",
-        "move": f"move /y \"{file_path}\" \"{dist_dir}\"",
-        "rename": f"rename /y \"{file_path}\" \"{dist_path}\"",
-        "delete": f"RD /S /Q \"{file_path}\"" if path.isdir(file_path) else f"DEl /Q \"{file_path}\""
-    }
-    command = command_dict[command]
-    output = check_output(command, shell=False)
-    encoding = detect(output)["encoding"]
-    out = output.decode(encoding=encoding)
-    return out
 
 
 @log
@@ -126,18 +74,96 @@ def download(url, **kwargs):
     else:
         file_dir = path.dirname(file_path)
     makedirs(file_dir) if path.exists(file_dir) is False else None
-    # file_size = path.getsize(file_path) if path.exists(file_path) else 0
-    # file_mode = "wb" if file_size == 0 else "ab"
     chunk_size = 1024 * 1024
     response = session.get(url, **option)
     headers = response.headers
-    # total_size = int(headers.setdefault("content-length", "0"))
-    # if total_size == file_size:
-    #     return True
     with open(file_path, "wb") as file:
         for chunk in response.iter_content(chunk_size=chunk_size):
             file.write(chunk)
     return True
+
+
+@log
+def get_sample_url():
+    download_date = date.strftime("%Y-%m-%d")
+    url = f"https://mb-api.abuse.ch/downloads/{download_date}.zip"
+    return url
+
+
+@log
+def get_sample_file_path():
+    download_date = date.strftime("%Y%m%d")
+    file_name = f"[infected]{download_date}Abuse.zip"
+    file_path = path.join(sample_dir, file_name)
+    return file_path
+
+
+def run():
+    url = get_sample_url()
+    file_path = get_sample_file_path()
+    download(url, file_path=file_path)
+    cmd_copy(file_path, sm_dir)
+    return f"{datetime.today()}下载完成"
+
+
+if __name__ == "__main__":
+    run()
+
+"""
+
+
+@log
+def archive(file_path, pwd="infected", **kwargs):
+    file_dir = path.dirname(file_path)
+    archive_name = kwargs.setdefault("archive_name", path.basename(file_path).split(".")[0])
+    archive_path = kwargs.setdefault("archive_path", path.join(file_dir, archive_name))
+    command = "7z a \"{}\" \"{}\\*\" -p{} -y".format(archive_path, file_path, pwd)
+    output = check_output(command, shell=False)
+    encoding = detect(output)["encoding"]
+    out = output.decode(encoding=encoding)
+    return archive_path if "Ok" in out else out
+
+
+@log
+def extract(file_path, **kwargs):
+    password = kwargs.setdefault("password", "infected")
+    dist_dir = kwargs.setdefault("dist_dir", path.dirname(file_path))
+    makedirs(dist_dir) if path.isdir(dist_dir) and path.exists(dist_dir) is False else None
+    command = "7z e \"{}\" -o\"{}\" -p{} -y -r".format(file_path, dist_dir, password)
+    try:
+        output = check_output(command, shell=False)
+        encoding = detect(output)["encoding"]
+        out = output.decode(encoding=encoding)
+        return True if "Ok" in out else out
+    except SubprocessError as out:
+        cmd_delete(file_path)
+        return out
+
+
+@log
+def cmd_delete(file_path):
+    command = "RD /S /Q \"{}\"".format(file_path) if path.isdir(file_path) else "DEl /Q \"{}\"".format(file_path)
+    output = popen(command)
+    out = output.read()
+    return True if out == "" else out
+
+
+@log
+def cmd(command, **kwargs):
+    file_path = kwargs.setdefault("file_path")
+    dist_dir = kwargs.setdefault("dist_dir")
+    dist_path = kwargs.setdefault("dist_path")
+    command_dict = {
+        "copy": f"copy /y \"{file_path}\" \"{dist_dir}\"",
+        "move": f"move /y \"{file_path}\" \"{dist_dir}\"",
+        "rename": f"rename /y \"{file_path}\" \"{dist_path}\"",
+        "delete": f"RD /S /Q \"{file_path}\"" if path.isdir(file_path) else f"DEl /Q \"{file_path}\""
+    }
+    command = command_dict[command]
+    output = check_output(command, shell=False)
+    encoding = detect(output)["encoding"]
+    out = output.decode(encoding=encoding)
+    return out
 
 
 class CMD:
@@ -162,44 +188,4 @@ class CMD:
         except LookupError as e:
             return e
 
-
-class Sample:
-
-    def __init__(self, **kwargs):
-
-        date = self.date.strftime("%Y-%m-%d")
-        file_name = "[infected]{}_Abuse.zip".format(date)
-        url = "https://mb-api.abuse.ch/downloads/{}.zip".format(date)
-        download(url=url, file_name=file_name, file_dir=self.file_dir)
-
-    def __call__(self):
-        sample_link_list = self.sample_link_list
-        date = self.download_date
-        return sample_link_list, date
-
-
-class Run:
-
-    def __init__(self):
-        sm_dir = r"G:\Auto"
-        sample_dir = r"G:\AutoSample\Abuse"
-        sample_list, download_date = Sample().__call__()
-        for url in sample_list:
-            download(url)
-        # for file_name in listdir(temp_dir):
-        #     file_path = path.join(temp_dir, file_name)
-        #     extract(file_path)
-        #     cmd_delete(file_path)
-        # file_path_list = [path.join(temp_dir, file_name) for file_name in listdir(temp_dir)]
-        # for file_path in file_path_list:
-        #     cmd_delete(file_path) if path.isdir(file_path) else None
-        archive_name = "[infected]{}Abuse.zip".format(download_date.strftime("%Y%m%d"))
-        archive_path = path.join(sample_dir, archive_name)
-        archive(temp_dir, archive_path=archive_path)
-        cmd_copy(archive_path, sm_dir)
-
-
-if __name__ == "__main__":
-    Run()
-
-
+"""

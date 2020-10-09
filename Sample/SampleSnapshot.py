@@ -2,8 +2,6 @@
 # -*- coding: UTF-8 -*-
 """
 @author: Hewen
-@file:SampleHybird.py
-@time:2020/07/27
 """
 from urllib import parse
 from os import path, makedirs, popen, remove

@@ -1,143 +1,239 @@
-from sys import argv
-from time import time
-from urllib import parse
-from base64 import b64decode
-from re import match, findall
-from inspect import signature
+from chardet import detect
 from bs4 import BeautifulSoup
-from contextlib import closing
-from os import makedirs, path, remove
+from re import match, findall
+from urllib3 import disable_warnings
 from requests_html import HTMLSession
 from datetime import datetime, timedelta
+from urllib.parse import urlparse, unquote
+from os import makedirs, path, popen, listdir
+from subprocess import check_output, SubprocessError
 
 
-def decode_url(url: str):
-    return parse.unquote(url)
+def get_log_path():
+    log_dir = path.join(path.dirname(__file__), "Log")
+    makedirs(log_dir) if path.exists(log_dir) is False else None
+    log_name = "{}{}.log".format(path.basename(__file__), datetime.today().strftime("%Y%m%d"))
+    return path.join(log_dir, log_name)
 
 
-def decode_base_64(url: str):
-    return b64decode(url)
+log_path = get_log_path()
 
 
-# @log_action
-def download(kwargs: dict):
-    session = HTMLSession()
-    url = kwargs.setdefault("url")
-    attrs = [
-        'headers', 'cookies', 'auth', 'proxies', 'hooks', 'params', 'verify',
-        'cert', 'prefetch', 'adapters', 'stream', 'trust_env',
-        'max_redirects',
-    ]
-    option = {key: value for key, value in kwargs.items() if key in attrs}
-    option.setdefault("stream", "True")
-    if kwargs is None or isinstance(kwargs, dict) is False:
-        return "参数错误"
-    if url is None:
-        return "Url is None"
-    re_url = r"http.*://.*"
-    if match(re_url, url) is None:
-        return "Url {} is not match: {}".format(url, re_url)
-    while True:
-        head = session.head(url, **option)
-        status_code = head.status_code
-        if head.status_code in [301, 302]:
-            url = head.headers.setdefault("Location")
-        elif head.status_code == 200:
-            break
+def log(function):
+    def run(*args, **kwargs):
+        function_name = function.__name__
+        try:
+            result = function(*args, **kwargs)
+        except Exception as e:
+            result = "function: {}, Exception:{}".format(function_name, e)
+        line = "{}: {}\n".format(datetime.today(), result)
+        with open(log_path, "a+", encoding="utf-8")as file:
+            file.write(line)
+        return result
+
+    return run
+
+
+@log
+def archive(file_path, pwd="infected", **kwargs):
+    file_dir = path.dirname(file_path)
+    archive_name = kwargs.setdefault("archive_name", path.basename(file_path).split(".")[0])
+    archive_path = kwargs.setdefault("archive_path", path.join(file_dir, archive_name))
+    command = "7z a \"{}\" \"{}\\*\" -p{} -y".format(archive_path, file_path, pwd)
+    output = check_output(command, shell=False)
+    encoding = detect(output)["encoding"]
+    out = output.decode(encoding=encoding)
+    return archive_path if "Ok" in out else out
+
+
+@log
+def extract(file_path, **kwargs):
+    password = kwargs.setdefault("password", "infected")
+    dist_dir = kwargs.setdefault("dist_dir", path.dirname(file_path))
+    makedirs(dist_dir) if path.isdir(dist_dir) and path.exists(dist_dir) is False else None
+    command = "7z e \"{}\" -o\"{}\" -p{} -y -r".format(file_path, dist_dir, password)
+    try:
+        output = check_output(command, shell=False)
+        encoding = detect(output)["encoding"]
+        out = output.decode(encoding=encoding)
+        return True if "Ok" in out else out
+    except SubprocessError as out:
+        cmd_delete(file_path)
+        return out
+
+
+@log
+def cmd_copy(file_path, dist_path):
+    makedirs(dist_path) if path.exists(dist_path) is False else None
+    command = "copy \"{}\" \"{}\"".format(file_path, dist_path)
+    output = popen(command)
+    out = output.read()
+    return True if "copied" in out else out
+
+
+@log
+def cmd_delete(file_path):
+    command = "RD /S /Q \"{}\"".format(file_path) if path.isdir(file_path) else "DEl /Q \"{}\"".format(file_path)
+    output = popen(command)
+    out = output.read()
+    return True if out == "" else out
+
+
+@log
+def cmd(command, **kwargs):
+    file_path = kwargs.setdefault("file_path")
+    dist_dir = kwargs.setdefault("dist_dir")
+    dist_path = kwargs.setdefault("dist_path")
+    command_dict = {
+        "copy": f"copy /y \"{file_path}\" \"{dist_dir}\"",
+        "move": f"move /y \"{file_path}\" \"{dist_dir}\"",
+        "rename": f"rename /y \"{file_path}\" \"{dist_path}\"",
+        "delete": f"RD /S /Q \"{file_path}\"" if path.isdir(file_path) else f"DEl /Q \"{file_path}\""
+    }
+    command = command_dict[command]
+    output = check_output(command, shell=False)
+    encoding = detect(output)["encoding"]
+    out = output.decode(encoding=encoding)
+    return out
+
+
+@log
+def download(url, **kwargs):
+    session = kwargs.setdefault("session", HTMLSession())
+    params = ['headers', 'cookies', 'auth', 'proxies', 'hooks', 'params', 'verify',
+              'cert', 'prefetch', 'adapters', 'stream', 'trust_env', 'max_redirects']
+    option = {key: value for key, value in kwargs.items() if key in params}
+    disable_warnings() if "verify" in option else None
+    option.setdefault("stream", True)
+    assert "http" in url, f"http not in url:{url}"
+    head = session.head(url, **option)
+    status_code = head.status_code
+    headers = head.headers
+    assert status_code not in [301, 302], download(headers.setdefault("location"), **kwargs)
+    assert status_code == 200, f"status_code: {status_code}"
+
+    def get_file_name():
+        disposition = headers.setdefault("Content-Disposition")
+        if disposition is None:
+            file_name_from_url = unquote(path.basename(url).split("?")[0])
         else:
-            return "Url: {}, status code: {}".format(url, status_code)
+            file_name_from_url = unquote(disposition.split("=")[-1].strip("\""))
+        return file_name_from_url
 
     file_path = kwargs.setdefault("file_path")
     if file_path is None:
-        file_dir = kwargs.setdefault("file_dir", path.dirname(argv[0]))
-        makedirs(file_dir) if path.exists(file_dir) is False else None
-        file_name = kwargs.setdefault("file_name")
-        if file_name is None:
-            url_name_list = findall(r"^http.*//.*/(.*\..{1,5})$", url)
-            file_name = url_name_list[0] if len(url_name_list) != 0 else None
-            if file_name is None:
-                headers = head.headers
-                response_name = headers.setdefault("Content-Disposition")
-                if response_name is not None:
-                    file_name = response_name.split("filename=")[-1].strip("\"")
-                    file_name = decode_url(file_name)
-                else:
-                    file_name = str(time()) + ".tmp"
+        file_name = kwargs.setdefault("file_name", get_file_name())
+        file_dir = kwargs.setdefault("file_dir", path.dirname(__file__))
         file_path = path.join(file_dir, file_name)
-    try:
-        chunk_size = 1024 * 1024
-        file = open(file_path, "wb")
-        for chunk in session.get(**option, timeout=30).iter_content(chunk_size):
+    else:
+        file_dir = path.dirname(file_path)
+    makedirs(file_dir) if path.exists(file_dir) is False else None
+    chunk_size = 1024 * 1024
+    response = session.get(url, **option)
+    headers = response.headers
+    with open(file_path, "wb") as file:
+        for chunk in response.iter_content(chunk_size=chunk_size):
             file.write(chunk)
-        file.close()
-    except Exception as e:
-        remove(file_path) if path.exists(file_path) else None
-        return "download Exception: {}".format(e)
     return True
 
 
-def st(**kwargs):
-    option = kwargs.setdefault("option")
-    session = kwargs.setdefault("session")
-    file_size = kwargs.setdefault("file_size")
-    total_sie = kwargs.setdefault("total_sie")
-    file_path = kwargs.setdefault("file_path")
-    file_mode = kwargs.setdefault("file_mode")
-    session.headers["range"] = "bytes={}-{}".format(file_size, total_sie)
-    try:
-        file = open(file_path, file_mode)
-        chunk_size = 1024 * 1024
-        with closing(session.get(**option, timeout=30))as response:
-            for chunk in response.iter_content(chunk_size):
-                file.write(chunk)
-        file.close()
-    except Exception as e:
-        remove(file_path) if path.exists(file_path) else None
-        return "download Exception: {}".format(e)
-    return True
+class Lanzou:
 
+    @log
+    def get_url(self, url):
+        session = self.get_session(url)
+        parameters = self.get_parameters(session, url)
+        sign = self.get_sign(session, url, parameters)
+        link = self.get_ajaxm(session, sign)
+        direct_link = self.get_direct_link(link)
+        return direct_link
 
-# @log_action
-def parser_lanzou_link(url: str) -> str:
-    with closing(HTMLSession())as session:
-        session.headers["referer"] = url
-        session.headers["accept-language"] = "zh-CN"
-        try:
-            response_fn = session.get(url)
-            soup_fn = BeautifulSoup(response_fn.text, "lxml").select("iframe[class=ifr2]")
-            src = soup_fn[0].get("src")
-            sign_url = "https://jirehlov.lanzous.com{}".format(src)
-            sign_re = r"downprocess\',\'sign\':\'(.*)\',\'ves"
-        except Exception as e:
-            return "lanzou link parser error1:{}\n{}".format(e, url)
-        try:
-            sign_response = session.get(sign_url)
-            sign = findall(sign_re, sign_response.text)[0]
-            url_file = "https://jirehlov.lanzous.com/ajaxm.php"
-            data = {
-                "action": "downprocess",
-                "sign": sign,
-                "ves": "1"
-            }
-            response = session.post(url_file, data=data).json()
-            url_parser = "{}/file/{}".format(response["dom"], response["url"])
-            url_sample = session.head(url_parser).headers["Location"]
-            return url_sample
-        except Exception as e:
-            return "lanzou link parser error2:{}\nurl:{}".format(e, url)
+    @staticmethod
+    def get_session(url: str):
+        session = HTMLSession()
+        session.headers["Host"] = urlparse(url).netloc
+        return session
 
+    @staticmethod
+    def get_parameters(session, url):
+        response = session.get(url)
+        text = response.content.decode()
+        soup = BeautifulSoup(text, "lxml").select("body > div.d > div.d2 > div.ifr > iframe")
+        parameters = soup[0].get("src")
+        return parameters
 
-base_dir = r"G:\AutoSample\Kafan"
-download_date = datetime.today() - timedelta(days=1)
+    @staticmethod
+    def get_sign(session, url, parameters: str):
+        url = "https://{}{}".format(urlparse(url).netloc, parameters)
+        response = session.get(url)
+        re = "pdownload = \'(.*?)\';//var"
+        sign = findall(re, response.text)[0]
+        session.headers["Referer"] = url
+        return sign
+
+    @staticmethod
+    def get_ajaxm(session, sign: str):
+        session.headers["Origin"] = "https://{}".format(session.headers["Host"])
+        url = "{}/ajaxm.php".format(session.headers["Origin"])
+        data = {"action": "downprocess", "sign": sign, "ves": "1"}
+        response = session.post(url, data=data)
+        json = response.json()
+        link = "{}/file/{}".format(json["dom"], json["url"])
+        return link
+
+    @staticmethod
+    def get_direct_link(link):
+        session = HTMLSession()
+        session.headers["Accept-language"] = "zh-CN"
+        response = session.head(link)
+        url = response.headers["Location"]
+        session.close()
+        return url
 
 
 class Kafan:
 
-    @staticmethod
-    def login():
+    def __init__(self):
+        self.session = self.login()
+        assert isinstance(self.session, HTMLSession), "login failed"
+        self.download_date = datetime.today() - timedelta(days=1)
+        self.sample_link_list = self.run()
+
+    def run(self):
+        sample_list = [self.parser_page(page_link) for page_link in self.get_page_list()]
+        sample_link_list = [link for link_list in sample_list if link_list for link in link_list]
+        return sample_link_list
+
+    @log
+    def login(self):
         session = HTMLSession()
         url = "https://bbs.kafan.cn/member.php"
-        params_formhash = {
+        params = {
+            "mod": "logging",
+            "action": "login",
+            "loginsubmit": "yes",
+            "handlekey": "login",
+            "loginhash": "LVmod",
+            "inajax": "1"
+        }
+        data = {
+            "formhash": self.get_formhash(session),
+            "referer": "https://bbs.kafan.cn/",
+            "username": "1569010448@qq.com",
+            "password": "e7008529ce2df26ccc4a060e28e66dd3",
+            "questionid": "0"
+        }
+        response = session.post(url, params=params, data=data)
+        assert "欢迎您回来" in response.text, "Login failed."
+        formhash = data.setdefault("formhash")
+        sign_url = f"https://bbs.kafan.cn/plugin.php?id=dsu_amupper&ppersubmit=true&formhash={formhash}"
+        session.get(sign_url)
+        return session
+
+    @staticmethod
+    def get_formhash(session):
+        url = "https://bbs.kafan.cn/member.php"
+        params = {
             "mod": "logging",
             "action": "login",
             "infloat": "yes",
@@ -145,83 +241,74 @@ class Kafan:
             "inajax": "1",
             "ajaxtarget": "fwin_content_login"
         }
-        try:
-            response_formhash = session.get(url, params=params_formhash).text
-            re_formhash = r"name=\"formhash\" value=\"(.*)\" />"
-            formhash = findall(re_formhash, response_formhash)[0]
-            params_login = {
-                "mod": "logging",
-                "action": "login",
-                "loginsubmit": "yes",
-                "handlekey": "login",
-                "loginhash": "LVmod",
-                "inajax": "1"
-            }
-            data = {
-                "formhash": formhash,
-                "referer": "https://bbs.kafan.cn/",
-                "username": "1569010448@qq.com",
-                "password": "e7008529ce2df26ccc4a060e28e66dd3",
-                "questionid": "0"
-            }
-            login_result = session.post(url, params=params_login, data=data).text
-            return session if "欢迎您回来" in login_result else "Login Failed"
-        except Exception as e:
-            return "Login Kafan Error: {}".format(e)
+        formhash_text = session.get(url, params=params).text
+        formhash = findall(r"name=\"formhash\" value=\"(.*)\" />", formhash_text)[0]
+        return formhash
 
-    def __init__(self):
-        session = self.login()
-        if isinstance(session, HTMLSession) is False:
-            raise RuntimeError(session)
-        print("Login Success")
-        page_list = self.get_page_list(session)
-        if isinstance(page_list, list) is False:
-            raise RuntimeError( "get page list Failed: {}".format(page_list))
-        for page_link in page_list:
-            sample_list = self.parser_page(session, page_link)
-            for sample in sample_list:
-                download(sample)
-
-    @staticmethod
-    def get_page_list(session: HTMLSession):
+    def get_page_list(self):
         url = "https://bbs.kafan.cn/forum.php"
-        params = {
-            "mod": "forumdisplay",
-            "fid": "31",
-            "filter": "author",
-            "orderby": "dateline"
-        }
-        try:
-            response = session.get(url, params=params).text
-            soup = BeautifulSoup(response, "lxml").select("tr")
-            page_link_list = []
-            for element in soup[7:-2]:
-                element_date_soup = element.select("td > em > span > span")
-                if len(element_date_soup) == 0:
-                    continue
-                element_date = datetime.strptime(element_date_soup[0].get("title"), "%Y-%m-%d").date()
-                page_link = element.select("th > a")[0].get("href")
-                page_link_list.append(page_link) if element_date == download_date.date() else None
-            return page_link_list
-        except Exception as e:
-            return "get all page list Error:{}".format(e)
+        params = {"mod": "forumdisplay", "fid": "31", "filter": "author", "orderby": "dateline"}
+        response = self.session.get(url, params=params).text
+        soup = BeautifulSoup(response, "lxml").select("tr")[7:]
+        download_date = self.download_date.date()
+        page_link_list = []
+        for element in soup:
+            element_date_soup = element.select("td[class=by] > em > span > span")
+            element_date = datetime.strptime(element_date_soup[0].get("title"), "%Y-%m-%d").date()
+            if element_date > download_date:
+                continue
+            elif element_date == download_date:
+                page_link_list.append(element.select("th > a")[0].get("href"))
+            elif element_date < download_date:
+                break
+        return page_link_list
+
+    def parser_page(self, page_link: str):
+        response = self.session.get(page_link).text
+        soup = BeautifulSoup(response, "lxml").select("div[class=pct]")
+        if not len(soup):
+            return None
+        link_list = self.parse_page_text(soup[0])
+        return link_list
 
     @staticmethod
-    def parser_page(session: HTMLSession, page_link: str):
-        response = session.get(page_link).text
-        soup = BeautifulSoup(response, "lxml").select("div[class=pct]")[0]
+    def parse_page_text(soup):
         content = soup.getText()
         re_lanzou = r"https://\w*?.lanzou.\.com/[a-zA-Z0-9]*"
         lanzou_list = findall(re_lanzou, content)
-        file_dir = path.join(base_dir, str(download_date.month))
-        lanzou_list = [{"url": parser_lanzou_link(i), "file_dir": file_dir} for i in lanzou_list]
+        lanzou_list = [Lanzou().get_url(i) for i in lanzou_list if i]
         if len(lanzou_list) != 0:
             return lanzou_list
         re_other = r"(.*\.)zip|(.*\.)7z|(.*\.)exe|(.*\.)rar"
         url_list = [i.get("href") if match(re_other, i.getText()) is not None else None for i in soup.select("a")]
-        link_list = [{"url": link, "file_dir": file_dir, "cookie": session.cookies} for link in url_list]
+        link_list = [link for link in url_list if link]
         return link_list
 
 
+def final():
+    A = Kafan()
+    sample_list, session, download_date = A.sample_link_list, A.session, A.download_date
+    sm_dir = r"G:\Auto"
+    sample_dir = r"G:\AutoSample\Kafan"
+    temp_dir = r"G:\AutoSample\Kafan\Temp"
+    makedirs(temp_dir) if path.exists(temp_dir) is False else None
+    for url in sample_list:
+        download(url, session=session, file_dir=temp_dir)
+    for file_name in listdir(temp_dir):
+        file_path = path.join(temp_dir, file_name)
+        extract(file_path)
+        cmd_delete(file_path)
+    file_path_list = [path.join(temp_dir, file_name) for file_name in listdir(temp_dir)]
+    for file_path in file_path_list:
+        cmd_delete(file_path) if path.isdir(file_path) else None
+    archive_name = "[infected]{}_Kafan.zip".format(download_date.strftime("%Y%m%d"))
+    archive_path = path.join(sample_dir, archive_name)
+    archive(temp_dir, archive_path=archive_path)
+    cmd_copy(archive_path, sm_dir)
+    cmd_delete(temp_dir)
+
+
 if __name__ == "__main__":
-    Kafan()
+    # final()
+    a = "https://www.lanzoux.com/iSvJhh90lre"
+    print(Lanzou().get_url(a))

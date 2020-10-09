@@ -5,6 +5,5 @@
 @time:2020/09/28
 """
 
- 
 if __name__ == "__main__":
     print("This is Templates")

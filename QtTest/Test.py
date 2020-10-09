@@ -18,7 +18,7 @@ class Main(QWidget):
         QToolTip.setFont(QFont('SansSerif', 10))
         self.setToolTip("窗口提示文字")
         #  静态图标
-        icon = QIcon(r"F:\Workspace\First\Base\ico.ico")
+        icon = QIcon(r"/First/Base/ico.ico")
         self.setWindowIcon(icon)
         self.setWindowTitle("窗口标题")
         self.setGeometry(100, 100, 500, 500)

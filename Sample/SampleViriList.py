@@ -2,7 +2,7 @@
 """
 @author: Hewen
 """
-# todo: ALL Done
+# todo:
 from urllib.parse import unquote
 from os import makedirs, path, popen
 from urllib3 import disable_warnings
@@ -10,7 +10,7 @@ from requests_html import HTMLSession
 from datetime import datetime, timedelta
 
 sm_dir = r"G:\Auto"
-sample_dir = r"G:\AutoSample\Abuse"
+sample_dir = r"G:\AutoSample\ViriList"
 date = datetime.today() - timedelta(days=1)
 
 log_dir = path.join(path.dirname(__file__), "Log")
@@ -108,88 +108,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-
-"""
-
-
-@log
-def archive(file_path, pwd="infected", **kwargs):
-    file_dir = path.dirname(file_path)
-    archive_name = kwargs.setdefault("archive_name", path.basename(file_path).split(".")[0])
-    archive_path = kwargs.setdefault("archive_path", path.join(file_dir, archive_name))
-    command = "7z a \"{}\" \"{}\\*\" -p{} -y".format(archive_path, file_path, pwd)
-    output = check_output(command, shell=False)
-    encoding = detect(output)["encoding"]
-    out = output.decode(encoding=encoding)
-    return archive_path if "Ok" in out else out
-
-
-@log
-def extract(file_path, **kwargs):
-    password = kwargs.setdefault("password", "infected")
-    dist_dir = kwargs.setdefault("dist_dir", path.dirname(file_path))
-    makedirs(dist_dir) if path.isdir(dist_dir) and path.exists(dist_dir) is False else None
-    command = "7z e \"{}\" -o\"{}\" -p{} -y -r".format(file_path, dist_dir, password)
-    try:
-        output = check_output(command, shell=False)
-        encoding = detect(output)["encoding"]
-        out = output.decode(encoding=encoding)
-        return True if "Ok" in out else out
-    except SubprocessError as out:
-        cmd_delete(file_path)
-        return out
-
-
-@log
-def cmd_delete(file_path):
-    command = "RD /S /Q \"{}\"".format(file_path) if path.isdir(file_path) else "DEl /Q \"{}\"".format(file_path)
-    output = popen(command)
-    out = output.read()
-    return True if out == "" else out
-
-
-@log
-def cmd(command, **kwargs):
-    file_path = kwargs.setdefault("file_path")
-    dist_dir = kwargs.setdefault("dist_dir")
-    dist_path = kwargs.setdefault("dist_path")
-    command_dict = {
-        "copy": f"copy /y \"{file_path}\" \"{dist_dir}\"",
-        "move": f"move /y \"{file_path}\" \"{dist_dir}\"",
-        "rename": f"rename /y \"{file_path}\" \"{dist_path}\"",
-        "delete": f"RD /S /Q \"{file_path}\"" if path.isdir(file_path) else f"DEl /Q \"{file_path}\""
-    }
-    command = command_dict[command]
-    output = check_output(command, shell=False)
-    encoding = detect(output)["encoding"]
-    out = output.decode(encoding=encoding)
-    return out
-
-
-class CMD:
-
-    @staticmethod
-    def archive(file_path, **kwargs):
-        pass
-
-    @staticmethod
-    def extract(file_path, **kwargs):
-        pass
-
-    @staticmethod
-    def execute(command):
-        try:
-            output = check_output(command, shell=False)
-            encoding = detect(output).setdefault("encoding")
-            out = output.decode(encoding=encoding)
-            return out
-        except SubprocessError as e:
-            return e
-        except LookupError as e:
-            return e
-
-"""
-
-
-if __name__ == "__main__":
-    print("This is Templates")
